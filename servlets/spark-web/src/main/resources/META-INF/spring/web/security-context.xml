@@ -6,8 +6,11 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true" xmlns="http://www.springframework.org/schema/security">
+        <intercept-url pattern="/static/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/auth/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
-        <form-login />
+        <form-login login-page="/auth/login" username-parameter="username"
+            password-parameter="password" authentication-failure-url="/auth/login/failure" />
     </http>
 
     <authentication-manager xmlns="http://www.springframework.org/schema/security">
