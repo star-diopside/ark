@@ -3,16 +3,16 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <name>spark-ejbs</name>
-
-    <artifactId>spark-ejbs-parent</artifactId>
-    <packaging>pom</packaging>
 
     <parent>
         <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
         <artifactId>spark-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <artifactId>spark-ejbs-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>spark-ejbs</name>
 
     <properties>
         <project.rootdir>${project.basedir}/..</project.rootdir>

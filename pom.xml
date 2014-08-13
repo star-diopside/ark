@@ -3,12 +3,12 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <name>spark</name>
 
     <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
     <artifactId>spark-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>spark</name>
 
     <modules>
         <module>projects</module>
@@ -276,9 +276,39 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-resources</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-web-controller</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.14.4</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
             </dependency>
             <dependency>
                 <groupId>javax</groupId>
@@ -289,6 +319,16 @@
                 <groupId>jstl</groupId>
                 <artifactId>jstl</artifactId>
                 <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>4.3.6.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>1.0.0.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -322,6 +362,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
@@ -334,6 +379,11 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>1.6.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
