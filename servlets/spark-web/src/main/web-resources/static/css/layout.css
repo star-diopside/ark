@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+body,
+input {
+	font-family: "Lucida Grande", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+}
+
+.mainbtn-area {
+	padding-top: 15px;
+}

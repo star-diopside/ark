@@ -6,14 +6,21 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true" xmlns="http://www.springframework.org/schema/security">
+        <intercept-url pattern="/static/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/auth/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
-        <form-login />
+        <form-login login-page="/auth/login" username-parameter="username"
+            password-parameter="password" authentication-failure-url="/auth/login/failure" />
     </http>
 
     <authentication-manager xmlns="http://www.springframework.org/schema/security">
-        <authentication-provider>
-            <jdbc-user-service data-source-ref="dataSource" />
-        </authentication-provider>
+        <authentication-provider ref="authenticationProvider" />
     </authentication-manager>
+
+    <bean id="authenticationProvider"
+        class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService" />
+        <property name="passwordEncoder" ref="passwordEncoder" />
+    </bean>
 
 </beans>
