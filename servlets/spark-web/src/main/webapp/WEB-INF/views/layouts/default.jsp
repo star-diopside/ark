@@ -8,5 +8,10 @@
 <tiles:importAttribute name="title" />
 <title><spring:message code="${title}" text="spark-web" /></title>
 </head>
-<body><tiles:insertAttribute name="content" /></body>
+<body>
+<div class="container">
+<tiles:insertAttribute name="header" />
+<tiles:insertAttribute name="content" />
+</div>
+</body>
 </html>
