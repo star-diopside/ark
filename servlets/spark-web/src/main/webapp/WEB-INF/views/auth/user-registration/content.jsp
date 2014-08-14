@@ -36,7 +36,7 @@
   <div class="form-group mainbtn-area">
     <div class="col-sm-12">
       <div class="pull-right">
-        <input type="submit" name="login" value="新規登録" class="btn btn-default" />
+        <input type="submit" name="register" value="新規登録" class="btn btn-default" />
       </div>
       <div class="pull-left">
         <a href="<spring:url value='/auth/user-login' />" class="btn btn-default">戻る</a>

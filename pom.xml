@@ -289,6 +289,11 @@
             </dependency>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-support</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-data</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -446,6 +451,11 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>1.8.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.3.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.tiles</groupId>
