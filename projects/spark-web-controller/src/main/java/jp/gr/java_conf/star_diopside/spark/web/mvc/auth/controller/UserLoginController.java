@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.LoginForm;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,20 +23,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * ログインコントローラ
+ * ユーザログインコントローラ
  */
 @Controller
-@RequestMapping("auth/login")
-public class LoginController {
+@RequestMapping("auth/user-login")
+public class UserLoginController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserLoginController.class);
     private static final Map<String, String> EXCEPTION_MAP;
 
     static {
         HashMap<String, String> map = new HashMap<>();
-        map.put(BadCredentialsException.class.getName(), "Error.BadCredential");
-        map.put(UsernameNotFoundException.class.getName(), "Error.BadCredential");
-        map.put(AccountExpiredException.class.getName(), "Error.UserInvalid");
+        map.put(BadCredentialsException.class.getName(), "error.BadCredential");
+        map.put(UsernameNotFoundException.class.getName(), "error.BadCredential");
+        map.put(AccountExpiredException.class.getName(), "error.UserInvalid");
         EXCEPTION_MAP = Collections.unmodifiableMap(map);
     }
 
@@ -49,7 +49,7 @@ public class LoginController {
      * @return 処理結果
      */
     @RequestMapping(method = RequestMethod.GET)
-    public String show(LoginForm form, ModelMap model, Errors errors) {
+    public String show(UserLoginForm form, ModelMap model, Errors errors) {
 
         // 認証エラーメッセージを取得する。
         Exception exception = (Exception) model.get(WebAttributes.AUTHENTICATION_EXCEPTION);
@@ -64,7 +64,7 @@ public class LoginController {
             }
         }
 
-        return "auth/login";
+        return "auth/user-login";
     }
 
     /**
@@ -84,7 +84,7 @@ public class LoginController {
             attr.addFlashAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception);
         }
 
-        return "redirect:/auth/login";
+        return "redirect:/auth/user-login";
     }
 
     /**
@@ -95,9 +95,9 @@ public class LoginController {
      * @return 処理結果
      */
     @RequestMapping(method = RequestMethod.POST, params = "login")
-    public String login(@Valid LoginForm form, Errors errors) {
+    public String login(@Valid UserLoginForm form, Errors errors) {
         if (errors.hasErrors()) {
-            return "auth/login";
+            return "auth/user-login";
         } else {
             return "forward:/j_spring_security_check";
         }

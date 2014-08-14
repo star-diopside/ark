@@ -9,8 +9,8 @@
         <intercept-url pattern="/static/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/auth/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
-        <form-login login-page="/auth/login" username-parameter="username"
-            password-parameter="password" authentication-failure-url="/auth/login/failure" />
+        <form-login login-page="/auth/user-login" username-parameter="username"
+            password-parameter="password" authentication-failure-url="/auth/user-login/failure" />
     </http>
 
     <authentication-manager xmlns="http://www.springframework.org/schema/security">
