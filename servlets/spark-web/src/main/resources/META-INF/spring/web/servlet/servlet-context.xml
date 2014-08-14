@@ -23,9 +23,15 @@
 
     <mvc:default-servlet-handler />
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/" />
-        <property name="suffix" value=".jsp" />
+    <bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
+
+    <bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/views/layouts/tiles-layout.xml</value>
+                <value>/WEB-INF/views/**/tiles-view.xml</value>
+            </list>
+        </property>
     </bean>
 
 </beans>
