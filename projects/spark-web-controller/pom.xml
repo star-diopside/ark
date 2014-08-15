@@ -20,6 +20,10 @@
     <dependencies>
         <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+            <artifactId>spark-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-service</artifactId>
         </dependency>
         <dependency>
@@ -38,6 +42,10 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code</groupId>
+            <artifactId>kaptcha</artifactId>
         </dependency>
     </dependencies>
 

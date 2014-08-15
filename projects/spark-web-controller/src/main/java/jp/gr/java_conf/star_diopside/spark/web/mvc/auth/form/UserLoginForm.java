@@ -10,10 +10,13 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * ユーザログインフォーム
+ */
 @Data
 @ToString(exclude = "password")
 @SuppressWarnings("serial")
-public class LoginForm implements Serializable {
+public class UserLoginForm implements Serializable {
 
     /** ユーザ名 */
     @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.username.Required.message}")

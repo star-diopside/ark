@@ -34,4 +34,11 @@
         </property>
     </bean>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <bean class="jp.gr.java_conf.star_diopside.spark.web.mvc.interceptor.KaptchaSessionClearInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>

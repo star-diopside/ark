@@ -28,6 +28,13 @@
         <spring-security.version>3.2.4.RELEASE</spring-security.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>local-repository</id>
+            <url>file:${project.rootdir}/resources/repository</url>
+        </repository>
+    </repositories>
+
     <profiles>
         <profile>
             <id>develop</id>
@@ -289,6 +296,11 @@
             </dependency>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-support</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-data</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -448,9 +460,19 @@
                 <version>1.8.1</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.3.2</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.tiles</groupId>
                 <artifactId>tiles-jsp</artifactId>
                 <version>3.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>2.3.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

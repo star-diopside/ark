@@ -7,10 +7,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
+import jp.gr.java_conf.star_diopside.spark.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
+import jp.gr.java_conf.star_diopside.spark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.spark.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,6 +26,57 @@ public class UserManager {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private AuthorityRepository authorityRepository;
+
+    @Inject
+    @Named("passwordEncoder")
+    private PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public void createUser(String userId, String username, String password) {
+
+        // ユーザの存在チェックを行う。
+        if (userRepository.exists(userId)) {
+            throw new ApplicationException("error.UserExists", true);
+        }
+
+        // 現在時刻を取得する。
+        Date current = new Date();
+
+        // ユーザ情報の登録を行う。
+        User user = new User();
+
+        user.setUserId(userId);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPasswordUpdatedAt(current);
+        user.setEnabled(true);
+        user.setHighGradeRegistry(false);
+        user.setLoginErrorCount(0);
+        user.setLockoutAt(null);
+        user.setLastLoginAt(null);
+        user.setLogoutAt(null);
+        user.setCreatedAt(current);
+        user.setCreatedUserId(userId);
+        user.setUpdatedAt(current);
+        user.setUpdatedUserId(userId);
+
+        userRepository.save(user);
+
+        // 権限情報の登録を行う。
+        Authority authority = new Authority();
+
+        authority.setUserId(userId);
+        authority.setAuthority("ROLE_USER");
+        authority.setCreatedAt(current);
+        authority.setCreatedUserId(userId);
+        authority.setUpdatedAt(current);
+        authority.setUpdatedUserId(userId);
+
+        authorityRepository.save(authority);
+    }
 
     /**
      * ログアウト処理を行う。
