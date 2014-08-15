@@ -1,6 +1,7 @@
 package jp.gr.java_conf.star_diopside.spark.web.mvc.auth.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
@@ -15,6 +16,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.code.kaptcha.Constants;
 
 /**
  * ユーザ登録コントローラ
@@ -46,15 +49,16 @@ public class UserRegistrationController {
      * @return 処理結果
      */
     @RequestMapping(method = RequestMethod.POST, params = "register")
-    public String register(@Valid UserRegistrationForm form, Errors errors, RedirectAttributes attr) {
+    public String register(@Valid UserRegistrationForm form, Errors errors, HttpSession session, RedirectAttributes attr) {
 
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() || !form.validate(errors)) {
             return "auth/user-registration";
         }
 
-        // パスワードの一致チェックを行う。
-        if (!StringUtils.equals(form.getPassword(), form.getPasswordConfirm())) {
-            errors.reject("error.NotMatchPasswordConfirm");
+        // キャプチャ文字の一致チェックを行う。
+        String captcha = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        if (!StringUtils.equals(captcha, form.getCaptcha())) {
+            errors.rejectValue("captcha", "error.NotMatchCaptcha");
             return "auth/user-registration";
         }
 

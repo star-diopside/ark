@@ -33,6 +33,15 @@
       <form:errors path="passwordConfirm" element="span" cssClass="help-block" />
     </div>
   </div>
+  <div class="form-group<form:errors path='captcha'> has-error</form:errors>">
+    <label for="captcha" class="col-sm-2 control-label">画像認証</label>
+    <div class="col-sm-10">
+      <span class="help-block">画像に表示されている文字を入力してください。</span>
+      <p><img src="<spring:url value='/auth/captcha.jpg' />" /></p>
+      <form:input path="captcha" id="captcha" cssClass="form-control" autocomplete="off" />
+      <form:errors path="captcha" element="span" cssClass="help-block" />
+    </div>
+  </div>
   <div class="form-group mainbtn-area">
     <div class="col-sm-12">
       <div class="pull-right">

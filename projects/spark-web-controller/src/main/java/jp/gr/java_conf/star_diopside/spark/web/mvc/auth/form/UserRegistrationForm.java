@@ -8,8 +8,10 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.ToString;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.Errors;
 
 /**
  * ユーザ登録フォーム
@@ -42,4 +44,25 @@ public class UserRegistrationForm implements Serializable {
     @NotEmpty(message = "{jp.gr.java_conf.star_diopside.spark.validation.passwordConfirm.Required.message}")
     private String passwordConfirm;
 
+    /** キャプチャ */
+    @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.captcha.Required.message}")
+    @NotEmpty(message = "{jp.gr.java_conf.star_diopside.spark.validation.captcha.Required.message}")
+    private String captcha;
+
+    /**
+     * 項目関連チェックを行う。
+     * 
+     * @param errors エラー情報
+     * @return エラーがない場合はtrue、エラーがある場合はfalse
+     */
+    public boolean validate(Errors errors) {
+
+        // パスワードの一致チェックを行う。
+        if (!StringUtils.equals(password, passwordConfirm)) {
+            errors.reject("error.NotMatchPasswordConfirm");
+            return false;
+        }
+
+        return true;
+    }
 }
