@@ -7,9 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
-import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -366,8 +363,6 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
     protected void writeToExceptionLog(Log logger, Object message, Throwable t) {
         if (t == null) {
             logger.error(message);
-        } else if (t instanceof ApplicationException) {
-            logger.info(message);
         } else {
             logger.error(message, t);
         }
@@ -421,11 +416,7 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
      * @return ログ出力を有効にする場合はtrueを返す。
      */
     protected boolean isExceptionLogEnabled(Log logger, Throwable t) {
-        if (t instanceof ApplicationException) {
-            return logger.isInfoEnabled();
-        } else {
-            return logger.isErrorEnabled();
-        }
+        return logger.isErrorEnabled();
     }
 
     /**
@@ -457,8 +448,6 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
     protected Stream<?> streamLoggingObjects(Object obj) {
         if (obj == null) {
             return Stream.of(obj);
-        } else if (obj instanceof Loggable) {
-            return ((Loggable) obj).streamLoggingObjects();
         } else {
             return Stream.of(obj);
         }

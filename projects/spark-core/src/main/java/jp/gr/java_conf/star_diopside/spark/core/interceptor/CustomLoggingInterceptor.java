@@ -1,5 +1,10 @@
 package jp.gr.java_conf.star_diopside.spark.core.interceptor;
 
+import java.util.stream.Stream;
+
+import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
+import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
+
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.slf4j.MDC;
@@ -37,6 +42,33 @@ public class CustomLoggingInterceptor extends LoggingInterceptor {
             } else {
                 MDC.put(MDC_METHOD_NAME, beforeMethodName);
             }
+        }
+    }
+
+    @Override
+    protected void writeToExceptionLog(Log logger, Object message, Throwable t) {
+        if (t instanceof ApplicationException) {
+            logger.info(message);
+        } else {
+            super.writeToExceptionLog(logger, message, t);
+        }
+    }
+
+    @Override
+    protected boolean isExceptionLogEnabled(Log logger, Throwable t) {
+        if (t instanceof ApplicationException) {
+            return logger.isInfoEnabled();
+        } else {
+            return super.isExceptionLogEnabled(logger, t);
+        }
+    }
+
+    @Override
+    protected Stream<?> streamLoggingObjects(Object obj) {
+        if (obj instanceof Loggable) {
+            return ((Loggable) obj).streamLoggingObjects();
+        } else {
+            return super.streamLoggingObjects(obj);
         }
     }
 }
