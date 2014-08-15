@@ -31,6 +31,11 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+            <artifactId>spark-test-support</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
