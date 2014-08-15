@@ -446,11 +446,7 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
      * @return ログ出力用オブジェクトのストリーム
      */
     protected Stream<?> streamLoggingObjects(Object obj) {
-        if (obj == null) {
-            return Stream.of(obj);
-        } else {
-            return Stream.of(obj);
-        }
+        return Stream.of(obj);
     }
 
     /**
