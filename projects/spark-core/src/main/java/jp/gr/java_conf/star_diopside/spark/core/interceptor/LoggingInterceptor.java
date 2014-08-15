@@ -1,15 +1,11 @@
 package jp.gr.java_conf.star_diopside.spark.core.interceptor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
-import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
+import java.util.stream.Stream;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
@@ -282,20 +278,20 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             stopWatch.start();
 
             // 開始ログを出力する
-            if (this.isEnterLogEnabled(logger)) {
-                this.writeToEnterLog(logger, replacePlaceholders(this.enterMessage, sb, base));
+            if (isEnterLogEnabled(logger)) {
+                writeToEnterLog(logger, replacePlaceholders(enterMessage, sb, base));
             }
 
             // 入力パラメータログを出力する
-            if (this.isArgumentsLogEnabled(logger)) {
+            if (isArgumentsLogEnabled(logger)) {
                 Object[] arguments = invocation.getArguments();
                 addition.clear();
                 for (int i = 0; i < arguments.length; i++) {
-                    addition.put(this.placeholderArgumentIndex, Integer.valueOf(i));
-                    for (Object data : createPrintableObjects(arguments[i])) {
-                        addition.put(this.placeholderArgumentValue, data);
-                        this.writeToArgumentsLog(logger, replacePlaceholders(this.argumentsMessage, sb, base, addition));
-                    }
+                    addition.put(placeholderArgumentIndex, Integer.valueOf(i));
+                    streamLoggingObjects(arguments[i]).forEach(data -> {
+                        addition.put(placeholderArgumentValue, data);
+                        writeToArgumentsLog(logger, replacePlaceholders(argumentsMessage, sb, base, addition));
+                    });
                 }
             }
 
@@ -303,14 +299,14 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             Object result = invocation.proceed();
 
             // 出力パラメータログを出力する
-            if (this.isResultLogEnabled(logger)) {
+            if (isResultLogEnabled(logger)) {
                 // 戻り値が void 以外の場合にログ出力する
                 if (!invocation.getMethod().getReturnType().equals(Void.TYPE)) {
                     addition.clear();
-                    for (Object data : createPrintableObjects(result)) {
-                        addition.put(this.placeholderReturnValue, data);
-                        this.writeToResultLog(logger, replacePlaceholders(this.resultMessage, sb, base, addition));
-                    }
+                    streamLoggingObjects(result).forEach(data -> {
+                        addition.put(placeholderReturnValue, data);
+                        writeToResultLog(logger, replacePlaceholders(resultMessage, sb, base, addition));
+                    });
                 }
             }
 
@@ -318,10 +314,10 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
 
         } catch (Throwable t) {
             // エラーログを出力する
-            if (this.isExceptionLogEnabled(logger, t)) {
+            if (isExceptionLogEnabled(logger, t)) {
                 addition.clear();
-                addition.put(this.placeholderException, t);
-                this.writeToExceptionLog(logger, replacePlaceholders(this.exceptionMessage, sb, base, addition), t);
+                addition.put(placeholderException, t);
+                writeToExceptionLog(logger, replacePlaceholders(exceptionMessage, sb, base, addition), t);
             }
 
             // 例外を再スローする
@@ -329,10 +325,10 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
 
         } finally {
             // 終了ログを出力する
-            if (this.isExitLogEnabled(logger)) {
+            if (isExitLogEnabled(logger)) {
                 addition.clear();
-                addition.put(this.placeholderInvocationTime, Long.valueOf(stopWatch.getTime()));
-                this.writeToExitLog(logger, replacePlaceholders(this.exitMessage, sb, base, addition));
+                addition.put(placeholderInvocationTime, Long.valueOf(stopWatch.getTime()));
+                writeToExitLog(logger, replacePlaceholders(exitMessage, sb, base, addition));
             }
         }
     }
@@ -367,8 +363,6 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
     protected void writeToExceptionLog(Log logger, Object message, Throwable t) {
         if (t == null) {
             logger.error(message);
-        } else if (t instanceof ApplicationException) {
-            logger.info(message);
         } else {
             logger.error(message, t);
         }
@@ -422,11 +416,7 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
      * @return ログ出力を有効にする場合はtrueを返す。
      */
     protected boolean isExceptionLogEnabled(Log logger, Throwable t) {
-        if (t instanceof ApplicationException) {
-            return logger.isInfoEnabled();
-        } else {
-            return logger.isErrorEnabled();
-        }
+        return logger.isErrorEnabled();
     }
 
     /**
@@ -450,6 +440,20 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
     }
 
     /**
+     * オブジェクトのインスタンスからログ出力用オブジェクト列のストリームを生成する。
+     * 
+     * @param obj ログ出力対象オブジェクト
+     * @return ログ出力用オブジェクトのストリーム
+     */
+    protected Stream<?> streamLoggingObjects(Object obj) {
+        if (obj == null) {
+            return Stream.of(obj);
+        } else {
+            return Stream.of(obj);
+        }
+    }
+
+    /**
      * {@link org.aopalliance.intercept.MethodInvocation MethodInvocation}
      * インスタンスからプレースホルダー置換文字列マップを生成する。
      * 
@@ -460,39 +464,18 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
 
         HashMap<String, Object> replacement = new HashMap<>();
 
-        replacement.put(this.placeholderTargetClassName, getClassForLogging(invocation.getThis()).getName());
-        replacement.put(this.placeholderTargetClassShortName, getClassForLogging(invocation.getThis()).getSimpleName());
-        replacement.put(this.placeholderMethodName, invocation.getMethod().getName());
+        replacement.put(placeholderTargetClassName, getClassForLogging(invocation.getThis()).getName());
+        replacement.put(placeholderTargetClassShortName, getClassForLogging(invocation.getThis()).getSimpleName());
+        replacement.put(placeholderMethodName, invocation.getMethod().getName());
 
         Class<?>[] argumentTypes = invocation.getMethod().getParameterTypes();
         ArrayList<String> argumentTypeShortNames = new ArrayList<>(argumentTypes.length);
         for (Class<?> type : argumentTypes) {
             argumentTypeShortNames.add(type.getSimpleName());
         }
-        replacement.put(this.placeholderArgumentTypes, StringUtils.join(argumentTypeShortNames, ','));
+        replacement.put(placeholderArgumentTypes, StringUtils.join(argumentTypeShortNames, ','));
 
         return replacement;
-    }
-
-    /**
-     * オブジェクトのインスタンスからログ出力用文字列を生成する。
-     * 
-     * @param obj ログ出力内容の文字列コレクション
-     */
-    private static Collection<?> createPrintableObjects(Object obj) {
-
-        if (obj == null) {
-            return Arrays.asList((Object) null);
-        } else if (obj instanceof Loggable) {
-            Collection<String> logText = ((Loggable) obj).toLogText();
-            if (logText == null) {
-                return Arrays.asList((Object) null);
-            } else {
-                return logText;
-            }
-        } else {
-            return Arrays.asList(obj);
-        }
     }
 
     /**

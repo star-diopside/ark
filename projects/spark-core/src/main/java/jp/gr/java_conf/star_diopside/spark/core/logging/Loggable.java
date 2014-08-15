@@ -1,6 +1,6 @@
 package jp.gr.java_conf.star_diopside.spark.core.logging;
 
-import java.util.Collection;
+import java.util.stream.Stream;
 
 /**
  * ログ出力情報取得機能を持つクラスが実装するインタフェース
@@ -8,9 +8,9 @@ import java.util.Collection;
 public interface Loggable {
 
     /**
-     * ログ出力用文字列のリストを生成する。
+     * ログ出力用オブジェクトのストリームを生成する。
      * 
-     * @return ログ出力用文字列のリスト
+     * @return ログ出力用オブジェクトのストリーム
      */
-    Collection<String> toLogText();
+    Stream<?> streamLoggingObjects();
 }
