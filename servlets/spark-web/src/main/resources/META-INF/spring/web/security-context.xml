@@ -11,16 +11,21 @@
         <intercept-url pattern="/**" access="isFullyAuthenticated()" />
         <form-login login-page="/auth/user-login" username-parameter="username"
             password-parameter="password" authentication-failure-url="/auth/user-login/failure" />
+        <custom-filter after="LAST" ref="dualLoginCheckFilter" />
     </http>
 
     <authentication-manager xmlns="http://www.springframework.org/schema/security">
         <authentication-provider ref="authenticationProvider" />
     </authentication-manager>
 
-    <bean id="authenticationProvider"
-        class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="userDetailsService" />
         <property name="passwordEncoder" ref="passwordEncoder" />
+        <property name="hideUserNotFoundExceptions" value="false" />
     </bean>
+
+    <bean id="dualLoginCheckFilter" class="jp.gr.java_conf.star_diopside.spark.web.servlet.DualLoginCheckFilter" />
+
+    <bean id="flashMapManager" class="org.springframework.web.servlet.support.SessionFlashMapManager" />
 
 </beans>
