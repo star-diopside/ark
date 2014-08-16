@@ -32,7 +32,7 @@
     <repositories>
         <repository>
             <id>local-repository</id>
-            <url>file:${project.rootdir}/resources/repository</url>
+            <url>file://${project.rootdir}/resources/repository</url>
         </repository>
     </repositories>
 

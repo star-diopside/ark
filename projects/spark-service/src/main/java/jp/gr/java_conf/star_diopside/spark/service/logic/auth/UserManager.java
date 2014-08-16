@@ -1,123 +1,74 @@
 package jp.gr.java_conf.star_diopside.spark.service.logic.auth;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
-import jp.gr.java_conf.star_diopside.spark.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
-import jp.gr.java_conf.star_diopside.spark.data.repository.AuthorityRepository;
-import jp.gr.java_conf.star_diopside.spark.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
-
 /**
- * ユーザ管理クラス
+ * ユーザ管理インタフェース
  */
-@Named
-@Singleton
-public class UserManager {
+public interface UserManager {
 
-    @Inject
-    private UserRepository userRepository;
+    /**
+     * ユーザを作成する。
+     * 
+     * @param userId ユーザID
+     * @param username ユーザ名
+     * @param password パスワード
+     */
+    void createUser(String userId, String username, String password);
 
-    @Inject
-    private AuthorityRepository authorityRepository;
+    /**
+     * 取得したユーザ情報が有効かどうか判定する。
+     * 
+     * @param user ユーザエンティティ
+     * @return 有効なユーザ情報と判定した場合はtrue、無効なユーザと判定した場合はfalse
+     */
+    boolean checkValid(User user);
 
-    @Inject
-    @Named("passwordEncoder")
-    private PasswordEncoder passwordEncoder;
+    /**
+     * ユーザを削除する。
+     * 
+     * @param user ユーザエンティティ
+     */
+    void removeUser(User user);
 
-    @Transactional
-    public void createUser(String userId, String username, String password) {
+    /**
+     * ユーザ状態を判定し、無効ユーザの場合は削除する。
+     * 
+     * @param loginUser ユーザ情報
+     * @return 無効なユーザと判定して削除した場合はtrue、それ以外の場合はfalse
+     */
+    boolean removeInvalidUser(LoginUserDetails loginUser);
 
-        // ユーザの存在チェックを行う。
-        if (userRepository.exists(userId)) {
-            throw new ApplicationException("error.UserExists", true);
-        }
+    /**
+     * ログイン成功時の処理を行う。
+     * 
+     * @param loginUser ユーザ情報
+     * @return 更新後のユーザエンティティ
+     */
+    User loginSuccess(LoginUserDetails loginUser);
 
-        // 現在時刻を取得する。
-        Date current = new Date();
-
-        // ユーザ情報の登録を行う。
-        User user = new User();
-
-        user.setUserId(userId);
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setPasswordUpdatedAt(current);
-        user.setEnabled(true);
-        user.setHighGradeRegistry(false);
-        user.setLoginErrorCount(0);
-        user.setLockoutAt(null);
-        user.setLastLoginAt(null);
-        user.setLogoutAt(null);
-        user.setCreatedAt(current);
-        user.setCreatedUserId(userId);
-        user.setUpdatedAt(current);
-        user.setUpdatedUserId(userId);
-
-        userRepository.save(user);
-
-        // 権限情報の登録を行う。
-        Authority authority = new Authority();
-
-        authority.setUserId(userId);
-        authority.setAuthority("ROLE_USER");
-        authority.setCreatedAt(current);
-        authority.setCreatedUserId(userId);
-        authority.setUpdatedAt(current);
-        authority.setUpdatedUserId(userId);
-
-        authorityRepository.save(authority);
-    }
+    /**
+     * ログイン失敗時の処理を行う。
+     * 
+     * @param userId ユーザID
+     * @return 更新後のユーザエンティティ
+     */
+    User loginFailure(String userId);
 
     /**
      * ログアウト処理を行う。
      * 
      * @param loginUser ユーザ情報
      */
-    @Transactional
-    public void logout(LoginUserDetails loginUser) {
-        String userId = loginUser.getUserId();
-        User user = userRepository.findOne(userId);
-
-        // ログイン情報が更新されていない場合、ログアウト処理を行う。
-        if (!checkLoginInfo(loginUser, user)) {
-            Date current = new Date();
-            user.setLogoutAt(current);
-            user.setUpdatedAt(current);
-            user.setUpdatedUserId(userId);
-            userRepository.save(user);
-        }
-    }
+    void logout(LoginUserDetails loginUser);
 
     /**
-     * ログイン情報の不変チェックを行う。
+     * 二重ログインチェックを行う。
      * 
-     * @param loginUser ログインユーザ情報
-     * @param user ユーザテーブルから取得したユーザ情報
-     * @return ログイン後にログイン情報が更新されている場合はtrue、それ以外の場合はfalse。
+     * @param loginUser ユーザ情報
+     * @return 二重ログインエラーの場合はtrue、それ以外の場合はfalse。
      */
-    private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
-        // 最終ログイン日時、ログアウト日時の判定を行う。
-        return !equalsDateTime(loginUser.getLastLoginAt(), user.getLastLoginAt())
-                || !equalsDateTime(loginUser.getLogoutAt(), user.getLogoutAt());
-    }
+    boolean checkDualLogin(LoginUserDetails loginUser);
 
-    private static boolean equalsDateTime(ZonedDateTime dateTime, Date date) {
-        if (dateTime == null) {
-            return date == null;
-        } else if (date == null) {
-            return false;
-        } else {
-            return dateTime.toInstant().equals(date.toInstant());
-        }
-    }
 }
