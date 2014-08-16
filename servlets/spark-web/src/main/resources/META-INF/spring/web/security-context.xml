@@ -22,6 +22,9 @@
         <property name="userDetailsService" ref="userDetailsService" />
         <property name="passwordEncoder" ref="passwordEncoder" />
         <property name="hideUserNotFoundExceptions" value="false" />
+        <property name="preAuthenticationChecks">
+            <bean class="jp.gr.java_conf.star_diopside.spark.service.userdetails.BeforeLoginUserDetailsChecker" />
+        </property>
     </bean>
 
     <bean id="dualLoginCheckFilter" class="jp.gr.java_conf.star_diopside.spark.web.servlet.DualLoginCheckFilter" />
