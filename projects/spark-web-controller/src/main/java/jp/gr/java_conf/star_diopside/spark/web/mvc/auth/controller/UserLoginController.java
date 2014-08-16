@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import jp.gr.java_conf.star_diopside.spark.web.exception.DualLoginException;
 import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
 
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class UserLoginController {
         map.put(BadCredentialsException.class.getName(), "error.BadCredential");
         map.put(UsernameNotFoundException.class.getName(), "error.BadCredential");
         map.put(AccountExpiredException.class.getName(), "error.UserInvalid");
+        map.put(DualLoginException.class.getName(), "error.DualLogin");
         EXCEPTION_MAP = Collections.unmodifiableMap(map);
     }
 

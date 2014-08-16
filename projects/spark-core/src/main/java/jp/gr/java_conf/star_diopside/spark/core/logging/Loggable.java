@@ -13,4 +13,5 @@ public interface Loggable {
      * @return ログ出力用オブジェクトのストリーム
      */
     Stream<?> streamLoggingObjects();
+
 }
