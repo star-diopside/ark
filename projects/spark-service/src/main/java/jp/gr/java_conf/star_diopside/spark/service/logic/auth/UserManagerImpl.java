@@ -117,7 +117,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     @Transactional
     public User loginSuccess(LoginUserDetails loginUser) {
-        User user = loginUser.convertUserEntity();
+        User user = userRepository.findOne(loginUser.getUserId());
         Date current = new Date();
 
         user.setLoginErrorCount(0);
