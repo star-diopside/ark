@@ -16,6 +16,7 @@
 
     <modules>
         <module>spark-web</module>
+        <module>spark-batch-manager</module>
     </modules>
 
     <properties>
