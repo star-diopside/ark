@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import jp.gr.java_conf.star_diopside.spark.test.support.CommitTransactionDatabaseTestSupport;
@@ -28,7 +29,6 @@ import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -43,7 +43,7 @@ public class BA01J01Test {
     @Resource
     private PlatformTransactionManager transactionManager;
 
-    @Autowired
+    @Inject
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     private DatabaseTestSupport databaseTestSupport;
