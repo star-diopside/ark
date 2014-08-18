@@ -1,14 +1,14 @@
 package jp.gr.java_conf.star_diopside.spark.core.interceptor;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.springframework.aop.interceptor.AbstractTraceInterceptor;
@@ -463,13 +463,10 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
         replacement.put(placeholderTargetClassName, getClassForLogging(invocation.getThis()).getName());
         replacement.put(placeholderTargetClassShortName, getClassForLogging(invocation.getThis()).getSimpleName());
         replacement.put(placeholderMethodName, invocation.getMethod().getName());
-
-        Class<?>[] argumentTypes = invocation.getMethod().getParameterTypes();
-        ArrayList<String> argumentTypeShortNames = new ArrayList<>(argumentTypes.length);
-        for (Class<?> type : argumentTypes) {
-            argumentTypeShortNames.add(type.getSimpleName());
-        }
-        replacement.put(placeholderArgumentTypes, StringUtils.join(argumentTypeShortNames, ','));
+        replacement.put(
+                placeholderArgumentTypes,
+                Arrays.stream(invocation.getMethod().getParameterTypes()).map(Class::getSimpleName)
+                        .collect(Collectors.joining(", ")));
 
         return replacement;
     }
