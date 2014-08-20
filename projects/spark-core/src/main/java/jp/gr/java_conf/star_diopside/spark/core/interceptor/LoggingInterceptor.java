@@ -3,9 +3,11 @@ package jp.gr.java_conf.star_diopside.spark.core.interceptor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -269,8 +271,8 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
     protected Object invokeUnderTrace(MethodInvocation invocation, Log logger) throws Throwable {
 
         StopWatch stopWatch = new StopWatch();
-        Map<String, ?> base = createReplacementMap(invocation);
-        HashMap<String, Object> addition = new HashMap<>();
+        Map<String, Supplier<?>> base = createReplacementMap(invocation);
+        HashMap<String, Supplier<?>> addition = new HashMap<>();
         StringBuffer sb = new StringBuffer();
 
         try {
@@ -286,13 +288,13 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             if (isArgumentsLogEnabled(logger)) {
                 Object[] arguments = invocation.getArguments();
                 addition.clear();
-                for (int i = 0; i < arguments.length; i++) {
-                    addition.put(placeholderArgumentIndex, Integer.valueOf(i));
+                IntStream.range(0, arguments.length).forEach(i -> {
+                    addition.put(placeholderArgumentIndex, () -> Integer.valueOf(i));
                     streamLoggingObjects(arguments[i]).forEach(data -> {
-                        addition.put(placeholderArgumentValue, data);
+                        addition.put(placeholderArgumentValue, () -> data);
                         writeToArgumentsLog(logger, replacePlaceholders(argumentsMessage, sb, base, addition));
                     });
-                }
+                });
             }
 
             // 処理を実行する
@@ -304,7 +306,7 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
                 if (!invocation.getMethod().getReturnType().equals(Void.TYPE)) {
                     addition.clear();
                     streamLoggingObjects(result).forEach(data -> {
-                        addition.put(placeholderReturnValue, data);
+                        addition.put(placeholderReturnValue, () -> data);
                         writeToResultLog(logger, replacePlaceholders(resultMessage, sb, base, addition));
                     });
                 }
@@ -316,7 +318,7 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             // エラーログを出力する
             if (isExceptionLogEnabled(logger, t)) {
                 addition.clear();
-                addition.put(placeholderException, t);
+                addition.put(placeholderException, () -> t);
                 writeToExceptionLog(logger, replacePlaceholders(exceptionMessage, sb, base, addition), t);
             }
 
@@ -327,7 +329,7 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             // 終了ログを出力する
             if (isExitLogEnabled(logger)) {
                 addition.clear();
-                addition.put(placeholderInvocationTime, Long.valueOf(stopWatch.getTime()));
+                addition.put(placeholderInvocationTime, () -> Long.valueOf(stopWatch.getTime()));
                 writeToExitLog(logger, replacePlaceholders(exitMessage, sb, base, addition));
             }
         }
@@ -456,17 +458,15 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
      * @param invocation メソッド実行インスタンス
      * @return 置換文字列マップ
      */
-    private Map<String, ?> createReplacementMap(MethodInvocation invocation) {
+    private Map<String, Supplier<?>> createReplacementMap(MethodInvocation invocation) {
 
-        HashMap<String, Object> replacement = new HashMap<>();
+        HashMap<String, Supplier<?>> replacement = new HashMap<>();
 
-        replacement.put(placeholderTargetClassName, getClassForLogging(invocation.getThis()).getName());
-        replacement.put(placeholderTargetClassShortName, getClassForLogging(invocation.getThis()).getSimpleName());
-        replacement.put(placeholderMethodName, invocation.getMethod().getName());
-        replacement.put(
-                placeholderArgumentTypes,
-                Arrays.stream(invocation.getMethod().getParameterTypes()).map(Class::getSimpleName)
-                        .collect(Collectors.joining(", ")));
+        replacement.put(placeholderTargetClassName, () -> getClassForLogging(invocation.getThis()).getName());
+        replacement.put(placeholderTargetClassShortName, () -> getClassForLogging(invocation.getThis()).getSimpleName());
+        replacement.put(placeholderMethodName, () -> invocation.getMethod().getName());
+        replacement.put(placeholderArgumentTypes, () -> Arrays.stream(invocation.getMethod().getParameterTypes())
+                .map(Class::getSimpleName).collect(Collectors.joining(", ")));
 
         return replacement;
     }
@@ -479,7 +479,8 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
      * @param replacement 置換文字列マップ。nullの場合は置換を行わない。
      * @return プレースホルダーを置換した結果を格納する文字列バッファ
      */
-    private static StringBuffer replacePlaceholders(String message, StringBuffer sb, Map<String, ?> replacement) {
+    private static StringBuffer replacePlaceholders(String message, StringBuffer sb,
+            Map<String, Supplier<?>> replacement) {
         return replacePlaceholders(message, sb, replacement, null);
     }
 
@@ -492,8 +493,8 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
      * @param addition 追加の置換文字列マップ。nullの場合は置換を行わない。
      * @return プレースホルダーを置換した結果を格納する文字列バッファ
      */
-    private static StringBuffer replacePlaceholders(String message, StringBuffer sb, Map<String, ?> base,
-            Map<String, ?> addition) {
+    private static StringBuffer replacePlaceholders(String message, StringBuffer sb, Map<String, Supplier<?>> base,
+            Map<String, Supplier<?>> addition) {
 
         StringBuffer output;
 
@@ -511,9 +512,9 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             while (matcher.find()) {
                 String match = matcher.group();
                 if (base != null && base.containsKey(match)) {
-                    matcher.appendReplacement(output, Matcher.quoteReplacement(String.valueOf(base.get(match))));
+                    matcher.appendReplacement(output, Matcher.quoteReplacement(String.valueOf(base.get(match).get())));
                 } else if (addition != null && addition.containsKey(match)) {
-                    matcher.appendReplacement(output, Matcher.quoteReplacement(String.valueOf(addition.get(match))));
+                    matcher.appendReplacement(output, Matcher.quoteReplacement(String.valueOf(addition.get(match).get())));
                 } else {
                     matcher.appendReplacement(output, Matcher.quoteReplacement(match));
                 }
