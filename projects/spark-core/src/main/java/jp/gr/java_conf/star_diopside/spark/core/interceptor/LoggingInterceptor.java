@@ -276,9 +276,6 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
         StringBuffer sb = new StringBuffer();
 
         try {
-            // 実行時間の計測を開始する
-            stopWatch.start();
-
             // 開始ログを出力する
             if (isEnterLogEnabled(logger)) {
                 writeToEnterLog(logger, replacePlaceholders(enterMessage, sb, base));
@@ -297,8 +294,14 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
                 });
             }
 
+            // 実行時間の計測を開始する
+            stopWatch.start();
+
             // 処理を実行する
             Object result = invocation.proceed();
+
+            // 実行時間の計測を停止する
+            stopWatch.stop();
 
             // 出力パラメータログを出力する
             if (isResultLogEnabled(logger)) {
@@ -315,9 +318,15 @@ public class LoggingInterceptor extends AbstractTraceInterceptor {
             return result;
 
         } catch (Throwable t) {
+            // 実行時間の計測を終了する。
+            if (stopWatch.isStarted()) {
+                stopWatch.stop();
+            }
+
             // エラーログを出力する
             if (isExceptionLogEnabled(logger, t)) {
                 addition.clear();
+                addition.put(placeholderInvocationTime, () -> Long.valueOf(stopWatch.getTime()));
                 addition.put(placeholderException, () -> t);
                 writeToExceptionLog(logger, replacePlaceholders(exceptionMessage, sb, base, addition), t);
             }
