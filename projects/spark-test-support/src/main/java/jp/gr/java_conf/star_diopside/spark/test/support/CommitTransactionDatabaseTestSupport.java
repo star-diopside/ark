@@ -13,9 +13,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -45,33 +43,29 @@ public class CommitTransactionDatabaseTestSupport extends AbstractDatabaseTestSu
 
     @Override
     public void onSetup() {
-        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    IDatabaseConnection connection = getConnection();
-                    IDataSet dataSet = getDataSet();
-                    backupDataSet = new CachedDataSet(connection.createDataSet(dataSet.getTableNames()));
-                    DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-                } catch (DatabaseUnitException | SQLException e) {
-                    throw new TestException(e);
-                }
+        transactionTemplate.execute(status -> {
+            try {
+                IDatabaseConnection connection = getConnection();
+                IDataSet dataSet = getDataSet();
+                backupDataSet = new CachedDataSet(connection.createDataSet(dataSet.getTableNames()));
+                DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+            } catch (DatabaseUnitException | SQLException e) {
+                throw new TestException(e);
             }
+            return null;
         });
     }
 
     @Override
     public void onTearDown() {
-        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    IDatabaseConnection connection = getConnection();
-                    DatabaseOperation.CLEAN_INSERT.execute(connection, backupDataSet);
-                } catch (DatabaseUnitException | SQLException e) {
-                    throw new TestException(e);
-                }
+        transactionTemplate.execute(status -> {
+            try {
+                IDatabaseConnection connection = getConnection();
+                DatabaseOperation.CLEAN_INSERT.execute(connection, backupDataSet);
+            } catch (DatabaseUnitException | SQLException e) {
+                throw new TestException(e);
             }
+            return null;
         });
     }
 }
