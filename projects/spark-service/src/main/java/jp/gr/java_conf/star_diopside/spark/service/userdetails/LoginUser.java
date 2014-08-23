@@ -4,7 +4,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Stream;
+import java.util.stream.Stream.Builder;
 
+import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
+import jp.gr.java_conf.star_diopside.spark.core.logging.LoggableUtil;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * ログインユーザ情報クラス
  */
 @SuppressWarnings("serial")
-public class LoginUser implements LoginUserDetails {
+public class LoginUser implements LoginUserDetails, Loggable {
 
     private UserDetails _userDetails;
     private User _user;
@@ -117,5 +121,13 @@ public class LoginUser implements LoginUserDetails {
 
     private static ZonedDateTime toZonedDateTime(Date date) {
         return date == null ? null : ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    }
+
+    @Override
+    public Stream<?> streamLoggingObjects() {
+        Builder<String> builder = Stream.builder();
+        LoggableUtil.addLog(builder, _userDetails, "userDetails");
+        LoggableUtil.addLog(builder, _user, "user");
+        return builder.build();
     }
 }
