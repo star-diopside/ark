@@ -6,9 +6,9 @@ import java.util.stream.Stream.Builder;
 /**
  * ログ出力情報編集用ユーティリティクラス
  */
-public final class LoggableUtil {
+public final class LoggableUtils {
 
-    private LoggableUtil() {
+    private LoggableUtils() {
     }
 
     /**

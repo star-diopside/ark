@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import java.util.stream.Stream.Builder;
 
 import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
-import jp.gr.java_conf.star_diopside.spark.core.logging.LoggableUtil;
+import jp.gr.java_conf.star_diopside.spark.core.logging.LoggableUtils;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -126,8 +126,8 @@ public class LoginUser implements LoginUserDetails, Loggable {
     @Override
     public Stream<?> streamLoggingObjects() {
         Builder<String> builder = Stream.builder();
-        LoggableUtil.addLog(builder, _userDetails, "userDetails");
-        LoggableUtil.addLog(builder, _user, "user");
+        LoggableUtils.addLog(builder, _userDetails, "userDetails");
+        LoggableUtils.addLog(builder, _user, "user");
         return builder.build();
     }
 }
