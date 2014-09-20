@@ -19,6 +19,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
+            <artifactId>spark-commons-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
         </dependency>
@@ -41,17 +45,9 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 

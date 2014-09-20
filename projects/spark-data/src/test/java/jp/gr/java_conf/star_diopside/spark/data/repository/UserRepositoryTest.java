@@ -10,9 +10,9 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import jp.gr.java_conf.star_diopside.spark.commons.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.spark.commons.test.support.SimpleDatabaseTestSupport;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
-import jp.gr.java_conf.star_diopside.spark.test.support.DatabaseTestSupport;
-import jp.gr.java_conf.star_diopside.spark.test.support.SimpleDatabaseTestSupport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.DataSetException;

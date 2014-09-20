@@ -4,11 +4,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Stream;
-import java.util.stream.Stream.Builder;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
-import jp.gr.java_conf.star_diopside.spark.core.logging.LoggableUtils;
+import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -124,10 +123,10 @@ public class LoginUser implements LoginUserDetails, Loggable {
     }
 
     @Override
-    public Stream<?> streamLoggingObjects() {
-        Builder<String> builder = Stream.builder();
-        LoggableUtils.addLog(builder, _userDetails, "userDetails");
-        LoggableUtils.addLog(builder, _user, "user");
-        return builder.build();
+    public Map<String, ?> toLoggingObjects() {
+        LinkedHashMap<String, Object> objects = new LinkedHashMap<>();
+        objects.put("userDetails", _userDetails);
+        objects.put("user", _user);
+        return objects;
     }
 }

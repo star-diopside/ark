@@ -12,10 +12,10 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import jp.gr.java_conf.star_diopside.spark.test.support.CommitTransactionDatabaseTestSupport;
-import jp.gr.java_conf.star_diopside.spark.test.support.DatabaseTestSupport;
-import jp.gr.java_conf.star_diopside.spark.test.util.DataSetUtils;
-import jp.gr.java_conf.star_diopside.spark.test.util.TestUtils;
+import jp.gr.java_conf.star_diopside.spark.commons.test.support.CommitTransactionDatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.spark.commons.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.spark.commons.test.util.DataSetUtils;
+import jp.gr.java_conf.star_diopside.spark.commons.test.util.TestUtils;
 
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;

@@ -1,16 +1,14 @@
 package jp.gr.java_conf.star_diopside.spark.core.interceptor;
 
-import java.util.stream.Stream;
-
+import jp.gr.java_conf.star_diopside.spark.commons.core.interceptor.LoggingObjectDetailsInterceptor;
 import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
-import jp.gr.java_conf.star_diopside.spark.core.logging.Loggable;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.slf4j.MDC;
 
 @SuppressWarnings("serial")
-public class CustomLoggingInterceptor extends LoggingInterceptor {
+public class CustomLoggingInterceptor extends LoggingObjectDetailsInterceptor {
 
     /** クラス名を格納するMDCキー */
     private static final String MDC_CLASS_NAME = "className";
@@ -60,15 +58,6 @@ public class CustomLoggingInterceptor extends LoggingInterceptor {
             return logger.isInfoEnabled();
         } else {
             return super.isExceptionLogEnabled(logger, t);
-        }
-    }
-
-    @Override
-    protected Stream<?> streamLoggingObjects(Object obj) {
-        if (obj instanceof Loggable) {
-            return ((Loggable) obj).streamLoggingObjects();
-        } else {
-            return super.streamLoggingObjects(obj);
         }
     }
 }
