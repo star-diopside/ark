@@ -290,7 +290,7 @@
         <dependencies>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
-                <artifactId>spark-commons-batch-support</artifactId>
+                <artifactId>spark-commons-batch</artifactId>
                 <version>${spark-commons.version}</version>
             </dependency>
             <dependency>
@@ -300,7 +300,7 @@
             </dependency>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
-                <artifactId>spark-commons-test-support</artifactId>
+                <artifactId>spark-commons-test</artifactId>
                 <version>${spark-commons.version}</version>
             </dependency>
             <dependency>
