@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
@@ -123,10 +124,10 @@ public class LoginUser implements LoginUserDetails, Loggable {
     }
 
     @Override
-    public Map<String, ?> toLoggingObjects() {
-        LinkedHashMap<String, Object> objects = new LinkedHashMap<>();
-        objects.put("userDetails", _userDetails);
-        objects.put("user", _user);
-        return objects;
+    public Stream<Map.Entry<String, String>> streamLoggingObjects() {
+        LinkedHashMap<String, String> objects = new LinkedHashMap<>();
+        objects.put("userDetails", String.valueOf(_userDetails));
+        objects.put("user", String.valueOf(_user));
+        return objects.entrySet().stream();
     }
 }
