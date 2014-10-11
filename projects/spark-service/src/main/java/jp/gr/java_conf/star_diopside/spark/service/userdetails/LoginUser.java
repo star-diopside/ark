@@ -4,11 +4,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
+import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LogSetting;
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
+import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingType;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -21,9 +20,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 @SuppressWarnings("serial")
 public class LoginUser implements LoginUserDetails, Loggable {
 
+    @LogSetting(key = "userDetails")
     private UserDetails _userDetails;
+
+    @LogSetting(key = "user")
     private User _user;
+
+    @LogSetting(LoggingType.EXCLUDE)
     private ZonedDateTime _lastLoginAt;
+
+    @LogSetting(LoggingType.EXCLUDE)
     private ZonedDateTime _logoutAt;
 
     /**
@@ -121,13 +127,5 @@ public class LoginUser implements LoginUserDetails, Loggable {
 
     private static ZonedDateTime toZonedDateTime(Date date) {
         return date == null ? null : ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-    }
-
-    @Override
-    public Stream<Map.Entry<String, String>> streamLoggingObjects() {
-        LinkedHashMap<String, String> objects = new LinkedHashMap<>();
-        objects.put("userDetails", String.valueOf(_userDetails));
-        objects.put("user", String.valueOf(_user));
-        return objects.entrySet().stream();
     }
 }
