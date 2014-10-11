@@ -5,8 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
 
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LogSetting;
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
+import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingSetting;
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingType;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
@@ -20,16 +20,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 @SuppressWarnings("serial")
 public class LoginUser implements LoginUserDetails, Loggable {
 
-    @LogSetting(key = "userDetails")
+    @LoggingSetting(key = "userDetails")
     private UserDetails _userDetails;
 
-    @LogSetting(key = "user")
+    @LoggingSetting(key = "user")
     private User _user;
 
-    @LogSetting(LoggingType.EXCLUDE)
+    @LoggingSetting(LoggingType.EXCLUDE)
     private ZonedDateTime _lastLoginAt;
 
-    @LogSetting(LoggingType.EXCLUDE)
+    @LoggingSetting(LoggingType.EXCLUDE)
     private ZonedDateTime _logoutAt;
 
     /**
