@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
+import jp.gr.java_conf.star_diopside.spark.service.bean.PasswordWrapper;
 import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
 import jp.gr.java_conf.star_diopside.spark.support.util.ExceptionUtils;
 import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
@@ -64,7 +65,7 @@ public class UserRegistrationController {
 
         // ユーザ登録を行う。
         try {
-            userManager.createUser(form.getUsername(), form.getNickname(), form.getPassword());
+            userManager.createUser(form.getUsername(), form.getNickname(), PasswordWrapper.of(form.getPassword()));
         } catch (ApplicationException e) {
             ExceptionUtils.reject(errors, e);
             return "auth/user-registration";

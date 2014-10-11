@@ -13,6 +13,7 @@ import jp.gr.java_conf.star_diopside.spark.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 import jp.gr.java_conf.star_diopside.spark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.spark.data.repository.UserRepository;
+import jp.gr.java_conf.star_diopside.spark.service.bean.PasswordWrapper;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,7 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    public void createUser(String userId, String username, String password) {
+    public void createUser(String userId, String username, PasswordWrapper password) {
         // ユーザの存在チェックを行う。
         if (userRepository.exists(userId)) {
             throw new ApplicationException("error.UserExists", true);
@@ -51,7 +52,7 @@ public class UserManagerImpl implements UserManager {
 
         user.setUserId(userId);
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(password.getPassword()));
         user.setPasswordUpdatedAt(current);
         user.setEnabled(true);
         user.setHighGradeRegistry(false);

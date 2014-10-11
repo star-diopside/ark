@@ -1,6 +1,7 @@
 package jp.gr.java_conf.star_diopside.spark.service.logic.auth;
 
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
+import jp.gr.java_conf.star_diopside.spark.service.bean.PasswordWrapper;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
 
 /**
@@ -15,7 +16,7 @@ public interface UserManager {
      * @param username ユーザ名
      * @param password パスワード
      */
-    void createUser(String userId, String username, String password);
+    void createUser(String userId, String username, PasswordWrapper password);
 
     /**
      * 取得したユーザ情報が有効かどうか判定する。
