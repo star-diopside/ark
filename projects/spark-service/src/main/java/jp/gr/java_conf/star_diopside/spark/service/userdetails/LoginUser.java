@@ -4,10 +4,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
+import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingSetting;
+import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingType;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -20,9 +20,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 @SuppressWarnings("serial")
 public class LoginUser implements LoginUserDetails, Loggable {
 
+    @LoggingSetting(key = "userDetails")
     private UserDetails _userDetails;
+
+    @LoggingSetting(key = "user")
     private User _user;
+
+    @LoggingSetting(LoggingType.EXCLUDE)
     private ZonedDateTime _lastLoginAt;
+
+    @LoggingSetting(LoggingType.EXCLUDE)
     private ZonedDateTime _logoutAt;
 
     /**
@@ -120,13 +127,5 @@ public class LoginUser implements LoginUserDetails, Loggable {
 
     private static ZonedDateTime toZonedDateTime(Date date) {
         return date == null ? null : ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-    }
-
-    @Override
-    public Map<String, ?> toLoggingObjects() {
-        LinkedHashMap<String, Object> objects = new LinkedHashMap<>();
-        objects.put("userDetails", _userDetails);
-        objects.put("user", _user);
-        return objects;
     }
 }
