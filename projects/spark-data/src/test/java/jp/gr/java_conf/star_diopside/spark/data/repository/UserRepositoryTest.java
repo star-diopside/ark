@@ -10,10 +10,6 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import jp.gr.java_conf.star_diopside.spark.commons.test.support.DatabaseTestSupport;
-import jp.gr.java_conf.star_diopside.spark.commons.test.support.SimpleDatabaseTestSupport;
-import jp.gr.java_conf.star_diopside.spark.data.entity.User;
-
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
@@ -21,15 +17,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import jp.gr.java_conf.star_diopside.spark.commons.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.spark.commons.test.support.SimpleDatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
-@TransactionConfiguration
 @Transactional
+@Rollback
 public class UserRepositoryTest {
 
     @Resource(name = "dbunitDataSource")
