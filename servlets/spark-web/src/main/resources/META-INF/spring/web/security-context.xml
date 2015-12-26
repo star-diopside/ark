@@ -11,6 +11,7 @@
         <intercept-url pattern="/**" access="isFullyAuthenticated()" />
         <form-login login-page="/auth/user-login" username-parameter="username"
             password-parameter="password" authentication-failure-url="/auth/user-login/failure" />
+        <custom-filter before="FIRST" ref="redirectRootUriFilter" />
         <custom-filter after="LAST" ref="dualLoginCheckFilter" />
     </http>
 
@@ -26,6 +27,8 @@
             <bean class="jp.gr.java_conf.star_diopside.spark.service.userdetails.BeforeLoginUserDetailsChecker" />
         </property>
     </bean>
+
+    <bean id="redirectRootUriFilter" class="jp.gr.java_conf.star_diopside.spark.commons.web.servlet.filter.RedirectRootUriFilter" />
 
     <bean id="dualLoginCheckFilter" class="jp.gr.java_conf.star_diopside.spark.web.servlet.DualLoginCheckFilter" />
 

@@ -24,6 +24,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
+            <artifactId>spark-commons-web</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-resources</artifactId>
             <scope>runtime</scope>
@@ -37,6 +42,11 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>

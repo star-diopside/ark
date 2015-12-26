@@ -7,4 +7,4 @@
 <link rel="stylesheet" href="<spring:url value='/static/lib/bootstrap/css/bootstrap.min.css' />" type="text/css" media="screen,print">
 <link rel="stylesheet" href="<spring:url value='/static/lib/bootstrap/css/bootstrap-theme.min.css' />" type="text/css" media="screen,print">
 <link rel="stylesheet" href="<spring:url value='/static/css/layout.css' />" type="text/css" media="screen,print">
-<script src="<spring:url value='/static/bootstrap/js/bootstrap.min.js' />"></script>
+<script src="<spring:url value='/static/lib/bootstrap/js/bootstrap.min.js' />"></script>

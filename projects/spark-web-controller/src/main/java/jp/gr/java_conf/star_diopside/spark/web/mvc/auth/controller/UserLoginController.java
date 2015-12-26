@@ -7,9 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import jp.gr.java_conf.star_diopside.spark.web.exception.DualLoginException;
-import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AccountExpiredException;
@@ -22,6 +19,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jp.gr.java_conf.star_diopside.spark.web.exception.DualLoginException;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
 
 /**
  * ユーザログインコントローラ
@@ -101,7 +101,7 @@ public class UserLoginController {
         if (errors.hasErrors()) {
             return "auth/user-login";
         } else {
-            return "forward:/j_spring_security_check";
+            return "forward:/login";
         }
     }
 }
