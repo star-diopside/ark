@@ -62,7 +62,7 @@ public class UserLoginController {
                 errors.reject(errorCode);
             } else {
                 LOGGER.debug(exception.getMessage(), exception);
-                errors.reject("Error.Authentication");
+                errors.reject("error.Authentication");
             }
         }
 
