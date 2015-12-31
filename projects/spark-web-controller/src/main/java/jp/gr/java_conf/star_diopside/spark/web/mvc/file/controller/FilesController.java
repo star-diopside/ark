@@ -3,6 +3,8 @@ package jp.gr.java_conf.star_diopside.spark.web.mvc.file.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -11,6 +13,9 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +42,15 @@ public class FilesController {
         ModelAndView mav = new ModelAndView("files/show");
         mav.addObject(new FileShowForm(file));
         return mav;
+    }
+
+    @RequestMapping(value = "{id}/data", method = RequestMethod.GET)
+    public ResponseEntity<Resource> download(@PathVariable("id") Long id) throws UnsupportedEncodingException {
+        AttachedFile file = attachedFileManager.find(id).orElseThrow(ResourceNotFoundException::new);
+        return ResponseEntity.ok()
+                .header("Content-Disposition",
+                        "attachment; filename*=utf-8''" + URLEncoder.encode(file.getName(), "UTF-8"))
+                .body(new ByteArrayResource(file.getData()));
     }
 
     @RequestMapping(value = "create", method = RequestMethod.GET)
