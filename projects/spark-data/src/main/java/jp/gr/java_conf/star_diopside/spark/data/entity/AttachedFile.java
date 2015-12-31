@@ -1,5 +1,7 @@
 package jp.gr.java_conf.star_diopside.spark.data.entity;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -78,5 +80,14 @@ public class AttachedFile implements Serializable, Trackable {
     public void setData(byte[] data) {
         this.data = data;
         this.hash = DigestUtils.sha256Hex(data);
+    }
+
+    /**
+     * ファイルデータを読み込む {@link InputStream} を生成する。
+     * 
+     * @return ファイルデータを読み込む {@link InputStream}
+     */
+    public InputStream newDataInputStream() {
+        return new ByteArrayInputStream(data);
     }
 }

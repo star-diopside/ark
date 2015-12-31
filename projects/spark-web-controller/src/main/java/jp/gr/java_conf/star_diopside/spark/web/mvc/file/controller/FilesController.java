@@ -7,13 +7,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,7 +49,7 @@ public class FilesController {
         return ResponseEntity.ok()
                 .header("Content-Disposition",
                         "attachment; filename*=utf-8''" + URLEncoder.encode(file.getName(), "UTF-8"))
-                .body(new ByteArrayResource(file.getData()));
+                .body(new InputStreamResource(file.newDataInputStream()));
     }
 
     @RequestMapping(value = "create", method = RequestMethod.GET)
@@ -67,11 +66,14 @@ public class FilesController {
         AttachedFile attachedFile;
         Path tempFile = Files.createTempFile(null, null);
 
-        try (InputStream input = form.getFile().getInputStream();
-                OutputStream output = Files.newOutputStream(tempFile, StandardOpenOption.DELETE_ON_CLOSE)) {
-            IOUtils.copyLarge(input, output);
-            output.flush();
+        try {
+            try (InputStream input = form.getFile().getInputStream();
+                    OutputStream output = Files.newOutputStream(tempFile)) {
+                IOUtils.copyLarge(input, output);
+            }
             attachedFile = attachedFileManager.create(tempFile, form.getFile().getOriginalFilename());
+        } finally {
+            Files.delete(tempFile);
         }
 
         return "redirect:/files/" + attachedFile.getAttachedFileId();
