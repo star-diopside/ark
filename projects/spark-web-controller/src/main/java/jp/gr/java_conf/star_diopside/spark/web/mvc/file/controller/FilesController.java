@@ -1,0 +1,65 @@
+package jp.gr.java_conf.star_diopside.spark.web.mvc.file.controller;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+
+import javax.inject.Inject;
+import javax.validation.Valid;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFile;
+import jp.gr.java_conf.star_diopside.spark.service.logic.file.AttachedFileManager;
+import jp.gr.java_conf.star_diopside.spark.web.exception.ResourceNotFoundException;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.file.form.FileCreateForm;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.file.form.FileShowForm;
+
+@Controller
+@RequestMapping("files")
+public class FilesController {
+
+    @Inject
+    private AttachedFileManager attachedFileManager;
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public ModelAndView show(@PathVariable("id") Long id) {
+        AttachedFile file = attachedFileManager.find(id).orElseThrow(ResourceNotFoundException::new);
+        ModelAndView mav = new ModelAndView("files/show");
+        mav.addObject(new FileShowForm(file));
+        return mav;
+    }
+
+    @RequestMapping(value = "create", method = RequestMethod.GET)
+    public String create() {
+        return "files/create";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(@Valid FileCreateForm form, Errors errors) throws IOException {
+        if (errors.hasErrors()) {
+            return "files/create";
+        }
+
+        AttachedFile attachedFile;
+        Path tempFile = Files.createTempFile(null, null);
+
+        try (InputStream input = form.getFile().getInputStream();
+                OutputStream output = Files.newOutputStream(tempFile, StandardOpenOption.DELETE_ON_CLOSE)) {
+            IOUtils.copyLarge(input, output);
+            output.flush();
+            attachedFile = attachedFileManager.create(tempFile, form.getFile().getOriginalFilename());
+        }
+
+        return "redirect:/files/" + attachedFile.getAttachedFileId();
+    }
+}

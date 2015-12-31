@@ -8,6 +8,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
 import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
 import jp.gr.java_conf.star_diopside.spark.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
@@ -15,9 +18,6 @@ import jp.gr.java_conf.star_diopside.spark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.spark.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.spark.service.bean.PasswordWrapper;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * ユーザ管理クラス
@@ -56,14 +56,6 @@ public class UserManagerImpl implements UserManager {
         user.setPasswordUpdatedAt(current);
         user.setEnabled(true);
         user.setHighGradeRegistry(false);
-        user.setLoginErrorCount(0);
-        user.setLockoutAt(null);
-        user.setLastLoginAt(null);
-        user.setLogoutAt(null);
-        user.setCreatedAt(current);
-        user.setCreatedUserId(userId);
-        user.setUpdatedAt(current);
-        user.setUpdatedUserId(userId);
 
         userRepository.save(user);
 
@@ -72,10 +64,6 @@ public class UserManagerImpl implements UserManager {
 
         authority.setUserId(userId);
         authority.setAuthority("ROLE_USER");
-        authority.setCreatedAt(current);
-        authority.setCreatedUserId(userId);
-        authority.setUpdatedAt(current);
-        authority.setUpdatedUserId(userId);
 
         authorityRepository.save(authority);
     }
@@ -83,7 +71,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public boolean checkValid(User user) {
         // ユーザの有効チェックを行う
-        if (Boolean.TRUE.equals(user.getHighGradeRegistry())) {
+        if (user.isHighGradeRegistry()) {
             // 本登録済みの場合、有効ユーザとする。
             return true;
         } else {
@@ -124,8 +112,6 @@ public class UserManagerImpl implements UserManager {
         user.setLoginErrorCount(0);
         user.setLastLoginAt(current);
         user.setLogoutAt(null);
-        user.setUpdatedAt(current);
-        user.setUpdatedUserId(user.getUserId());
 
         return userRepository.save(user);
     }
@@ -134,11 +120,8 @@ public class UserManagerImpl implements UserManager {
     @Transactional
     public User loginFailure(String userId) {
         User user = userRepository.findOne(userId);
-        Date current = new Date();
 
         user.setLoginErrorCount(user.getLoginErrorCount() + 1);
-        user.setUpdatedAt(current);
-        user.setUpdatedUserId(userId);
 
         return userRepository.save(user);
     }
@@ -153,8 +136,6 @@ public class UserManagerImpl implements UserManager {
         if (!checkLoginInfo(loginUser, user)) {
             Date current = new Date();
             user.setLogoutAt(current);
-            user.setUpdatedAt(current);
-            user.setUpdatedUserId(userId);
             userRepository.save(user);
         }
     }

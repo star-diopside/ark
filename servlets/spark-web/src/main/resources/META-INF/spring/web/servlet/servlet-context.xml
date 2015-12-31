@@ -36,6 +36,8 @@
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**" />

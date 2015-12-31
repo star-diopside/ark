@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,9 +23,10 @@ import lombok.ToString;
 @Data
 @ToString(exclude = "authorities")
 @Entity
+@EntityListeners(TrackableListener.class)
 @Table(name = "users")
 @SuppressWarnings("serial")
-public class User implements Serializable, Cloneable {
+public class User implements Serializable, Trackable, Cloneable {
 
     /** ユーザID */
     @Id
@@ -43,15 +45,15 @@ public class User implements Serializable, Cloneable {
     private Date passwordUpdatedAt;
 
     /** 有効フラグ */
-    private Boolean enabled;
+    private boolean enabled;
 
     /** 本登録フラグ */
     @Column(name = "high_grade_registry")
-    private Boolean highGradeRegistry;
+    private boolean highGradeRegistry;
 
     /** ログインエラー回数 */
     @Column(name = "login_error_count")
-    private Integer loginErrorCount;
+    private int loginErrorCount;
 
     /** ロックアウト日時 */
     @Column(name = "lockout_at")
@@ -88,7 +90,7 @@ public class User implements Serializable, Cloneable {
 
     /** バージョン */
     @Version
-    private Integer version;
+    private int version;
 
     /** 権限エンティティ一覧 */
     @OneToMany(mappedBy = "user")

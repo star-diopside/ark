@@ -22,10 +22,6 @@
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-data</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

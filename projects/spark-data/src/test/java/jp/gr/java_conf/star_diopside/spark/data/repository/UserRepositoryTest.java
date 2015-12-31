@@ -86,8 +86,8 @@ public class UserRepositoryTest {
                 assertThat(user.getPassword(), is(table.getValue(i, "password")));
                 assertThat(user.getPasswordUpdatedAt().getTime(),
                         is(parseTimeMillis(table.getValue(i, "password_updated_at"))));
-                assertThat(user.getEnabled(), is(Boolean.valueOf((String) table.getValue(i, "enabled"))));
-                assertThat(user.getHighGradeRegistry(),
+                assertThat(user.isEnabled(), is(Boolean.valueOf((String) table.getValue(i, "enabled"))));
+                assertThat(user.isHighGradeRegistry(),
                         is(Boolean.valueOf((String) table.getValue(i, "high_grade_registry"))));
                 assertThat(user.getLoginErrorCount(),
                         is(Integer.valueOf((String) table.getValue(i, "login_error_count"))));

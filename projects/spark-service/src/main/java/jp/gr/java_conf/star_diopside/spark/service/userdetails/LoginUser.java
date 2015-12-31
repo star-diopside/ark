@@ -5,14 +5,14 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingSetting;
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingType;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * ログインユーザ情報クラス
@@ -39,7 +39,7 @@ public class LoginUser implements LoginUserDetails, Loggable {
      */
     public LoginUser(User user) {
         _userDetails = new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(),
-                user.getEnabled(), true, true, true, AuthorityUtils.NO_AUTHORITIES);
+                user.isEnabled(), true, true, true, AuthorityUtils.NO_AUTHORITIES);
         _user = user.clone();
         _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
         _logoutAt = toZonedDateTime(user.getLogoutAt());
