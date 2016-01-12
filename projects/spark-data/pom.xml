@@ -19,6 +19,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
+            <artifactId>spark-commons-data</artifactId>
+        </dependency>
+        <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-core</artifactId>
         </dependency>
@@ -34,10 +38,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
         </dependency>
         <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>

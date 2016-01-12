@@ -1,9 +1,7 @@
 package jp.gr.java_conf.star_diopside.spark.service.userdetails;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -11,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
 import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingSetting;
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingType;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 /**
@@ -26,12 +23,6 @@ public class LoginUser implements LoginUserDetails, Loggable {
     @LoggingSetting(key = "user")
     private User _user;
 
-    @LoggingSetting(LoggingType.EXCLUDE)
-    private ZonedDateTime _lastLoginAt;
-
-    @LoggingSetting(LoggingType.EXCLUDE)
-    private ZonedDateTime _logoutAt;
-
     /**
      * コンストラクタ
      * 
@@ -41,8 +32,6 @@ public class LoginUser implements LoginUserDetails, Loggable {
         _userDetails = new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(),
                 user.isEnabled(), true, true, true, AuthorityUtils.NO_AUTHORITIES);
         _user = user.clone();
-        _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
-        _logoutAt = toZonedDateTime(user.getLogoutAt());
     }
 
     /**
@@ -101,13 +90,13 @@ public class LoginUser implements LoginUserDetails, Loggable {
     }
 
     @Override
-    public ZonedDateTime getLastLoginAt() {
-        return _lastLoginAt;
+    public LocalDateTime getLastLoginAt() {
+        return _user.getLastLoginAt();
     }
 
     @Override
-    public ZonedDateTime getLogoutAt() {
-        return _logoutAt;
+    public LocalDateTime getLogoutAt() {
+        return _user.getLogoutAt();
     }
 
     @Override
@@ -121,11 +110,5 @@ public class LoginUser implements LoginUserDetails, Loggable {
                 userDetails.getPassword(), userDetails.isEnabled(), userDetails.isAccountNonExpired(),
                 userDetails.isCredentialsNonExpired(), userDetails.isAccountNonLocked(), userDetails.getAuthorities());
         _user = user.clone();
-        _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
-        _logoutAt = toZonedDateTime(user.getLogoutAt());
-    }
-
-    private static ZonedDateTime toZonedDateTime(Date date) {
-        return date == null ? null : ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }

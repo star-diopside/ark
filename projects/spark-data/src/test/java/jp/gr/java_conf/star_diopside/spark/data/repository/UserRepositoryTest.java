@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -84,19 +85,18 @@ public class UserRepositoryTest {
                 assertThat(user.getUserId(), is(table.getValue(i, "user_id")));
                 assertThat(user.getUsername(), is(table.getValue(i, "username")));
                 assertThat(user.getPassword(), is(table.getValue(i, "password")));
-                assertThat(user.getPasswordUpdatedAt().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "password_updated_at"))));
+                assertThat(user.getPasswordUpdatedAt(), is(toLocalDateTime(table.getValue(i, "password_updated_at"))));
                 assertThat(user.isEnabled(), is(Boolean.valueOf((String) table.getValue(i, "enabled"))));
                 assertThat(user.isHighGradeRegistry(),
                         is(Boolean.valueOf((String) table.getValue(i, "high_grade_registry"))));
                 assertThat(user.getLoginErrorCount(),
                         is(Integer.valueOf((String) table.getValue(i, "login_error_count"))));
-                assertThat(user.getLockoutAt().getTime(), is(parseTimeMillis(table.getValue(i, "lockout_at"))));
-                assertThat(user.getLastLoginAt().getTime(), is(parseTimeMillis(table.getValue(i, "last_login_at"))));
-                assertThat(user.getLogoutAt().getTime(), is(parseTimeMillis(table.getValue(i, "logout_at"))));
-                assertThat(user.getCreatedAt().getTime(), is(parseTimeMillis(table.getValue(i, "created_at"))));
+                assertThat(user.getLockoutAt(), is(toLocalDateTime(table.getValue(i, "lockout_at"))));
+                assertThat(user.getLastLoginAt(), is(toLocalDateTime(table.getValue(i, "last_login_at"))));
+                assertThat(user.getLogoutAt(), is(toLocalDateTime(table.getValue(i, "logout_at"))));
+                assertThat(user.getCreatedAt(), is(toLocalDateTime(table.getValue(i, "created_at"))));
                 assertThat(user.getCreatedUserId(), is(table.getValue(i, "created_user_id")));
-                assertThat(user.getUpdatedAt().getTime(), is(parseTimeMillis(table.getValue(i, "updated_at"))));
+                assertThat(user.getUpdatedAt(), is(toLocalDateTime(table.getValue(i, "updated_at"))));
                 assertThat(user.getUpdatedUserId(), is(table.getValue(i, "updated_user_id")));
                 assertThat(user.getVersion(), is(Integer.valueOf((String) table.getValue(i, "version"))));
             }
@@ -105,7 +105,7 @@ public class UserRepositoryTest {
         assertThat(count, is(1));
     }
 
-    private static long parseTimeMillis(Object timestampString) {
-        return Timestamp.valueOf((String) timestampString).getTime();
+    private static LocalDateTime toLocalDateTime(Object timestampString) {
+        return Timestamp.valueOf((String) timestampString).toLocalDateTime();
     }
 }

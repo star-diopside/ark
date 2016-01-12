@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("serial")
 public class FileShowForm implements Serializable {
 
-    private Long attachedFileId;
+    private Long id;
     private String fileName;
     private long size;
     private String digest;
@@ -21,9 +21,9 @@ public class FileShowForm implements Serializable {
     }
 
     public void assign(AttachedFile file) {
-        attachedFileId = file.getAttachedFileId();
+        id = file.getId();
         fileName = file.getName();
-        size = file.getData().length;
+        size = file.getSize();
         digest = file.getHash();
     }
 }

@@ -7,8 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,29 +18,42 @@ import javax.persistence.Version;
 import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
 import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
 import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * 権限エンティティクラス
+ * 添付ファイルデータエンティティクラス
  */
 @Data
-@ToString(exclude = "user")
+@ToString(exclude = { "data", "attachedFile" })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(TrackableListener.class)
-@Table(name = "authorities")
-@IdClass(AuthorityId.class)
+@Table(name = "attached_file_data")
 @SuppressWarnings("serial")
-public class Authority implements Serializable, Trackable {
+public class AttachedFileData implements Serializable, Trackable {
 
-    /** ユーザID */
+    /** ID */
     @Id
-    @Column(name = "user_id")
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    /** 権限 */
-    @Id
-    private String authority;
+    /** 添付ファイルID */
+    @Column(name = "attached_file_id", insertable = false, updatable = false)
+    private Long attachedFileId;
+
+    /** 順序 */
+    @Column(name = "order_by")
+    private int orderBy;
+
+    /** ファイルデータ */
+    private byte[] data;
 
     /** 登録日時 */
     @Column(name = "created_at")
@@ -63,9 +77,9 @@ public class Authority implements Serializable, Trackable {
     @Version
     private int version;
 
-    /** ユーザエンティティ */
+    /** 添付ファイルエンティティ */
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
+    @JoinColumn(name = "attached_file_id", referencedColumnName = "id")
+    private AttachedFile attachedFile;
 
 }

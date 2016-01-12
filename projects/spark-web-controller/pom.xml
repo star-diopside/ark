@@ -48,10 +48,6 @@
             <artifactId>spring-security-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.code</groupId>
             <artifactId>kaptcha</artifactId>
         </dependency>

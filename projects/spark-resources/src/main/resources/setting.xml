@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!-- 仮登録ユーザ有効日数 -->
+    <entry key="tempUserValidDays">1</entry>
+    <!-- 添付ファイルデータ分割サイズ(バイト) -->
+    <entry key="divideAttachedFileDataSize">20971520</entry>
+</properties>

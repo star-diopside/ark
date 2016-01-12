@@ -1,6 +1,6 @@
-package jp.gr.java_conf.star_diopside.spark.data.entity;
+package jp.gr.java_conf.star_diopside.spark.data.support;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * エンティティ更新情報の設定処理を定義したインタフェース
@@ -12,7 +12,7 @@ public interface Trackable {
      * 
      * @param createdAt 登録日時
      */
-    void setCreatedAt(Date createdAt);
+    void setCreatedAt(LocalDateTime createdAt);
 
     /**
      * 登録ユーザIDを設定する。
@@ -26,7 +26,7 @@ public interface Trackable {
      * 
      * @param updatedAt 更新日時
      */
-    void setUpdatedAt(Date updatedAt);
+    void setUpdatedAt(LocalDateTime updatedAt);
 
     /**
      * 更新ユーザIDを設定する。

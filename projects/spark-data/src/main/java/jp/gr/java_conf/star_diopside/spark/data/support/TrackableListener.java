@@ -1,6 +1,6 @@
-package jp.gr.java_conf.star_diopside.spark.data.entity;
+package jp.gr.java_conf.star_diopside.spark.data.support;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -21,7 +21,7 @@ public class TrackableListener {
     @PrePersist
     public void changeCreated(Trackable entity) {
         String username = principalName();
-        Date current = new Date();
+        LocalDateTime current = LocalDateTime.now();
         entity.setCreatedAt(current);
         entity.setCreatedUserId(username);
         entity.setUpdatedAt(current);
@@ -36,7 +36,7 @@ public class TrackableListener {
     @PreUpdate
     public void changeUpdated(Trackable entity) {
         String username = principalName();
-        Date current = new Date();
+        LocalDateTime current = LocalDateTime.now();
         entity.setUpdatedAt(current);
         entity.setUpdatedUserId(username);
     }

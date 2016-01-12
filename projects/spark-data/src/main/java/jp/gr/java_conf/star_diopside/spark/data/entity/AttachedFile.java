@@ -1,59 +1,67 @@
 package jp.gr.java_conf.star_diopside.spark.data.entity;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Date;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import lombok.AccessLevel;
+import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
+import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
+import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
 import lombok.Data;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
  * 添付ファイルエンティティクラス
  */
 @Data
-@ToString(exclude = "data")
+@ToString(exclude = "attachedFileData")
 @Entity
 @EntityListeners(TrackableListener.class)
 @Table(name = "attached_files")
 @SuppressWarnings("serial")
 public class AttachedFile implements Serializable, Trackable {
 
-    /** 添付ファイルID */
+    /** ID */
     @Id
-    @Column(name = "attached_file_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long attachedFileId;
+    private Long id;
 
     /** ファイル名 */
     private String name;
 
-    /** ファイルデータ */
-    private byte[] data;
+    /** コンテンツタイプ */
+    @Column(name = "content_type")
+    private String contentType;
+
+    /** ファイルサイズ */
+    private long size;
 
     /** ハッシュ値 */
-    @Setter(AccessLevel.NONE)
     private String hash;
 
     /** 登録日時 */
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime createdAt;
 
     /** 登録ユーザID */
     @Column(name = "created_user_id")
@@ -61,8 +69,8 @@ public class AttachedFile implements Serializable, Trackable {
 
     /** 更新日時 */
     @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime updatedAt;
 
     /** 更新ユーザID */
     @Column(name = "updated_user_id")
@@ -72,15 +80,9 @@ public class AttachedFile implements Serializable, Trackable {
     @Version
     private int version;
 
-    /**
-     * ファイルデータを設定する。
-     * 
-     * @param data ファイルデータ
-     */
-    public void setData(byte[] data) {
-        this.data = data;
-        this.hash = DigestUtils.sha256Hex(data);
-    }
+    /** 添付ファイルデータ */
+    @OneToMany(mappedBy = "attachedFile")
+    private List<AttachedFileData> attachedFileData;
 
     /**
      * ファイルデータを読み込む {@link InputStream} を生成する。
@@ -88,6 +90,21 @@ public class AttachedFile implements Serializable, Trackable {
      * @return ファイルデータを読み込む {@link InputStream}
      */
     public InputStream newDataInputStream() {
-        return new ByteArrayInputStream(data);
+        try {
+            Path tempFile = Files.createTempFile(null, null);
+            try (OutputStream output = Files.newOutputStream(tempFile)) {
+                attachedFileData.stream().sorted(Comparator.comparingInt(AttachedFileData::getOrderBy))
+                        .forEachOrdered(data -> {
+                            try {
+                                output.write(data.getData());
+                            } catch (IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        });
+            }
+            return Files.newInputStream(tempFile, StandardOpenOption.DELETE_ON_CLOSE);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

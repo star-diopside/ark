@@ -6,6 +6,7 @@
 
     <persistence-unit name="default">
         <class>jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFile</class>
+        <class>jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFileData</class>
         <class>jp.gr.java_conf.star_diopside.spark.data.entity.Authority</class>
         <class>jp.gr.java_conf.star_diopside.spark.data.entity.User</class>
     </persistence-unit>

@@ -22,6 +22,10 @@
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-data</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,10 +1,10 @@
 package jp.gr.java_conf.star_diopside.spark.service.userdetails;
 
-import java.time.ZonedDateTime;
-
-import jp.gr.java_conf.star_diopside.spark.data.entity.User;
+import java.time.LocalDateTime;
 
 import org.springframework.security.core.userdetails.UserDetails;
+
+import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 /**
  * ログインユーザ情報詳細インタフェース
@@ -30,14 +30,14 @@ public interface LoginUserDetails extends UserDetails {
      * 
      * @return 最終ログイン日時
      */
-    ZonedDateTime getLastLoginAt();
+    LocalDateTime getLastLoginAt();
 
     /**
      * ログアウト日時を取得する。
      * 
      * @return ログアウト日時
      */
-    ZonedDateTime getLogoutAt();
+    LocalDateTime getLogoutAt();
 
     /**
      * ユーザエンティティに変換する。

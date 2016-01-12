@@ -1,13 +1,14 @@
 package jp.gr.java_conf.star_diopside.spark.service.logic.auth;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,9 @@ public class UserManagerImpl implements UserManager {
     @Named("passwordEncoder")
     private PasswordEncoder passwordEncoder;
 
+    @Value("${tempUserValidDays}")
+    private int tempUserValidDays;
+
     @Override
     @Transactional
     public void createUser(String userId, String username, PasswordWrapper password) {
@@ -45,7 +49,7 @@ public class UserManagerImpl implements UserManager {
         }
 
         // 現在時刻を取得する。
-        Date current = new Date();
+        LocalDateTime current = LocalDateTime.now();
 
         // ユーザ情報の登録を行う。
         User user = new User();
@@ -75,9 +79,8 @@ public class UserManagerImpl implements UserManager {
             // 本登録済みの場合、有効ユーザとする。
             return true;
         } else {
-            // 仮登録中の場合、登録後１日経過すると無効ユーザとする。
-            long duration = System.currentTimeMillis() - user.getCreatedAt().getTime();
-            return duration <= TimeUnit.DAYS.toMillis(1);
+            // 仮登録中の場合、有効期間を超過すると無効ユーザとする。
+            return user.getCreatedAt().until(LocalDateTime.now(), ChronoUnit.DAYS) < tempUserValidDays;
         }
     }
 
@@ -107,7 +110,7 @@ public class UserManagerImpl implements UserManager {
     @Transactional
     public User loginSuccess(LoginUserDetails loginUser) {
         User user = userRepository.findOne(loginUser.getUserId());
-        Date current = new Date();
+        LocalDateTime current = LocalDateTime.now();
 
         user.setLoginErrorCount(0);
         user.setLastLoginAt(current);
@@ -134,7 +137,7 @@ public class UserManagerImpl implements UserManager {
 
         // ログイン情報が更新されていない場合、ログアウト処理を行う。
         if (!checkLoginInfo(loginUser, user)) {
-            Date current = new Date();
+            LocalDateTime current = LocalDateTime.now();
             user.setLogoutAt(current);
             userRepository.save(user);
         }
@@ -156,17 +159,7 @@ public class UserManagerImpl implements UserManager {
      */
     private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
         // 最終ログイン日時、ログアウト日時の判定を行う。
-        return !equalsDateTime(loginUser.getLastLoginAt(), user.getLastLoginAt())
-                || !equalsDateTime(loginUser.getLogoutAt(), user.getLogoutAt());
-    }
-
-    private static boolean equalsDateTime(ZonedDateTime dateTime, Date date) {
-        if (dateTime == null) {
-            return date == null;
-        } else if (date == null) {
-            return false;
-        } else {
-            return dateTime.toInstant().equals(date.toInstant());
-        }
+        return !Objects.equals(loginUser.getLastLoginAt(), user.getLastLoginAt())
+                || !Objects.equals(loginUser.getLogoutAt(), user.getLogoutAt());
     }
 }

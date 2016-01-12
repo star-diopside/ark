@@ -1,5 +1,6 @@
 package jp.gr.java_conf.star_diopside.spark.service.logic.file;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -23,8 +24,19 @@ public interface AttachedFileManager {
      * 
      * @param file 添付ファイル
      * @param fileName ファイル名
+     * @param contentType コンテンツタイプ
      * @return 登録した添付ファイルエンティティ
      */
-    AttachedFile create(Path file, String fileName);
+    AttachedFile create(Path file, String fileName, String contentType);
+
+    /**
+     * 添付ファイルを登録する。
+     * 
+     * @param input 添付ファイル入力ストリーム
+     * @param fileName ファイル名
+     * @param contentType コンテンツタイプ
+     * @return 登録した添付ファイルエンティティ
+     */
+    AttachedFile create(InputStream input, String fileName, String contentType);
 
 }

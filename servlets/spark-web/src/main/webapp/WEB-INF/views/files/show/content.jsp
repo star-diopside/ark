@@ -6,7 +6,7 @@
   <div class="form-group">
     <label for="file" class="col-sm-2 control-label">ファイル名</label>
     <div class="col-sm-10">
-      <p class="form-control-static"><a href="<spring:url value='/files/${fileShowForm.attachedFileId}/data' />">${fileShowForm.fileName}</a></p>
+      <p class="form-control-static"><a href="<spring:url value='/files/${fileShowForm.id}/data' />">${fileShowForm.fileName}</a></p>
     </div>
   </div>
   <div class="form-group">
