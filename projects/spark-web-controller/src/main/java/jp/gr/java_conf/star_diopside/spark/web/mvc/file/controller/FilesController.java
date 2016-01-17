@@ -51,8 +51,8 @@ public class FilesController {
     }
 
     @RequestMapping(value = "create", method = RequestMethod.GET)
-    public String create() {
-        return "files/create";
+    public ModelAndView create() {
+        return new ModelAndView("files/create").addObject(new FileCreateForm());
     }
 
     @RequestMapping(method = RequestMethod.POST)

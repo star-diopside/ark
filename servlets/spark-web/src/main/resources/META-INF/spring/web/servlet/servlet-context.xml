@@ -10,7 +10,8 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:property-placeholder location="classpath:setting.xml" ignore-unresolvable="true" />
+    <context:property-placeholder order="1" location="classpath:settings.xml" ignore-unresolvable="true" />
+    <context:property-placeholder order="2" location="classpath:env.xml" ignore-unresolvable="true" />
 
     <context:component-scan base-package="jp.gr.java_conf.star_diopside.spark">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
@@ -24,14 +25,26 @@
 
     <mvc:default-servlet-handler />
 
-    <bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
-
-    <bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-        <property name="definitions">
-            <list>
-                <value>/WEB-INF/views/layouts/tiles-layout.xml</value>
-                <value>/WEB-INF/views/**/tiles-view.xml</value>
-            </list>
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="templateEngine">
+            <bean class="org.thymeleaf.spring4.SpringTemplateEngine">
+                <property name="additionalDialects">
+                    <set>
+                        <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
+                        <bean class="nz.net.ultraq.thymeleaf.LayoutDialect" />
+                    </set>
+                </property>
+                <property name="templateResolver">
+                    <bean class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+                        <property name="prefix" value="/WEB-INF/views/" />
+                        <property name="suffix" value=".html" />
+                        <property name="cacheable" value="${thymeleaf.cache}" />
+                        <property name="characterEncoding" value="UTF-8" />
+                        <property name="templateMode" value="HTML5" />
+                    </bean>
+                </property>
+            </bean>
         </property>
     </bean>
 
