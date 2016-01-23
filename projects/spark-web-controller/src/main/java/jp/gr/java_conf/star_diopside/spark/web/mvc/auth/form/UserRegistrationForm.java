@@ -5,13 +5,13 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
-import lombok.ToString;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.Errors;
+
+import lombok.Data;
+import lombok.ToString;
 
 /**
  * ユーザ登録フォーム
@@ -22,31 +22,31 @@ import org.springframework.validation.Errors;
 public class UserRegistrationForm implements Serializable {
 
     /** ユーザ名 */
-    @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.username.Required.message}")
-    @NotBlank(message = "{jp.gr.java_conf.star_diopside.spark.validation.username.Required.message}")
-    @Size(min = 6, max = 50, message = "{jp.gr.java_conf.star_diopside.spark.validation.username.Size.message}")
+    @NotNull
+    @NotBlank
+    @Size(min = 6, max = 50)
     private String username;
 
     /** ニックネーム */
-    @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.nickname.Required.message}")
-    @NotBlank(message = "{jp.gr.java_conf.star_diopside.spark.validation.nickname.Required.message}")
-    @Size(max = 50, message = "jp.gr.java_conf.star_diopside.spark.validation.nickname.Size.message")
+    @NotNull
+    @NotBlank
+    @Size(max = 50, message = "{jp.gr.java_conf.star_diopside.spark.validation.Size.max.message}")
     private String nickname;
 
     /** パスワード */
-    @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.password.Required.message}")
-    @NotEmpty(message = "{jp.gr.java_conf.star_diopside.spark.validation.password.Required.message}")
-    @Size(min = 6, message = "{jp.gr.java_conf.star_diopside.spark.validation.password.Size.message}")
+    @NotNull
+    @NotEmpty
+    @Size(min = 6, message = "{jp.gr.java_conf.star_diopside.spark.validation.Size.min.message}")
     private String password;
 
     /** パスワード(確認) */
-    @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.passwordConfirm.Required.message}")
-    @NotEmpty(message = "{jp.gr.java_conf.star_diopside.spark.validation.passwordConfirm.Required.message}")
+    @NotNull
+    @NotEmpty
     private String passwordConfirm;
 
     /** キャプチャ */
-    @NotNull(message = "{jp.gr.java_conf.star_diopside.spark.validation.captcha.Required.message}")
-    @NotEmpty(message = "{jp.gr.java_conf.star_diopside.spark.validation.captcha.Required.message}")
+    @NotNull
+    @NotEmpty
     private String captcha;
 
     /**

@@ -20,9 +20,13 @@
         <aop:advisor advice-ref="logging" pointcut="execution(* jp.gr.java_conf.star_diopside.spark..*(..))" />
     </aop:config>
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven validator="validator" />
 
     <mvc:default-servlet-handler />
+
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource" />
+    </bean>
 
     <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
         <property name="characterEncoding" value="UTF-8" />
