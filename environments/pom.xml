@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+        <artifactId>spark-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>spark-environments-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>spark-environments</name>
+
+    <modules>
+        <module>spark-env</module>
+        <module>spark-web-env</module>
+        <module>spark-batch-runner-env</module>
+        <module>spark-batch-manager-env</module>
+    </modules>
+
+    <properties>
+        <project.rootdir>${project.basedir}/..</project.rootdir>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile.basename>develop</profile.basename>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <profile.basename>staging</profile.basename>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/profiles/${profile.basename}/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+</project>

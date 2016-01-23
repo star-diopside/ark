@@ -16,7 +16,6 @@
 
     <modules>
         <module>spark-core</module>
-        <module>spark-resources</module>
         <module>spark-support</module>
         <module>spark-data</module>
         <module>spark-service</module>

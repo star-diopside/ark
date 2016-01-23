@@ -13,8 +13,7 @@
     <modules>
         <module>projects</module>
         <module>servlets</module>
-        <module>ejbs</module>
-        <module>ear</module>
+        <module>environments</module>
     </modules>
 
     <properties>
@@ -41,70 +40,7 @@
         </repository>
     </repositories>
 
-    <profiles>
-        <profile>
-            <id>develop</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <profile.basename>develop</profile.basename>
-            </properties>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-war-plugin</artifactId>
-                            <configuration>
-                                <webResources>
-                                    <resource>
-                                        <directory>${project.basedir}/src/main/profiles/${profile.basename}/webapp</directory>
-                                    </resource>
-                                    <resource>
-                                        <directory>${project.basedir}/src/main/web-resources</directory>
-                                    </resource>
-                                </webResources>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>staging</id>
-            <properties>
-                <profile.basename>staging</profile.basename>
-            </properties>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-war-plugin</artifactId>
-                            <configuration>
-                                <webResources>
-                                    <resource>
-                                        <directory>${project.basedir}/src/main/profiles/${profile.basename}/webapp</directory>
-                                    </resource>
-                                </webResources>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>${project.basedir}/src/main/profiles/${profile.basename}/resources</directory>
-            </resource>
-        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -310,11 +246,6 @@
             </dependency>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
-                <artifactId>spark-resources</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-support</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -336,6 +267,26 @@
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-batch</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-env</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-web-env</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-batch-runner-env</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-batch-manager-env</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
