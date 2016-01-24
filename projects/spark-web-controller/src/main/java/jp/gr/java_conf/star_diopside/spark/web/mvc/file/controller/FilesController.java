@@ -13,7 +13,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +39,6 @@ public class FilesController {
     }
 
     @RequestMapping(value = "{id}/data", method = RequestMethod.GET)
-    @Transactional
     public ResponseEntity<Resource> download(@PathVariable("id") Long id) throws UnsupportedEncodingException {
         AttachedFile file = attachedFileManager.find(id).orElseThrow(ResourceNotFoundException::new);
         return ResponseEntity.ok()
