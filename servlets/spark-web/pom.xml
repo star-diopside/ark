@@ -18,6 +18,42 @@
         <project.rootdir>${project.basedir}/../..</project.rootdir>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-war-plugin</artifactId>
+                            <configuration>
+                                <webResources>
+                                    <resource>
+                                        <directory>${project.basedir}/src/main/web-resources</directory>
+                                    </resource>
+                                </webResources>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                    <artifactId>spark-web-env</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>staging</id>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>${project.artifactId}</finalName>
     </build>
@@ -26,11 +62,6 @@
         <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
             <artifactId>spark-commons-web</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
-            <artifactId>spark-resources</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -74,8 +105,18 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-jsp</artifactId>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

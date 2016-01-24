@@ -18,16 +18,30 @@
         <project.rootdir>${project.basedir}/../..</project.rootdir>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                    <artifactId>spark-batch-manager-env</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>staging</id>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>${project.artifactId}</finalName>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
-            <artifactId>spark-resources</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-batch</artifactId>

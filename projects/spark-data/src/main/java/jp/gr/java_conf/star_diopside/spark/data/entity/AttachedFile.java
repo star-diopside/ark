@@ -1,0 +1,110 @@
+package jp.gr.java_conf.star_diopside.spark.data.entity;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
+import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
+import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
+import lombok.Data;
+import lombok.ToString;
+
+/**
+ * 添付ファイルエンティティクラス
+ */
+@Data
+@ToString(exclude = "attachedFileData")
+@Entity
+@EntityListeners(TrackableListener.class)
+@Table(name = "attached_files")
+@SuppressWarnings("serial")
+public class AttachedFile implements Serializable, Trackable {
+
+    /** ID */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    /** ファイル名 */
+    private String name;
+
+    /** コンテンツタイプ */
+    @Column(name = "content_type")
+    private String contentType;
+
+    /** ファイルサイズ */
+    private long size;
+
+    /** ハッシュ値 */
+    private String hash;
+
+    /** 登録日時 */
+    @Column(name = "created_at")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime createdAt;
+
+    /** 登録ユーザID */
+    @Column(name = "created_user_id")
+    private String createdUserId;
+
+    /** 更新日時 */
+    @Column(name = "updated_at")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime updatedAt;
+
+    /** 更新ユーザID */
+    @Column(name = "updated_user_id")
+    private String updatedUserId;
+
+    /** バージョン */
+    @Version
+    private int version;
+
+    /** 添付ファイルデータ */
+    @OneToMany(mappedBy = "attachedFile")
+    private List<AttachedFileData> attachedFileData;
+
+    /**
+     * ファイルデータを読み込む {@link InputStream} を生成する。
+     * 
+     * @return ファイルデータを読み込む {@link InputStream}
+     */
+    public InputStream newDataInputStream() {
+        try {
+            Path tempFile = Files.createTempFile(null, null);
+            try (OutputStream output = Files.newOutputStream(tempFile)) {
+                attachedFileData.stream().sorted(Comparator.comparingInt(AttachedFileData::getOrderBy))
+                        .forEachOrdered(data -> {
+                            try {
+                                output.write(data.getData());
+                            } catch (IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        });
+            }
+            return Files.newInputStream(tempFile, StandardOpenOption.DELETE_ON_CLOSE);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+}

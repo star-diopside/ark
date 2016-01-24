@@ -16,6 +16,6 @@ public class BA01J01S02Processor implements ItemProcessor<Pair<String, Integer>,
     @Override
     public User process(Pair<String, Integer> item) throws Exception {
         User user = userRepository.findOne(item.getLeft());
-        return user.getVersion().equals(item.getRight()) ? user : null;
+        return user.getVersion() == item.getRight() ? user : null;
     }
 }

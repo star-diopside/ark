@@ -19,6 +19,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
+            <artifactId>spark-commons-web</artifactId>
+        </dependency>
+        <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
             <artifactId>spark-support</artifactId>
         </dependency>

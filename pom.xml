@@ -13,8 +13,7 @@
     <modules>
         <module>projects</module>
         <module>servlets</module>
-        <module>ejbs</module>
-        <module>ear</module>
+        <module>environments</module>
     </modules>
 
     <properties>
@@ -41,70 +40,7 @@
         </repository>
     </repositories>
 
-    <profiles>
-        <profile>
-            <id>develop</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <profile.basename>develop</profile.basename>
-            </properties>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-war-plugin</artifactId>
-                            <configuration>
-                                <webResources>
-                                    <resource>
-                                        <directory>${project.basedir}/src/main/profiles/${profile.basename}/webapp</directory>
-                                    </resource>
-                                    <resource>
-                                        <directory>${project.basedir}/src/main/web-resources</directory>
-                                    </resource>
-                                </webResources>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>staging</id>
-            <properties>
-                <profile.basename>staging</profile.basename>
-            </properties>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-war-plugin</artifactId>
-                            <configuration>
-                                <webResources>
-                                    <resource>
-                                        <directory>${project.basedir}/src/main/profiles/${profile.basename}/webapp</directory>
-                                    </resource>
-                                </webResources>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>${project.basedir}/src/main/profiles/${profile.basename}/resources</directory>
-            </resource>
-        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -290,6 +226,11 @@
             </dependency>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
+                <artifactId>spark-commons-data</artifactId>
+                <version>${spark-commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
                 <artifactId>spark-commons-test</artifactId>
                 <version>${spark-commons.version}</version>
             </dependency>
@@ -301,11 +242,6 @@
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
-                <artifactId>spark-resources</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -331,6 +267,26 @@
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-batch</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-env</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-web-env</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-batch-runner-env</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-batch-manager-env</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -568,14 +524,29 @@
                 <version>2.4.2</version>
             </dependency>
             <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.4</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.tiles</groupId>
-                <artifactId>tiles-jsp</artifactId>
-                <version>3.0.5</version>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring4</artifactId>
+                <version>2.1.4.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.thymeleaf.extras</groupId>
+                <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+                <version>2.1.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>nz.net.ultraq.thymeleaf</groupId>
+                <artifactId>thymeleaf-layout-dialect</artifactId>
+                <version>1.3.1</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code</groupId>

@@ -1,18 +1,21 @@
 package jp.gr.java_conf.star_diopside.spark.data.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
+import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
+import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
 import lombok.Data;
 import lombok.ToString;
 
@@ -22,9 +25,10 @@ import lombok.ToString;
 @Data
 @ToString(exclude = "authorities")
 @Entity
+@EntityListeners(TrackableListener.class)
 @Table(name = "users")
 @SuppressWarnings("serial")
-public class User implements Serializable, Cloneable {
+public class User implements Serializable, Trackable, Cloneable {
 
     /** ユーザID */
     @Id
@@ -39,39 +43,39 @@ public class User implements Serializable, Cloneable {
 
     /** パスワード更新日時 */
     @Column(name = "password_updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date passwordUpdatedAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime passwordUpdatedAt;
 
     /** 有効フラグ */
-    private Boolean enabled;
+    private boolean enabled;
 
     /** 本登録フラグ */
     @Column(name = "high_grade_registry")
-    private Boolean highGradeRegistry;
+    private boolean highGradeRegistry;
 
     /** ログインエラー回数 */
     @Column(name = "login_error_count")
-    private Integer loginErrorCount;
+    private int loginErrorCount;
 
     /** ロックアウト日時 */
     @Column(name = "lockout_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lockoutAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime lockoutAt;
 
     /** 最終ログイン日時 */
     @Column(name = "last_login_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLoginAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime lastLoginAt;
 
     /** ログアウト日時 */
     @Column(name = "logout_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date logoutAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime logoutAt;
 
     /** 登録日時 */
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime createdAt;
 
     /** 登録ユーザID */
     @Column(name = "created_user_id")
@@ -79,8 +83,8 @@ public class User implements Serializable, Cloneable {
 
     /** 更新日時 */
     @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime updatedAt;
 
     /** 更新ユーザID */
     @Column(name = "updated_user_id")
@@ -88,7 +92,7 @@ public class User implements Serializable, Cloneable {
 
     /** バージョン */
     @Version
-    private Integer version;
+    private int version;
 
     /** 権限エンティティ一覧 */
     @OneToMany(mappedBy = "user")
