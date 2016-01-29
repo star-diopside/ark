@@ -30,13 +30,13 @@ public class UserRegistrationForm implements Serializable {
     /** ニックネーム */
     @NotNull
     @NotBlank
-    @Size(max = 50, message = "{jp.gr.java_conf.star_diopside.spark.validation.Size.max.message}")
+    @Size(max = 50, message = "{jp.gr.java_conf.star_diopside.spark.validation.constraints.Size.max.message}")
     private String nickname;
 
     /** パスワード */
     @NotNull
     @NotEmpty
-    @Size(min = 6, message = "{jp.gr.java_conf.star_diopside.spark.validation.Size.min.message}")
+    @Size(min = 6, message = "{jp.gr.java_conf.star_diopside.spark.validation.constraints.Size.min.message}")
     private String password;
 
     /** パスワード(確認) */
