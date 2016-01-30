@@ -21,14 +21,16 @@ import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * 添付ファイルデータエンティティクラス
  */
-@Data
+@Getter
+@Setter
 @ToString(exclude = { "data", "attachedFile" })
 @Builder
 @NoArgsConstructor

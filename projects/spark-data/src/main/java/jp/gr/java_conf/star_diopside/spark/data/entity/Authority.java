@@ -17,14 +17,23 @@ import javax.persistence.Version;
 import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
 import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
 import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * 権限エンティティクラス
  */
-@Data
+@Getter
+@Setter
 @ToString(exclude = "user")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(TrackableListener.class)
 @Table(name = "authorities")

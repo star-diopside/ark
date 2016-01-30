@@ -48,7 +48,11 @@
         <appender-ref ref="traceLog" />
     </logger>
 
-    <logger name="org.hibernate.SQL" level="TRACE">
+    <logger name="org.eclipse.persistence.logging.sql" level="TRACE">
+        <appender-ref ref="traceLog" />
+    </logger>
+
+    <logger name="org.springframework.batch.core" level="INFO">
         <appender-ref ref="traceLog" />
     </logger>
 

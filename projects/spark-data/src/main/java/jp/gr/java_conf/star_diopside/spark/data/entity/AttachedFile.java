@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -26,14 +27,23 @@ import javax.persistence.Version;
 import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
 import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
 import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * 添付ファイルエンティティクラス
  */
-@Data
+@Getter
+@Setter
 @ToString(exclude = "attachedFileData")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(TrackableListener.class)
 @Table(name = "attached_files")
@@ -81,7 +91,7 @@ public class AttachedFile implements Serializable, Trackable {
     private int version;
 
     /** 添付ファイルデータ */
-    @OneToMany(mappedBy = "attachedFile")
+    @OneToMany(mappedBy = "attachedFile", cascade = CascadeType.ALL)
     private List<AttachedFileData> attachedFileData;
 
     /**

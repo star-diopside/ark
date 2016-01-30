@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -16,14 +17,23 @@ import javax.persistence.Version;
 import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
 import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
 import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * ユーザエンティティクラス
  */
-@Data
+@Getter
+@Setter
 @ToString(exclude = "authorities")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(TrackableListener.class)
 @Table(name = "users")
@@ -95,7 +105,7 @@ public class User implements Serializable, Trackable, Cloneable {
     private int version;
 
     /** 権限エンティティ一覧 */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Authority> authorities;
 
     @Override

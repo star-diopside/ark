@@ -87,7 +87,6 @@ public class UserManagerImpl implements UserManager {
     @Override
     @Transactional
     public void removeUser(User user) {
-        authorityRepository.delete(user.getAuthorities());
         userRepository.delete(user);
     }
 
