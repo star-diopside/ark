@@ -266,6 +266,11 @@
             </dependency>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
+                <artifactId>spark-web-view</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.spark</groupId>
                 <artifactId>spark-batch</artifactId>
                 <version>${project.version}</version>
             </dependency>

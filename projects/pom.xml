@@ -20,6 +20,7 @@
         <module>spark-data</module>
         <module>spark-service</module>
         <module>spark-web-controller</module>
+        <module>spark-web-view</module>
         <module>spark-batch</module>
         <module>spark-batch-runner</module>
         <module>spark-test-support</module>
