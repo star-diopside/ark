@@ -1,0 +1,12 @@
+machine:
+  java:
+    version: oraclejdk8
+  environment:
+    TEST_ENVIRONMENT: circleci
+database:
+  override:
+    - psql -f resources/database/database.sql -d circle_test -U ubuntu
+dependencies:
+  pre:
+    - ./ci/scripts/install_repository.sh
+    - mvn -DskipTests=true clean install
