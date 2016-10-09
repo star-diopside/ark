@@ -19,8 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
-            <artifactId>spark-commons-core</artifactId>
+            <groupId>jp.gr.java_conf.star_diopside.silver.commons</groupId>
+            <artifactId>silver-commons-core</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>

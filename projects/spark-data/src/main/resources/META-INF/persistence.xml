@@ -5,7 +5,7 @@
     version="2.1">
 
     <persistence-unit name="default">
-        <class>jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter</class>
+        <class>jp.gr.java_conf.star_diopside.silver.commons.data.converter.LocalDateTimeConverter</class>
         <class>jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFile</class>
         <class>jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFileData</class>
         <class>jp.gr.java_conf.star_diopside.spark.data.entity.Authority</class>

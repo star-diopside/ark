@@ -1,8 +1,8 @@
 package jp.gr.java_conf.star_diopside.spark.service.bean;
 
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingSetting;
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingType;
+import jp.gr.java_conf.star_diopside.silver.commons.core.logging.Loggable;
+import jp.gr.java_conf.star_diopside.silver.commons.core.logging.LoggingSetting;
+import jp.gr.java_conf.star_diopside.silver.commons.core.logging.LoggingType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;

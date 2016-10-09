@@ -1,5 +1,6 @@
 #!/bin/bash
+rm -rf ~/.m2
 cd $(dirname $(dirname $0))
-git clone --branch=develop https://github.com/star-diopside/spark-commons.git
-cd spark-commons
-./gradlew install
+git clone --branch=develop https://github.com/star-diopside/silver-commons.git
+cd silver-commons
+./gradlew clean install

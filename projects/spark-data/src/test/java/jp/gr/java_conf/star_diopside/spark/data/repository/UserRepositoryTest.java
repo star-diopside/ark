@@ -23,8 +23,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import jp.gr.java_conf.star_diopside.spark.commons.test.support.DatabaseTestSupport;
-import jp.gr.java_conf.star_diopside.spark.commons.test.support.SimpleDatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.silver.commons.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.silver.commons.test.support.SimpleDatabaseTestSupport;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -60,8 +60,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
-            <artifactId>spark-commons-web</artifactId>
+            <groupId>jp.gr.java_conf.star_diopside.silver.commons</groupId>
+            <artifactId>silver-commons-web</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

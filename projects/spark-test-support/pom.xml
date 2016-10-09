@@ -19,8 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>jp.gr.java_conf.star_diopside.spark.commons</groupId>
-            <artifactId>spark-commons-test</artifactId>
+            <groupId>jp.gr.java_conf.star_diopside.silver.commons</groupId>
+            <artifactId>silver-commons-test</artifactId>
         </dependency>
         <dependency>
             <groupId>jp.gr.java_conf.star_diopside.spark</groupId>

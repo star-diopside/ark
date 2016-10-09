@@ -23,7 +23,7 @@
         </step>
     </job>
 
-    <bean id="BA01J01.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.spark.commons.batch.support.TemporaryFileJobListener">
+    <bean id="BA01J01.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryFileJobListener">
         <property name="key" value="tempFile" />
     </bean>
 

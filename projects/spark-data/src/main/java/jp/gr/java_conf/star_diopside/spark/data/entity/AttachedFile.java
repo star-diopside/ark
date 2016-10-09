@@ -24,7 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import jp.gr.java_conf.star_diopside.spark.commons.data.converter.LocalDateTimeConverter;
+import jp.gr.java_conf.star_diopside.silver.commons.data.converter.LocalDateTimeConverter;
 import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
 import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
 import lombok.AccessLevel;

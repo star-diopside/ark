@@ -7,8 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.Loggable;
-import jp.gr.java_conf.star_diopside.spark.commons.core.logging.LoggingSetting;
+import jp.gr.java_conf.star_diopside.silver.commons.core.logging.Loggable;
+import jp.gr.java_conf.star_diopside.silver.commons.core.logging.LoggingSetting;
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 
 /**
