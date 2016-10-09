@@ -10,5 +10,6 @@
     <import resource="classpath:/META-INF/spring/web/data-source-context.xml" />
     <import resource="classpath:/META-INF/spring/web/transaction-context.xml" />
     <import resource="classpath:/META-INF/spring/web/security-context.xml" />
+    <import resource="classpath:/META-INF/spring/web/session-context.xml" />
 
 </beans>
