@@ -9,4 +9,3 @@ database:
 dependencies:
   pre:
     - ./ci/scripts/install_repository.sh
-    - mvn -DskipTests=true clean install

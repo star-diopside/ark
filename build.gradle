@@ -1,0 +1,284 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
+    }
+}
+
+allprojects {
+    group = "jp.gr.java_conf.star_diopside.spark"
+    version = "1.0.0-SNAPSHOT"
+
+    ext {
+        env = project.hasProperty("env") ? project.getProperty("env") : "develop"
+        silverCommonsVersion = "1.0.0-SNAPSHOT"
+        springBatchAdminVersion = "1.3.1.RELEASE"
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "maven"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "eclipse-wtp"
+    apply plugin: "checkstyle"
+    apply plugin: "findbugs"
+    apply plugin: "jacoco"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    repositories {
+        jcenter()
+        mavenLocal()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "io.spring.platform:platform-bom:Athens-RELEASE"
+        }
+    }
+
+    dependencies {
+        compileOnly "org.projectlombok:lombok"
+    }
+
+    javadoc {
+        options.charSet = "UTF-8"
+        options.encoding = "UTF-8"
+    }
+
+    checkstyle {
+        toolVersion = "7.1.1"
+        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+        ignoreFailures = true
+    }
+
+    findbugs {
+        toolVersion = "3.0.1"
+        ignoreFailures = true
+    }
+
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.7.7.201606060606"
+    }
+
+    task packageSources(type: Jar, dependsOn: classes) {
+        classifier = "sources"
+        from sourceSets.main.allSource
+    }
+
+    task packageJavadoc(type: Jar, dependsOn: javadoc) {
+        classifier = "javadoc"
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives packageSources
+        archives packageJavadoc
+    }
+}
+
+project(":spark-projects:spark-core") {
+    dependencies {
+        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-core:${silverCommonsVersion}"
+        compile "javax.inject:javax.inject"
+        compile "org.slf4j:slf4j-api"
+        compile "org.slf4j:jcl-over-slf4j"
+        runtime "org.slf4j:log4j-over-slf4j"
+        runtime "org.aspectj:aspectjweaver"
+    }
+}
+
+project(":spark-projects:spark-support") {
+    dependencies {
+        compile project(":spark-projects:spark-core")
+        compile "org.springframework:spring-context"
+    }
+}
+
+project(":spark-projects:spark-data") {
+    dependencies {
+        compile project(":spark-projects:spark-core")
+        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-data:${silverCommonsVersion}"
+        compile "org.springframework.data:spring-data-jpa"
+        compile "org.springframework.security:spring-security-core"
+        compileOnly "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        testCompile project(":spark-projects:spark-test-support")
+    }
+}
+
+project(":spark-projects:spark-service") {
+    dependencies {
+        compile project(":spark-projects:spark-data")
+        compile "commons-codec:commons-codec"
+    }
+}
+
+project(":spark-projects:spark-web-controller") {
+    dependencies {
+        compile project(":spark-projects:spark-support")
+        compile project(":spark-projects:spark-service")
+        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
+        compile "org.hibernate:hibernate-validator"
+        compile "org.springframework:spring-webmvc"
+        compile "org.springframework.security:spring-security-web"
+        compile files("lib/kaptcha-2.3.2.jar")
+        compileOnly "javax.servlet:javax.servlet-api"
+    }
+}
+
+project(":spark-projects:spark-web-view") {
+    dependencies {
+        runtime "org.thymeleaf:thymeleaf-spring4"
+        runtime "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
+        runtime "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
+    }
+}
+
+project(":spark-projects:spark-batch") {
+    dependencies {
+        compile project(":spark-projects:spark-service")
+        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
+        compile "org.springframework.batch:spring-batch-core"
+        compile "commons-io:commons-io"
+        testCompile project(":spark-projects:spark-test-support")
+        testCompile "org.springframework.batch:spring-batch-test"
+        testCompile "com.h2database:h2"
+    }
+}
+
+project(":spark-projects:spark-batch-runner") {
+    dependencies {
+        runtime project(":spark-projects:spark-batch")
+        runtime project(":spark-environments:spark-batch-runner-env")
+        runtime "ch.qos.logback:logback-classic"
+        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        runtime "org.apache.commons:commons-dbcp2"
+        runtime "org.postgresql:postgresql"
+    }
+}
+
+project(":spark-projects:spark-test-support") {
+    dependencies {
+        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-test:${silverCommonsVersion}"
+        compile "org.springframework:spring-context"
+        compile "org.springframework:spring-orm"
+        compile "org.apache.commons:commons-dbcp2"
+        runtime project(":spark-environments:spark-env")
+        runtime "javax.transaction:javax.transaction-api"
+        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        runtime "ch.qos.logback:logback-classic"
+        runtime "org.postgresql:postgresql"
+    }
+}
+
+project(":spark-servlets") {
+    subprojects {
+        eclipse {
+            wtp {
+                component {
+                    resource sourcePath: "src/main/webapp", deployPath: "/"
+                    resource sourcePath: "src/main/web-resources", deployPath: "/"
+                }
+
+                facet {
+                    facet name: "jst.web", version: "3.1"
+                    facet name: "wst.jsdt.web", version: "1.0"
+                }
+            }
+        }
+    }
+}
+
+project(":spark-servlets:spark-web") {
+    apply plugin: "war"
+
+    dependencies {
+        runtime project(":spark-projects:spark-web-controller")
+        runtime project(":spark-projects:spark-web-view")
+        runtime "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
+        runtime "javax.servlet:jstl"
+        runtime "javax.transaction:javax.transaction-api"
+        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        runtime "ch.qos.logback:logback-classic"
+        runtime "org.springframework.session:spring-session"
+        runtime "org.springframework.security:spring-security-config"
+        runtime "org.springframework.security:spring-security-taglibs"
+        providedCompile "javax.servlet:javax.servlet-api"
+
+        if (env == "develop") {
+            runtime project(":spark-environments:spark-web-env")
+        }
+    }
+
+    war {
+        archiveName = "spark-web.war"
+    }
+}
+
+project(":spark-servlets:spark-batch-manager") {
+    apply plugin: "war"
+
+    dependencies {
+        runtime project(":spark-projects:spark-batch")
+        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        runtime "ch.qos.logback:logback-classic"
+        runtime "org.springframework.batch:spring-batch-admin-manager:${springBatchAdminVersion}"
+
+        if (env == "develop") {
+            runtime project(":spark-environments:spark-batch-manager-env")
+        }
+    }
+
+    war {
+        archiveName = "spark-batch-manager.war"
+    }
+}
+
+project(":spark-environments") {
+    subprojects {
+        sourceSets {
+            main {
+                resources {
+                    srcDir "src/main/profiles/${env}/resources"
+                }
+            }
+        }
+    }
+}
+
+project(":spark-environments:spark-env") {
+}
+
+project(":spark-environments:spark-web-env") {
+    dependencies {
+        runtime project(":spark-environments:spark-env")
+    }
+}
+
+project(":spark-environments:spark-batch-runner-env") {
+    dependencies {
+        runtime project(":spark-environments:spark-env")
+    }
+}
+
+project(":spark-environments:spark-batch-manager-env") {
+    dependencies {
+        runtime project(":spark-environments:spark-env")
+    }
+}
