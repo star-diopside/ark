@@ -7,9 +7,10 @@
     <import resource="classpath:/META-INF/spring/resources/message-context.xml" />
     <import resource="classpath:/META-INF/spring/data/repository-context.xml" />
     <import resource="classpath:/META-INF/spring/service/service-context.xml" />
-    <import resource="classpath:/META-INF/spring/web/data-source-context.xml" />
     <import resource="classpath:/META-INF/spring/web/transaction-context.xml" />
     <import resource="classpath:/META-INF/spring/web/security-context.xml" />
     <import resource="classpath:/META-INF/spring/web/session-context.xml" />
+    <import resource="classpath:/META-INF/spring/env/data-source-context.xml" />
+    <import resource="classpath:/META-INF/spring/env/setting-context.xml" />
 
 </beans>

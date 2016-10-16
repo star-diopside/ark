@@ -10,5 +10,6 @@
     <import resource="classpath:/META-INF/spring/batch/job-execution-context.xml" />
     <import resource="classpath:/META-INF/spring/test/data-source-context.xml" />
     <import resource="classpath:/META-INF/spring/test/job-data-source-context.xml" />
+    <import resource="classpath:/META-INF/spring/test/setting-context.xml" />
 
 </beans>

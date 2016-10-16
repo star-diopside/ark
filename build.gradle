@@ -46,6 +46,10 @@ subprojects {
         }
     }
 
+    configurations {
+        all*.exclude group: "commons-logging", module: "commons-logging"
+    }
+
     dependencies {
         compileOnly "org.projectlombok:lombok"
     }
@@ -216,7 +220,7 @@ project(":spark-servlets:spark-web") {
         runtime "javax.transaction:javax.transaction-api"
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "ch.qos.logback:logback-classic"
-        runtime "org.springframework.session:spring-session"
+        runtime "org.springframework.session:spring-session-data-redis"
         runtime "org.springframework.security:spring-security-config"
         runtime "org.springframework.security:spring-security-taglibs"
         providedCompile "javax.servlet:javax.servlet-api"

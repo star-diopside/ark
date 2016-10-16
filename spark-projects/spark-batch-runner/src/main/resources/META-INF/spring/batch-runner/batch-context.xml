@@ -9,5 +9,6 @@
     <import resource="classpath:/META-INF/spring/service/service-context.xml" />
     <import resource="classpath:/META-INF/spring/batch/job-execution-context.xml" />
     <import resource="classpath:/META-INF/spring/batch-runner/data-source-context.xml" />
+    <import resource="classpath:/META-INF/spring/env/setting-context.xml" />
 
 </beans>
