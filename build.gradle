@@ -195,11 +195,6 @@ project(":spark-servlets") {
     subprojects {
         eclipse {
             wtp {
-                component {
-                    resource sourcePath: "src/main/webapp", deployPath: "/"
-                    resource sourcePath: "src/main/web-resources", deployPath: "/"
-                }
-
                 facet {
                     facet name: "jst.web", version: "3.1"
                     facet name: "wst.jsdt.web", version: "1.0"

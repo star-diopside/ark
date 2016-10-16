@@ -6,18 +6,18 @@
   <meta charset="UTF-8" th:remove="all" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all" />
   <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
-  <link rel="stylesheet" href="../../../../web-resources/static/lib/normalize/css/normalize.css" type="text/css" media="screen,print" th:remove="all" />
-  <link rel="stylesheet" href="../../../../web-resources/static/lib/bootstrap/css/bootstrap.min.css" type="text/css" media="screen,print" th:remove="all" />
-  <link rel="stylesheet" href="../../../../web-resources/static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
-  <link rel="stylesheet" href="../../../../web-resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
-  <script src="../../../../web-resources/static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+  <link rel="stylesheet" href="../../META-INF/resources/static/lib/normalize/css/normalize.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../META-INF/resources/static/lib/bootstrap/css/bootstrap.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../META-INF/resources/static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
+  <script src="../../META-INF/resources/static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
   <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">ユーザログイン</title>
 </head>
 <body>
   <div class="container">
     <div layout:fragment="content">
       <h1 class="page-header">ユーザログイン</h1>
-      <form action="../home.html" th:action="@{/auth/user-login}" th:object="${userLoginForm}" method="post" class="form-horizontal" role="form">
+      <form action="../home/index.html" th:action="@{/auth/user-login}" th:object="${userLoginForm}" method="post" class="form-horizontal" role="form">
         <div th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="alert alert-danger">エラーメッセージ</div>
         <div class="form-group" th:class="${#fields.hasErrors('username')}? 'form-group has-error' : 'form-group'">
           <label for="username" class="col-sm-2 control-label">ユーザ名</label>
