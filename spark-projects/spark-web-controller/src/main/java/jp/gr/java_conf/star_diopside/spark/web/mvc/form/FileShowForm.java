@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.spark.web.mvc.file.form;
+package jp.gr.java_conf.star_diopside.spark.web.mvc.form;
 
 import java.io.Serializable;
 

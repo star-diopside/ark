@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.spark.web.mvc.auth.controller;
+package jp.gr.java_conf.star_diopside.spark.web.mvc.controller;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.gr.java_conf.star_diopside.spark.web.exception.DualLoginException;
-import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.form.UserLoginForm;
 
 /**
  * ユーザログインコントローラ
  */
 @Controller
-@RequestMapping("auth/user-login")
+@RequestMapping("/auth/user-login")
 public class UserLoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserLoginController.class);
@@ -76,7 +76,7 @@ public class UserLoginController {
      * @param attr リダイレクト属性情報
      * @return 処理結果
      */
-    @RequestMapping(value = "failure", method = RequestMethod.GET)
+    @RequestMapping(value = "/failure", method = RequestMethod.GET)
     public String failure(HttpSession session, RedirectAttributes attr) {
 
         // 認証エラー例外を取得する。

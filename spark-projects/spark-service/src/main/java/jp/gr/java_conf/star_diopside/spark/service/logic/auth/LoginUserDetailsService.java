@@ -1,21 +1,21 @@
 package jp.gr.java_conf.star_diopside.spark.service.logic.auth;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
 import jp.gr.java_conf.star_diopside.spark.data.entity.User;
 import jp.gr.java_conf.star_diopside.spark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.spark.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUser;
 import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
 /**
  * ログインユーザ情報サービスクラス
@@ -31,7 +31,7 @@ public class LoginUserDetailsService extends JdbcDaoImpl {
     @Override
     protected List<UserDetails> loadUsersByUsername(String username) {
         User user = userRepository.findOne(username);
-        return user == null ? Arrays.asList() : Arrays.asList(new LoginUser(user));
+        return user == null ? Collections.emptyList() : Collections.singletonList(new LoginUser(user));
     }
 
     @Override

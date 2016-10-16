@@ -1,15 +1,8 @@
-package jp.gr.java_conf.star_diopside.spark.web.mvc.auth.controller;
+package jp.gr.java_conf.star_diopside.spark.web.mvc.controller;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
-import jp.gr.java_conf.star_diopside.spark.service.bean.PasswordWrapper;
-import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
-import jp.gr.java_conf.star_diopside.spark.support.util.ExceptionUtils;
-import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserLoginForm;
-import jp.gr.java_conf.star_diopside.spark.web.mvc.auth.form.UserRegistrationForm;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -20,11 +13,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.code.kaptcha.Constants;
 
+import jp.gr.java_conf.star_diopside.spark.core.exception.ApplicationException;
+import jp.gr.java_conf.star_diopside.spark.service.bean.PasswordWrapper;
+import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
+import jp.gr.java_conf.star_diopside.spark.support.util.ExceptionUtils;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.form.UserLoginForm;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.form.UserRegistrationForm;
+
 /**
  * ユーザ登録コントローラ
  */
 @Controller
-@RequestMapping("auth/user-registration")
+@RequestMapping("/auth/user-registration")
 public class UserRegistrationController {
 
     @Inject

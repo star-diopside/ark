@@ -216,7 +216,6 @@ project(":spark-servlets:spark-web") {
         runtime project(":spark-projects:spark-web-controller")
         runtime project(":spark-projects:spark-web-view")
         runtime "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
-        runtime "javax.servlet:jstl"
         runtime "javax.transaction:javax.transaction-api"
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "ch.qos.logback:logback-classic"

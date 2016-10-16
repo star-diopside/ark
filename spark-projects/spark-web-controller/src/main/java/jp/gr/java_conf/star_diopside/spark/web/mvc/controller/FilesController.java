@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.spark.web.mvc.file.controller;
+package jp.gr.java_conf.star_diopside.spark.web.mvc.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,23 +22,23 @@ import org.springframework.web.servlet.ModelAndView;
 import jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFile;
 import jp.gr.java_conf.star_diopside.spark.service.logic.file.AttachedFileManager;
 import jp.gr.java_conf.star_diopside.spark.web.exception.ResourceNotFoundException;
-import jp.gr.java_conf.star_diopside.spark.web.mvc.file.form.FileCreateForm;
-import jp.gr.java_conf.star_diopside.spark.web.mvc.file.form.FileShowForm;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.form.FileCreateForm;
+import jp.gr.java_conf.star_diopside.spark.web.mvc.form.FileShowForm;
 
 @Controller
-@RequestMapping("files")
+@RequestMapping("/files")
 public class FilesController {
 
     @Inject
     private AttachedFileManager attachedFileManager;
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView show(@PathVariable("id") Long id) {
         AttachedFile file = attachedFileManager.find(id).orElseThrow(ResourceNotFoundException::new);
         return new ModelAndView("files/show").addObject(new FileShowForm(file));
     }
 
-    @RequestMapping(value = "{id}/data", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
     public ResponseEntity<Resource> download(@PathVariable("id") Long id) throws UnsupportedEncodingException {
         AttachedFile file = attachedFileManager.find(id).orElseThrow(ResourceNotFoundException::new);
         return ResponseEntity.ok()
@@ -48,7 +48,7 @@ public class FilesController {
                 .body(new InputStreamResource(file.newDataInputStream()));
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView create() {
         return new ModelAndView("files/create").addObject(new FileCreateForm());
     }
