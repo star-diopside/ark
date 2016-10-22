@@ -2,7 +2,7 @@
 <!DOCTYPE configuration>
 <configuration>
 
-    <property name="LOG_DIR" value="${user.home}/log/spark-batch-manager/main" />
+    <property name="LOG_DIR" value="${user.home}/log/spark-batch-manager" />
 
     <!-- Error Log Appender -->
     <appender name="errorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">

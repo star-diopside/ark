@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="templateEngine">
+            <bean class="org.thymeleaf.spring4.SpringTemplateEngine">
+                <property name="additionalDialects">
+                    <set>
+                        <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
+                        <bean class="nz.net.ultraq.thymeleaf.LayoutDialect" />
+                    </set>
+                </property>
+                <property name="templateResolver">
+                    <bean class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+                        <property name="prefix" value="/views/" />
+                        <property name="suffix" value=".html" />
+                        <property name="cacheable" value="${thymeleaf.cache}" />
+                        <property name="characterEncoding" value="UTF-8" />
+                        <property name="templateMode" value="HTML5" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

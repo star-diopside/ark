@@ -4,18 +4,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import jp.gr.java_conf.star_diopside.spark.data.entity.User;
-import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
-
 import org.springframework.batch.item.ItemWriter;
+
+import jp.gr.java_conf.star_diopside.spark.data.entity.User;
+import jp.gr.java_conf.star_diopside.spark.service.UserService;
 
 public class BA01J01S02Writer implements ItemWriter<User> {
 
     @Inject
-    private UserManager userManager;
+    private UserService userService;
 
     @Override
     public void write(List<? extends User> items) throws Exception {
-        items.forEach(userManager::removeUser);
+        items.forEach(userService::removeUser);
     }
 }
