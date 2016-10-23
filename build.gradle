@@ -143,6 +143,8 @@ project(":spark-projects:spark-web-controller") {
         compile "org.springframework.security:spring-security-web"
         compile files("lib/kaptcha-2.3.2.jar")
         compileOnly "javax.servlet:javax.servlet-api"
+        testCompile project(":spark-projects:spark-test-support")
+        testCompile "javax.servlet:javax.servlet-api"
     }
 }
 

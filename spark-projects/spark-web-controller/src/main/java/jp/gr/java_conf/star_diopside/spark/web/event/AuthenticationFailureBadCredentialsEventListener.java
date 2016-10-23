@@ -4,19 +4,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
-
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import jp.gr.java_conf.star_diopside.spark.service.UserService;
+
 @Named
 @Singleton
-public class AuthenticationFailureBadCredentialsEventListener implements
-        ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+public class AuthenticationFailureBadCredentialsEventListener
+        implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
     @Inject
-    private UserManager userManager;
+    private UserService userService;
 
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
@@ -26,6 +26,6 @@ public class AuthenticationFailureBadCredentialsEventListener implements
         }
 
         // 認証エラー時の処理を行う。
-        userManager.loginFailure(event.getAuthentication().getName());
+        userService.loginFailure(event.getAuthentication().getName());
     }
 }

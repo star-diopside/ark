@@ -2,7 +2,7 @@
 <!DOCTYPE configuration>
 <configuration>
 
-    <property name="LOG_DIR" value="${user.home}/log/spark-web/main" />
+    <property name="LOG_DIR" value="${user.home}/log/spark-web" />
 
     <!-- Error Log Appender -->
     <appender name="errorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">

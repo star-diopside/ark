@@ -3,12 +3,12 @@ package jp.gr.java_conf.star_diopside.spark.service.userdetails;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
-
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
+
+import jp.gr.java_conf.star_diopside.spark.service.UserService;
 
 /**
  * 認証前ユーザ情報チェック処理クラス
@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 public class BeforeLoginUserDetailsChecker implements UserDetailsChecker {
 
     @Inject
-    private UserManager userManager;
+    private UserService userService;
 
     @Inject
     @Named("messages")
@@ -24,8 +24,8 @@ public class BeforeLoginUserDetailsChecker implements UserDetailsChecker {
 
     @Override
     public void check(UserDetails toCheck) {
-        if (userManager.removeInvalidUser((LoginUserDetails) toCheck)) {
-            throw new AccountExpiredException(messages.getMessage("error.UserInvalid"));
+        if (userService.removeInvalidUser((LoginUserDetails) toCheck)) {
+            throw new AccountExpiredException(messages.getMessage("error.userInvalid"));
         }
     }
 }

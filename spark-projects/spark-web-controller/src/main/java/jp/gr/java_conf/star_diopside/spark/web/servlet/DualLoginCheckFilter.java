@@ -9,10 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jp.gr.java_conf.star_diopside.spark.service.logic.auth.UserManager;
-import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
-import jp.gr.java_conf.star_diopside.spark.web.exception.DualLoginException;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,13 +16,17 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.FlashMapManager;
 
+import jp.gr.java_conf.star_diopside.spark.service.UserService;
+import jp.gr.java_conf.star_diopside.spark.service.userdetails.LoginUserDetails;
+import jp.gr.java_conf.star_diopside.spark.web.exception.DualLoginException;
+
 /**
  * 二重ログインチェックを行うサーブレットフィルタ
  */
 public class DualLoginCheckFilter extends OncePerRequestFilter {
 
     @Inject
-    private UserManager userManager;
+    private UserService userService;
 
     @Inject
     @Named(DispatcherServlet.FLASH_MAP_MANAGER_BEAN_NAME)
@@ -40,7 +40,7 @@ public class DualLoginCheckFilter extends OncePerRequestFilter {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // 認証済みの場合、二重ログインチェック処理を行う。
-        if (principal instanceof LoginUserDetails && userManager.checkDualLogin((LoginUserDetails) principal)) {
+        if (principal instanceof LoginUserDetails && userService.checkDualLogin((LoginUserDetails) principal)) {
             // 二重ログイン例外をフラッシュスコープに設定する。
             DualLoginException exception = new DualLoginException();
             FlashMap flashMap = new FlashMap();
