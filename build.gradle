@@ -169,6 +169,10 @@ project(":spark-projects:spark-batch") {
 }
 
 project(":spark-projects:spark-batch-runner") {
+    apply plugin: "application"
+
+    mainClassName = "org.springframework.batch.core.launch.support.CommandLineJobRunner"
+
     dependencies {
         runtime project(":spark-projects:spark-batch")
         runtime project(":spark-environments:spark-batch-runner-env")
