@@ -30,9 +30,6 @@ public class LoggingConfigFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        // MDCをクリアする。
-        MDC.clear();
-
         // MDCにログ出力情報をセットする。
         HttpSession session = ((HttpServletRequest) request).getSession(false);
 
@@ -42,5 +39,8 @@ public class LoggingConfigFilter implements Filter {
         MDC.put("remoteAddr", request.getRemoteAddr());
 
         chain.doFilter(request, response);
+
+        // MDCをクリアする。
+        MDC.clear();
     }
 }

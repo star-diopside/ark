@@ -2,15 +2,12 @@ package jp.gr.java_conf.star_diopside.spark.web.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +22,7 @@ import jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFile;
 import jp.gr.java_conf.star_diopside.spark.service.AttachedFileService;
 import jp.gr.java_conf.star_diopside.spark.web.exception.ResourceNotFoundException;
 import jp.gr.java_conf.star_diopside.spark.web.form.FileCreateForm;
+import jp.gr.java_conf.star_diopside.spark.web.util.HttpHeaderUtils;
 
 @Controller
 @RequestMapping("/files")
@@ -40,11 +38,9 @@ public class FilesController {
     }
 
     @GetMapping("/{id}/data")
-    public ResponseEntity<Resource> download(@PathVariable Long id) throws UnsupportedEncodingException {
+    public ResponseEntity<Resource> download(@PathVariable Long id) {
         AttachedFile file = attachedFileService.find(id).orElseThrow(ResourceNotFoundException::new);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment;filename*=utf-8''" + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"))
+        return ResponseEntity.ok().headers(HttpHeaderUtils.createContentDispositionHeader(file.getName()))
                 .contentType(MediaType.parseMediaType(file.getContentType()))
                 .body(new InputStreamResource(file.newDataInputStream()));
     }
