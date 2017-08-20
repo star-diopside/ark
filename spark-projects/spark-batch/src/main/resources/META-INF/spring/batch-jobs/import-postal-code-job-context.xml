@@ -10,13 +10,8 @@
     <job id="importPostalCodeJob" incrementer="jobParametersIncrementer" xmlns="http://www.springframework.org/schema/batch">
 
         <listeners>
-            <listener ref="importPostalCodeJob.listener.temporaryFile" />
             <listener ref="importPostalCodeJob.listener.TemporaryDirectory" />
         </listeners>
-
-        <step id="importPostalCodeJob.downloadStep" parent="simpleStep" next="importPostalCodeJob.unarchiveStep">
-            <tasklet ref="importPostalCodeJob.downloadStep.tasklet" transaction-manager="resourcelessTransactionManager" />
-        </step>
 
         <step id="importPostalCodeJob.unarchiveStep" parent="simpleStep" next="importPostalCodeJob.clearDataStep">
             <tasklet ref="importPostalCodeJob.unarchiveStep.tasklet" transaction-manager="resourcelessTransactionManager" />
@@ -34,24 +29,13 @@
 
     </job>
 
-    <bean id="importPostalCodeJob.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryFileJobListener">
-        <property name="key" value="postcode.tempFile" />
-        <property name="prefix" value="postcode" />
-        <property name="suffix" value=".zip" />
-    </bean>
-
     <bean id="importPostalCodeJob.listener.TemporaryDirectory" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryDirectoryJobListener">
         <property name="key" value="postcode.tempDir" />
         <property name="prefix" value="postcode" />
     </bean>
 
-    <bean id="importPostalCodeJob.downloadStep.tasklet" class="jp.gr.java_conf.star_diopside.spark.batch.logic.FileDownloadTasklet" scope="step">
-        <property name="uri" value="${download.url.postcode}" />
-        <property name="saveFile" value="file:#{jobExecutionContext['postcode.tempFile']}" />
-    </bean>
-
     <bean id="importPostalCodeJob.unarchiveStep.tasklet" class="jp.gr.java_conf.star_diopside.spark.batch.logic.UnarchiveZipFileTasklet" scope="step">
-        <property name="resource" value="file:#{jobExecutionContext['postcode.tempFile']}" />
+        <property name="resource" value="${resource.postcode}" />
         <property name="charset" value="Windows-31J" />
         <property name="unarchiveDirectory" value="#{jobExecutionContext['postcode.tempDir']}" />
     </bean>

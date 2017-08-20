@@ -161,8 +161,6 @@ project(":spark-projects:spark-batch") {
         compile project(":spark-projects:spark-service")
         compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
         compile "org.springframework.batch:spring-batch-core"
-        compile "commons-io:commons-io"
-        compile "org.apache.httpcomponents:httpclient"
         testCompile project(":spark-projects:spark-test-support")
         testCompile "org.springframework.batch:spring-batch-test"
         testCompile "com.h2database:h2"
