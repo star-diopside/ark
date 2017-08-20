@@ -237,4 +237,50 @@
         <createSequence sequenceName="batch_job_seq" maxValue="9223372036854775807" cycle="false" />
     </changeSet>
 
+    <changeSet author="se-yoshi" id="4">
+        <createTable tableName="postal_codes" remarks="郵便番号住所データ">
+            <column name="id" type="int" autoIncrement="true" remarks="ID">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="local_government_code" type="char(5)" remarks="全国地方公共団体コード">
+                <constraints nullable="false" />
+            </column>
+            <column name="old_postal_code" type="char(5)" remarks="(旧)郵便番号">
+                <constraints nullable="false" />
+            </column>
+            <column name="postal_code" type="char(7)" remarks="郵便番号">
+                <constraints nullable="false" />
+            </column>
+            <column name="kana_prefecture_name" type="text" remarks="都道府県名(カナ)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kana_municipality_name" type="text" remarks="市区町村名(カナ)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kana_area_name" type="text" remarks="町域名(カナ)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kanji_prefecture_name" type="text" remarks="都道府県名(漢字)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kanji_municipality_name" type="text" remarks="市区町村名(漢字)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kanji_area_name" type="text" remarks="町域名(漢字)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="timestamp" remarks="登録日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_user_id" type="varchar(32)" remarks="登録ユーザID" />
+            <column name="updated_at" type="timestamp" remarks="更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_user_id" type="varchar(32)" remarks="更新ユーザID" />
+            <column name="version" type="int" remarks="バージョン">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
