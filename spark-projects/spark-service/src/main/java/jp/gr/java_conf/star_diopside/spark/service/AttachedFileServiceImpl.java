@@ -15,10 +15,10 @@ import javax.inject.Singleton;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFile;
 import jp.gr.java_conf.star_diopside.spark.data.entity.AttachedFileData;
@@ -43,9 +43,7 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (divideAttachedFileDataSize <= 0) {
-            throw new BeanInitializationException("Parameter 'divideAttachedFileDataSize' is not over 1.");
-        }
+        Assert.isTrue(divideAttachedFileDataSize > 0, "Parameter 'divideAttachedFileDataSize' is not over 1.");
     }
 
     @Override
