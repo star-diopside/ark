@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
@@ -14,9 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import jp.gr.java_conf.star_diopside.silver.commons.data.converter.LocalDateTimeConverter;
-import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
-import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,10 +37,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@EntityListeners(TrackableListener.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 @SuppressWarnings("serial")
-public class User implements Serializable, Trackable, Cloneable {
+public class User implements Serializable, Cloneable {
 
     /** ユーザID */
     @Id
@@ -53,7 +55,6 @@ public class User implements Serializable, Trackable, Cloneable {
 
     /** パスワード更新日時 */
     @Column(name = "password_updated_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime passwordUpdatedAt;
 
     /** 有効フラグ */
@@ -69,34 +70,33 @@ public class User implements Serializable, Trackable, Cloneable {
 
     /** ロックアウト日時 */
     @Column(name = "lockout_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime lockoutAt;
 
     /** 最終ログイン日時 */
     @Column(name = "last_login_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime lastLoginAt;
 
     /** ログアウト日時 */
     @Column(name = "logout_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime logoutAt;
 
     /** 登録日時 */
+    @CreatedDate
     @Column(name = "created_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createdAt;
 
     /** 登録ユーザID */
+    @CreatedBy
     @Column(name = "created_user_id")
     private String createdUserId;
 
     /** 更新日時 */
+    @LastModifiedDate
     @Column(name = "updated_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime updatedAt;
 
     /** 更新ユーザID */
+    @LastModifiedBy
     @Column(name = "updated_user_id")
     private String updatedUserId;
 

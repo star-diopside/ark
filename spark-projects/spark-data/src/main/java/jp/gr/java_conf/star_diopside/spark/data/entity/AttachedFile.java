@@ -14,7 +14,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -24,9 +23,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import jp.gr.java_conf.star_diopside.silver.commons.data.converter.LocalDateTimeConverter;
-import jp.gr.java_conf.star_diopside.spark.data.support.Trackable;
-import jp.gr.java_conf.star_diopside.spark.data.support.TrackableListener;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +47,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@EntityListeners(TrackableListener.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "attached_files")
 @SuppressWarnings("serial")
-public class AttachedFile implements Serializable, Trackable {
+public class AttachedFile implements Serializable {
 
     /** ID */
     @Id
@@ -69,20 +71,22 @@ public class AttachedFile implements Serializable, Trackable {
     private String hash;
 
     /** 登録日時 */
+    @CreatedDate
     @Column(name = "created_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createdAt;
 
     /** 登録ユーザID */
+    @CreatedBy
     @Column(name = "created_user_id")
     private String createdUserId;
 
     /** 更新日時 */
+    @LastModifiedDate
     @Column(name = "updated_at")
-    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime updatedAt;
 
     /** 更新ユーザID */
+    @LastModifiedBy
     @Column(name = "updated_user_id")
     private String updatedUserId;
 

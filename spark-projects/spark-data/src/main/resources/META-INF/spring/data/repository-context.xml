@@ -10,4 +10,9 @@
         base-package="jp.gr.java_conf.star_diopside.spark.data.repository"
         entity-manager-factory-ref="entityManagerFactory" />
 
+    <jpa:auditing auditor-aware-ref="auditorAware" />
+
+    <bean id="auditorAware"
+        class="jp.gr.java_conf.star_diopside.spark.data.domain.SecurityContextAuditorAware" />
+
 </beans>

@@ -118,10 +118,10 @@ project(":spark-projects:spark-support") {
 project(":spark-projects:spark-data") {
     dependencies {
         compile project(":spark-projects:spark-core")
-        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-data:${silverCommonsVersion}"
         compile "org.springframework.data:spring-data-jpa"
         compile "org.springframework.security:spring-security-core"
         compileOnly "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        runtime "org.springframework:spring-aspects"
         testCompile project(":spark-projects:spark-test-support")
     }
 }
