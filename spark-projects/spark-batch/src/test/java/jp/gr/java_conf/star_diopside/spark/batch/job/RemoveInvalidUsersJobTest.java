@@ -35,7 +35,7 @@ import jp.gr.java_conf.star_diopside.silver.commons.test.util.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class BA01J01Test {
+public class RemoveInvalidUsersJobTest {
 
     @Resource(name = "dbunitDataSource")
     private DataSource dataSource;
