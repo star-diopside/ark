@@ -59,7 +59,9 @@
                     </bean>
                 </property>
                 <property name="fieldSetMapper">
-                    <bean class="jp.gr.java_conf.star_diopside.spark.batch.logic.UserKeyMapper" />
+                    <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+                        <property name="targetType" value="jp.gr.java_conf.star_diopside.spark.data.entity.User" />
+                    </bean>
                 </property>
             </bean>
         </property>
