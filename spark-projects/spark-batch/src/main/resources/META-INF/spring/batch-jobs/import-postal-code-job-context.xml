@@ -85,7 +85,7 @@
 
     <bean id="importPostalCodeJob.importStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.logic.PostalCodeConverter" />
 
-    <bean id="importPostalCodeJob.importStep.writer" class="org.springframework.batch.item.database.JpaItemWriter">
+    <bean id="importPostalCodeJob.importStep.writer" class="org.springframework.batch.item.database.JpaItemWriter" scope="step">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 

@@ -8,19 +8,23 @@
     <import resource="classpath:/META-INF/spring/batch/simple-step-context.xml" />
 
     <job id="removeInvalidUsersJob" incrementer="jobParametersIncrementer" xmlns="http://www.springframework.org/schema/batch">
+
         <listeners>
             <listener ref="removeInvalidUsersJob.listener.temporaryFile" />
         </listeners>
+
         <step id="removeInvalidUsersJob.extractStep" parent="simpleStep" next="removeInvalidUsersJob.removeStep">
             <tasklet transaction-manager="transactionManager">
                 <chunk reader="removeInvalidUsersJob.extractStep.reader" processor="removeInvalidUsersJob.extractStep.processor" writer="removeInvalidUsersJob.extractStep.writer" />
             </tasklet>
         </step>
+
         <step id="removeInvalidUsersJob.removeStep" parent="simpleStep">
             <tasklet transaction-manager="transactionManager">
                 <chunk reader="removeInvalidUsersJob.removeStep.reader" processor="removeInvalidUsersJob.removeStep.processor" writer="removeInvalidUsersJob.removeStep.writer" />
             </tasklet>
         </step>
+
     </job>
 
     <bean id="removeInvalidUsersJob.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryFileJobListener">
