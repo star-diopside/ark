@@ -17,7 +17,10 @@
   <div class="container">
     <div layout:fragment="content">
       <h1 class="page-header">Home</h1>
-      <a href="../files/create.html" th:href="@{/files/create}" class="btn btn-link">ファイル登録</a>
+      <div class="list-group">
+        <a href="../files/create.html" th:href="@{/files/create}" class="list-group-item">ファイル登録</a>
+        <a href="../postal-codes/index.html" th:href="@{/postal-codes}" class="list-group-item">郵便番号検索</a>
+      </div>
     </div>
   </div>
 </body>
