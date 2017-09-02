@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.liquibase:liquibase-gradle-plugin:1.2.4"
+        classpath "org.postgresql:postgresql:42.1.4"
+    }
+}
+
+apply plugin: "org.liquibase.gradle"
+
+liquibase {
+    activities {
+        main {
+            def env = project.hasProperty("env") ? project.getProperty("env") : "develop"
+            def config = new ConfigSlurper().parse(new File("${rootDir}/database-${env}.groovy").toURL());
+            changeLogFile new File("${rootDir}/../../spark-projects/spark-data/src/main/resources/db/changelog/db.changelog-master.xml").canonicalFile
+            url "${config.datasource.url}"
+            username "${config.datasource.username}"
+            password "${config.datasource.password}"
+        }
+    }
+}

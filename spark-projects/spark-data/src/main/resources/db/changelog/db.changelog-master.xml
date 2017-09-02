@@ -245,7 +245,7 @@
             <column name="local_government_code" type="char(5)" remarks="全国地方公共団体コード">
                 <constraints nullable="false" />
             </column>
-            <column name="old_postal_code" type="char(5)" remarks="(旧)郵便番号">
+            <column name="old_postal_code" type="varchar(5)" remarks="(旧)郵便番号">
                 <constraints nullable="false" />
             </column>
             <column name="postal_code" type="char(7)" remarks="郵便番号">

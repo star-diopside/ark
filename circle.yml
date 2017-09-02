@@ -5,7 +5,7 @@ machine:
     TEST_ENVIRONMENT: circleci
 database:
   override:
-    - psql -f resources/database/database.sql -d circle_test -U ubuntu
+    - ./gradlew -b config/database/build.gradle -Penv=circleci update
 dependencies:
   pre:
     - ./ci/scripts/install_repository.sh
