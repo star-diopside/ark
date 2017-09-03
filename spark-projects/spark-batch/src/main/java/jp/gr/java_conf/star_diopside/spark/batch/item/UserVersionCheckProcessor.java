@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.spark.batch.logic;
+package jp.gr.java_conf.star_diopside.spark.batch.item;
 
 import javax.inject.Inject;
 

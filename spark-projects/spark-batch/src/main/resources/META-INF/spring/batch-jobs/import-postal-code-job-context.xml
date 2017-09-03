@@ -34,7 +34,7 @@
         <property name="prefix" value="postcode" />
     </bean>
 
-    <bean id="importPostalCodeJob.unarchiveStep.tasklet" class="jp.gr.java_conf.star_diopside.spark.batch.logic.UnarchiveZipFileTasklet" scope="step">
+    <bean id="importPostalCodeJob.unarchiveStep.tasklet" class="jp.gr.java_conf.star_diopside.spark.batch.tasklet.UnarchiveZipFileTasklet" scope="step">
         <property name="resource" value="${resource.postcode}" />
         <property name="charset" value="Windows-31J" />
         <property name="unarchiveDirectory" value="#{jobExecutionContext['postcode.tempDir']}" />
@@ -83,7 +83,7 @@
         </property>
     </bean>
 
-    <bean id="importPostalCodeJob.importStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.logic.PostalCodeConverter" />
+    <bean id="importPostalCodeJob.importStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.item.PostalCodeConverter" />
 
     <bean id="importPostalCodeJob.importStep.writer" class="org.springframework.batch.item.database.JpaItemWriter" scope="step">
         <property name="entityManagerFactory" ref="entityManagerFactory" />

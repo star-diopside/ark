@@ -36,7 +36,7 @@
         <property name="queryString" value="select u from User u order by u.userId asc" />
     </bean>
 
-    <bean id="removeInvalidUsersJob.extractStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.logic.InvalidUserFilter" />
+    <bean id="removeInvalidUsersJob.extractStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.item.InvalidUserFilter" />
 
     <bean id="removeInvalidUsersJob.extractStep.writer" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
         <property name="resource" value="file:#{jobExecutionContext['tempFile']}" />
@@ -71,8 +71,8 @@
         </property>
     </bean>
 
-    <bean id="removeInvalidUsersJob.removeStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.logic.UserVersionCheckProcessor" />
+    <bean id="removeInvalidUsersJob.removeStep.processor" class="jp.gr.java_conf.star_diopside.spark.batch.item.UserVersionCheckProcessor" />
 
-    <bean id="removeInvalidUsersJob.removeStep.writer" class="jp.gr.java_conf.star_diopside.spark.batch.logic.RemoveUserWriter" />
+    <bean id="removeInvalidUsersJob.removeStep.writer" class="jp.gr.java_conf.star_diopside.spark.batch.item.RemoveUserWriter" />
 
 </beans>
