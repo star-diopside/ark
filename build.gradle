@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE"
     }
 }
 
@@ -42,7 +42,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "io.spring.platform:platform-bom:Athens-RELEASE"
+            mavenBom "io.spring.platform:platform-bom:Brussels-SR4"
         }
     }
 
@@ -145,6 +145,8 @@ project(":spark-projects:spark-web-controller") {
         compileOnly "javax.servlet:javax.servlet-api"
         testCompile project(":spark-projects:spark-test-support")
         testCompile "javax.servlet:javax.servlet-api"
+        testCompile "javax.el:javax.el-api"
+        testCompile "org.glassfish:javax.el"
     }
 }
 
