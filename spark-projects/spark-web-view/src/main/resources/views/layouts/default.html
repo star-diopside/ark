@@ -6,18 +6,18 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="../../META-INF/resources/static/lib/normalize/css/normalize.css" th:href="@{/static/lib/normalize/css/normalize.css}" type="text/css" media="screen,print" />
-  <link rel="stylesheet" href="../../META-INF/resources/static/lib/bootstrap/css/bootstrap.min.css" th:href="@{/static/lib/bootstrap/css/bootstrap.min.css}" type="text/css" media="screen,print" />
-  <link rel="stylesheet" href="../../META-INF/resources/static/lib/bootstrap/css/bootstrap-theme.min.css" th:href="@{/static/lib/bootstrap/css/bootstrap-theme.min.css}" type="text/css" media="screen,print" />
+  <link rel="stylesheet" href="../../../../static/lib/normalize/css/normalize.css" th:href="@{/webjars/normalize.css/5.0.0/normalize.css}" type="text/css" media="screen,print" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" type="text/css" media="screen,print" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css}" type="text/css" media="screen,print" />
   <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" th:href="@{/static/css/layout.css}" type="text/css" media="screen,print" />
-  <script src="../../META-INF/resources/static/lib/bootstrap/js/bootstrap.min.js" th:src="@{/static/lib/bootstrap/js/bootstrap.min.js}"></script>
+  <script src="../../../../static/lib/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
   <title>spark-web</title>
 </head>
 <body>
   <div class="container">
     <div class="col-sm-12" sec:authorize="isAuthenticated()">
       <div class="pull-right">
-        <form action="../auth/user-login.html" th:action="@{/logout}" method="post">
+        <form action="../authentication/create.html" th:action="@{/logout}" method="post">
           <input type="submit" value="ログアウト" class="btn btn-link" />
         </form>
       </div>

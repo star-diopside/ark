@@ -155,6 +155,8 @@ project(":spark-projects:spark-web-view") {
         runtime "org.thymeleaf:thymeleaf-spring4"
         runtime "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
         runtime "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
+        runtime "org.webjars:normalize.css:5.0.0"
+        runtime "org.webjars:bootstrap:3.3.7-1"
     }
 }
 
