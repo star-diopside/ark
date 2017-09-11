@@ -1,5 +1,5 @@
 datasource {
-    url = "jdbc:postgresql://localhost:5432/spark"
-    username = "spark"
-    password = "spark"
+    url = "jdbc:postgresql://localhost:5432/arkdb"
+    username = "ark"
+    password = "ark"
 }

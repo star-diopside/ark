@@ -16,7 +16,7 @@ liquibase {
         main {
             def env = project.hasProperty("env") ? project.getProperty("env") : "develop"
             def config = new ConfigSlurper().parse(new File("${rootDir}/database-${env}.groovy").toURL());
-            changeLogFile new File("${rootDir}/../../spark-projects/spark-data/src/main/resources/db/changelog/db.changelog-master.xml").canonicalFile
+            changeLogFile new File("${rootDir}/../../ark-projects/ark-data/src/main/resources/db/changelog/db.changelog-master.xml").canonicalFile
             url "${config.datasource.url}"
             username "${config.datasource.username}"
             password "${config.datasource.password}"

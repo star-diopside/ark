@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+    <import resource="classpath:/META-INF/spring/batch/simple-step-context.xml" />
+
+    <job id="removeInvalidUsersJob" incrementer="jobParametersIncrementer" xmlns="http://www.springframework.org/schema/batch">
+
+        <listeners>
+            <listener ref="removeInvalidUsersJob.listener.temporaryFile" />
+        </listeners>
+
+        <step id="removeInvalidUsersJob.extractStep" parent="simpleStep" next="removeInvalidUsersJob.removeStep">
+            <tasklet transaction-manager="transactionManager">
+                <chunk reader="removeInvalidUsersJob.extractStep.reader" processor="removeInvalidUsersJob.extractStep.processor" writer="removeInvalidUsersJob.extractStep.writer" />
+            </tasklet>
+        </step>
+
+        <step id="removeInvalidUsersJob.removeStep" parent="simpleStep">
+            <tasklet transaction-manager="transactionManager">
+                <chunk reader="removeInvalidUsersJob.removeStep.reader" processor="removeInvalidUsersJob.removeStep.processor" writer="removeInvalidUsersJob.removeStep.writer" />
+            </tasklet>
+        </step>
+
+    </job>
+
+    <bean id="removeInvalidUsersJob.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryFileJobListener">
+        <property name="key" value="tempFile" />
+    </bean>
+
+    <bean id="removeInvalidUsersJob.extractStep.reader" class="org.springframework.batch.item.database.JpaPagingItemReader" scope="step">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="queryString" value="select u from User u order by u.userId asc" />
+    </bean>
+
+    <bean id="removeInvalidUsersJob.extractStep.processor" class="jp.gr.java_conf.star_diopside.ark.batch.item.InvalidUserFilter" />
+
+    <bean id="removeInvalidUsersJob.extractStep.writer" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
+        <property name="resource" value="file:#{jobExecutionContext['tempFile']}" />
+        <property name="encoding" value="UTF-8" />
+        <property name="lineAggregator">
+            <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="fieldExtractor">
+                    <bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names" value="userId,version" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="removeInvalidUsersJob.removeStep.reader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+        <property name="resource" value="file:#{jobExecutionContext['tempFile']}" />
+        <property name="encoding" value="UTF-8" />
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="userId,version" />
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+                        <property name="targetType" value="jp.gr.java_conf.star_diopside.ark.data.entity.User" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="removeInvalidUsersJob.removeStep.processor" class="jp.gr.java_conf.star_diopside.ark.batch.item.UserVersionCheckProcessor" />
+
+    <bean id="removeInvalidUsersJob.removeStep.writer" class="jp.gr.java_conf.star_diopside.ark.batch.item.RemoveUserWriter" />
+
+</beans>

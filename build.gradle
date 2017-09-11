@@ -9,13 +9,12 @@ buildscript {
 }
 
 allprojects {
-    group = "jp.gr.java_conf.star_diopside.spark"
+    group = "jp.gr.java_conf.star_diopside.ark"
     version = "1.0.0-SNAPSHOT"
 
     ext {
         env = project.hasProperty("env") ? project.getProperty("env") : "develop"
         silverCommonsVersion = "1.0.0-SNAPSHOT"
-        springBatchAdminVersion = "1.3.1.RELEASE"
     }
 }
 
@@ -97,7 +96,7 @@ subprojects {
     }
 }
 
-project(":spark-projects:spark-core") {
+project(":ark-projects:ark-core") {
     dependencies {
         compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-core:${silverCommonsVersion}"
         compile "javax.inject:javax.inject"
@@ -108,49 +107,60 @@ project(":spark-projects:spark-core") {
     }
 }
 
-project(":spark-projects:spark-support") {
+project(":ark-projects:ark-support") {
     dependencies {
-        compile project(":spark-projects:spark-core")
+        compile project(":ark-projects:ark-core")
         compile "org.springframework:spring-context"
     }
 }
 
-project(":spark-projects:spark-data") {
+project(":ark-projects:ark-data") {
     dependencies {
-        compile project(":spark-projects:spark-core")
+        compile project(":ark-projects:ark-core")
         compile "org.springframework.data:spring-data-jpa"
         compile "org.springframework.security:spring-security-core"
         compileOnly "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "org.springframework:spring-aspects"
-        testCompile project(":spark-projects:spark-test-support")
+        testCompile project(":ark-projects:ark-test-support")
     }
 }
 
-project(":spark-projects:spark-service") {
+project(":ark-projects:ark-service") {
     dependencies {
-        compile project(":spark-projects:spark-data")
+        compile project(":ark-projects:ark-data")
         compile "commons-codec:commons-codec"
     }
 }
 
-project(":spark-projects:spark-web-controller") {
+project(":ark-projects:ark-batch") {
     dependencies {
-        compile project(":spark-projects:spark-support")
-        compile project(":spark-projects:spark-service")
+        compile project(":ark-projects:ark-service")
+        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
+        compile "org.springframework.batch:spring-batch-core"
+        testCompile project(":ark-projects:ark-test-support")
+        testCompile "org.springframework.batch:spring-batch-test"
+        testCompile "com.h2database:h2"
+    }
+}
+
+project(":ark-projects:ark-web-controller") {
+    dependencies {
+        compile project(":ark-projects:ark-support")
+        compile project(":ark-projects:ark-service")
         compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
         compile "org.hibernate:hibernate-validator"
         compile "org.springframework:spring-webmvc"
         compile "org.springframework.security:spring-security-web"
         compile files("lib/kaptcha-2.3.2.jar")
         compileOnly "javax.servlet:javax.servlet-api"
-        testCompile project(":spark-projects:spark-test-support")
+        testCompile project(":ark-projects:ark-test-support")
         testCompile "javax.servlet:javax.servlet-api"
         testCompile "javax.el:javax.el-api"
         testCompile "org.glassfish:javax.el"
     }
 }
 
-project(":spark-projects:spark-web-view") {
+project(":ark-projects:ark-web-view") {
     dependencies {
         runtime "org.springframework:spring-webmvc"
         runtime "org.thymeleaf:thymeleaf-spring4"
@@ -162,39 +172,13 @@ project(":spark-projects:spark-web-view") {
     }
 }
 
-project(":spark-projects:spark-batch") {
-    dependencies {
-        compile project(":spark-projects:spark-service")
-        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
-        compile "org.springframework.batch:spring-batch-core"
-        testCompile project(":spark-projects:spark-test-support")
-        testCompile "org.springframework.batch:spring-batch-test"
-        testCompile "com.h2database:h2"
-    }
-}
-
-project(":spark-projects:spark-batch-runner") {
-    apply plugin: "application"
-
-    mainClassName = "org.springframework.batch.core.launch.support.CommandLineJobRunner"
-
-    dependencies {
-        runtime project(":spark-projects:spark-batch")
-        runtime project(":spark-environments:spark-batch-runner-env")
-        runtime "ch.qos.logback:logback-classic"
-        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
-        runtime "org.apache.commons:commons-dbcp2"
-        runtime "org.postgresql:postgresql"
-    }
-}
-
-project(":spark-projects:spark-test-support") {
+project(":ark-projects:ark-test-support") {
     dependencies {
         compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-test:${silverCommonsVersion}"
         compile "org.springframework:spring-context"
         compile "org.springframework:spring-orm"
         compile "org.apache.commons:commons-dbcp2"
-        runtime project(":spark-environments:spark-env")
+        runtime project(":ark-environments:ark-env")
         runtime "javax.transaction:javax.transaction-api"
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "ch.qos.logback:logback-classic"
@@ -202,7 +186,22 @@ project(":spark-projects:spark-test-support") {
     }
 }
 
-project(":spark-servlets") {
+project(":ark-applications:ark-batch-runner") {
+    apply plugin: "application"
+
+    mainClassName = "org.springframework.batch.core.launch.support.CommandLineJobRunner"
+
+    dependencies {
+        runtime project(":ark-projects:ark-batch")
+        runtime project(":ark-environments:ark-batch-runner-env")
+        runtime "ch.qos.logback:logback-classic"
+        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        runtime "org.apache.commons:commons-dbcp2"
+        runtime "org.postgresql:postgresql"
+    }
+}
+
+project(":ark-servlets") {
     subprojects {
         eclipse {
             wtp {
@@ -215,12 +214,12 @@ project(":spark-servlets") {
     }
 }
 
-project(":spark-servlets:spark-web") {
+project(":ark-servlets:ark-web") {
     apply plugin: "war"
 
     dependencies {
-        runtime project(":spark-projects:spark-web-controller")
-        runtime project(":spark-projects:spark-web-view")
+        runtime project(":ark-projects:ark-web-controller")
+        runtime project(":ark-projects:ark-web-view")
         runtime "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
         runtime "javax.transaction:javax.transaction-api"
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
@@ -231,35 +230,16 @@ project(":spark-servlets:spark-web") {
         providedCompile "javax.servlet:javax.servlet-api"
 
         if (env == "develop") {
-            runtime project(":spark-environments:spark-web-env")
+            runtime project(":ark-environments:ark-web-env")
         }
     }
 
     war {
-        archiveName = "spark-web.war"
+        archiveName = "ark-web.war"
     }
 }
 
-project(":spark-servlets:spark-batch-manager") {
-    apply plugin: "war"
-
-    dependencies {
-        runtime project(":spark-projects:spark-batch")
-        runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
-        runtime "ch.qos.logback:logback-classic"
-        runtime "org.springframework.batch:spring-batch-admin-manager:${springBatchAdminVersion}"
-
-        if (env == "develop") {
-            runtime project(":spark-environments:spark-batch-manager-env")
-        }
-    }
-
-    war {
-        archiveName = "spark-batch-manager.war"
-    }
-}
-
-project(":spark-environments") {
+project(":ark-environments") {
     subprojects {
         sourceSets {
             main {
@@ -271,23 +251,17 @@ project(":spark-environments") {
     }
 }
 
-project(":spark-environments:spark-env") {
+project(":ark-environments:ark-env") {
 }
 
-project(":spark-environments:spark-web-env") {
+project(":ark-environments:ark-batch-runner-env") {
     dependencies {
-        runtime project(":spark-environments:spark-env")
+        runtime project(":ark-environments:ark-env")
     }
 }
 
-project(":spark-environments:spark-batch-runner-env") {
+project(":ark-environments:ark-web-env") {
     dependencies {
-        runtime project(":spark-environments:spark-env")
-    }
-}
-
-project(":spark-environments:spark-batch-manager-env") {
-    dependencies {
-        runtime project(":spark-environments:spark-env")
+        runtime project(":ark-environments:ark-env")
     }
 }
