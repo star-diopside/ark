@@ -26,7 +26,7 @@
                 </property>
                 <property name="templateResolver">
                     <bean class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
-                        <property name="prefix" value="/views/" />
+                        <property name="prefix" value="/templates/" />
                         <property name="suffix" value=".html" />
                         <property name="cacheable" value="${thymeleaf.cache}" />
                         <property name="characterEncoding" value="UTF-8" />
