@@ -1,5 +1,6 @@
 package jp.gr.java_conf.star_diopside.ark.web.controller;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -11,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -42,7 +44,7 @@ public class FilesControllerTest {
 
     @Before
     public void before() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
         databaseTestSupport = new SimpleDatabaseTestSupport(this, dataSource);
         databaseTestSupport.setCsvDataSet("dataset");
         databaseTestSupport.onSetup();
@@ -54,17 +56,20 @@ public class FilesControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void showOkTest() throws Exception {
         mockMvc.perform(get("/files/1")).andExpect(status().isOk()).andExpect(view().name("files/show"))
                 .andExpect(model().hasNoErrors());
     }
 
     @Test
+    @WithMockUser
     public void showNotFoundTest() throws Exception {
         mockMvc.perform(get("/files/99")).andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser
     public void createTest() throws Exception {
         mockMvc.perform(get("/files/create")).andExpect(status().isOk()).andExpect(view().name("files/create"))
                 .andExpect(model().hasNoErrors());

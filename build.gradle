@@ -153,10 +153,12 @@ project(":ark-projects:ark-web-controller") {
         compile "org.springframework.security:spring-security-web"
         compile files("lib/kaptcha-2.3.2.jar")
         compileOnly "javax.servlet:javax.servlet-api"
+        runtime "org.springframework.security:spring-security-config"
         testCompile project(":ark-projects:ark-test-support")
         testCompile "javax.servlet:javax.servlet-api"
         testCompile "javax.el:javax.el-api"
         testCompile "org.glassfish:javax.el"
+        testCompile "org.springframework.security:spring-security-test"
     }
 }
 
@@ -225,8 +227,6 @@ project(":ark-servlets:ark-web") {
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "ch.qos.logback:logback-classic"
         runtime "org.springframework.session:spring-session-data-redis"
-        runtime "org.springframework.security:spring-security-config"
-        runtime "org.springframework.security:spring-security-taglibs"
         providedCompile "javax.servlet:javax.servlet-api"
 
         if (env == "develop") {

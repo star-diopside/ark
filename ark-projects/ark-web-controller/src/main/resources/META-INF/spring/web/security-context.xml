@@ -16,7 +16,6 @@
             username-parameter="username" password-parameter="password"
             authentication-failure-forward-url="/authentication/failure" />
         <logout logout-success-url="/authentication/logout" />
-        <custom-filter after="LAST" ref="dualLoginCheckFilter" />
     </http>
 
     <authentication-manager xmlns="http://www.springframework.org/schema/security">
@@ -31,9 +30,5 @@
             <bean class="jp.gr.java_conf.star_diopside.ark.service.userdetails.BeforeLoginUserDetailsChecker" />
         </property>
     </bean>
-
-    <bean id="dualLoginCheckFilter" class="jp.gr.java_conf.star_diopside.ark.web.servlet.DualLoginCheckFilter" />
-
-    <bean id="flashMapManager" class="org.springframework.web.servlet.support.SessionFlashMapManager" />
 
 </beans>
