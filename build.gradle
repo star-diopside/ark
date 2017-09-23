@@ -203,6 +203,19 @@ project(":ark-applications:ark-batch-runner") {
     }
 }
 
+project(":ark-applications:ark-web-boot") {
+    dependencies {
+        compile project(":ark-projects:ark-web-controller")
+        compile project(":ark-projects:ark-web-view")
+        compile "org.springframework.boot:spring-boot-starter-data-jpa"
+        compile "org.springframework.boot:spring-boot-starter-security"
+        compile "org.springframework.boot:spring-boot-starter-web"
+        compile "org.springframework.session:spring-session-data-redis"
+        runtime project(":ark-environments:ark-env")
+        runtime "org.postgresql:postgresql"
+    }
+}
+
 project(":ark-servlets") {
     subprojects {
         eclipse {

@@ -1,0 +1,18 @@
+logging:
+  path: ${user.home}/log/ark-web-boot
+spring:
+  aop:
+    proxy-target-class: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/arkdb
+    username: ark
+    password: ark
+  messages:
+    basename: messages,ValidationMessages
+  redis:
+    host: localhost
+  session:
+    store-type: redis
+security:
+  filter-order: 2
