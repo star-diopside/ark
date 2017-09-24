@@ -5,6 +5,7 @@ buildscript {
 
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE"
     }
 }
 
@@ -188,6 +189,18 @@ project(":ark-projects:ark-test-support") {
     }
 }
 
+project("ark-applications:ark-db-setup") {
+    apply plugin: "org.springframework.boot"
+
+    dependencies {
+        compile project(":ark-projects:ark-data")
+        compile "org.springframework.boot:spring-boot-starter-data-jpa"
+        compile "org.springframework.boot:spring-boot-starter-batch"
+        runtime "org.liquibase:liquibase-core"
+        runtime "org.postgresql:postgresql"
+    }
+}
+
 project(":ark-applications:ark-batch-runner") {
     apply plugin: "application"
 
@@ -204,6 +217,8 @@ project(":ark-applications:ark-batch-runner") {
 }
 
 project(":ark-applications:ark-web-boot") {
+    apply plugin: "org.springframework.boot"
+
     dependencies {
         compile project(":ark-projects:ark-web-controller")
         compile project(":ark-projects:ark-web-view")
