@@ -2,8 +2,8 @@ package jp.gr.java_conf.star_diopside.ark.web.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -112,7 +112,7 @@ public class PageWrapper<T> implements Page<T> {
     }
 
     @Override
-    public <S> Page<S> map(Converter<? super T, ? extends S> converter) {
+    public <U> Page<U> map(Function<? super T, ? extends U> converter) {
         return page.map(converter);
     }
 }

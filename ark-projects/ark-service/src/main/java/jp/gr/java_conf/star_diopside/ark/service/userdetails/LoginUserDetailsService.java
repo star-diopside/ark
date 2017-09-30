@@ -1,8 +1,8 @@
 package jp.gr.java_conf.star_diopside.ark.service.userdetails;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
-import jp.gr.java_conf.star_diopside.ark.data.entity.User;
 import jp.gr.java_conf.star_diopside.ark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.ark.data.repository.UserRepository;
 
@@ -28,8 +27,8 @@ public class LoginUserDetailsService extends JdbcDaoImpl {
 
     @Override
     protected List<UserDetails> loadUsersByUsername(String username) {
-        User user = userRepository.findOne(username);
-        return user == null ? Collections.emptyList() : Collections.singletonList(new LoginUser(user));
+        return userRepository.findById(username).map(LoginUser::new).map(Stream::of).orElseGet(Stream::empty)
+                .collect(Collectors.toList());
     }
 
     @Override

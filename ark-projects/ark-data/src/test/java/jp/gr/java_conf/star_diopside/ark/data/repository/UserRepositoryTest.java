@@ -62,7 +62,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindOne() throws Exception {
-        User user = userRepository.findOne("user01");
+        User user = userRepository.getOne("user01");
         assertUserEntity(user);
     }
 

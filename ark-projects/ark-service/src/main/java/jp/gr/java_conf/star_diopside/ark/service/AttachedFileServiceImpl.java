@@ -49,7 +49,7 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
     @Override
     @Transactional
     public Optional<AttachedFile> find(Long id) {
-        return Optional.ofNullable(attachedFileRepository.findOne(id));
+        return attachedFileRepository.findById(id);
     }
 
     @Override

@@ -14,7 +14,8 @@ public class UserVersionCheckProcessor implements ItemProcessor<User, User> {
 
     @Override
     public User process(User item) throws Exception {
-        User user = userRepository.findOne(item.getUserId());
-        return user.getVersion() == item.getVersion() ? user : null;
+        return userRepository.findById(item.getUserId())
+                .filter(user -> user.getVersion() == item.getVersion())
+                .orElse(null);
     }
 }

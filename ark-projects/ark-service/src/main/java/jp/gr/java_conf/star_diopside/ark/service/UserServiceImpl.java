@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void createUser(String userId, String username, Supplier<String> password) {
         // ユーザの存在チェックを行う。
-        if (userRepository.exists(userId)) {
+        if (userRepository.existsById(userId)) {
             throw new ApplicationException("error.userExists", true);
         }
 
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User loginSuccess(LoginUserDetails loginUser) {
-        User user = userRepository.findOne(loginUser.getUserId());
+        User user = userRepository.getOne(loginUser.getUserId());
         LocalDateTime current = LocalDateTime.now();
 
         user.setLoginErrorCount(0);
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User loginFailure(String userId) {
-        User user = userRepository.findOne(userId);
+        User user = userRepository.getOne(userId);
 
         user.setLoginErrorCount(user.getLoginErrorCount() + 1);
 
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void logout(LoginUserDetails loginUser) {
         String userId = loginUser.getUserId();
-        User user = userRepository.findOne(userId);
+        User user = userRepository.getOne(userId);
 
         // ログイン情報が更新されていない場合、ログアウト処理を行う。
         if (!checkLoginInfo(loginUser, user)) {
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean checkDualLogin(LoginUserDetails loginUser) {
-        User user = userRepository.findOne(loginUser.getUserId());
+        User user = userRepository.getOne(loginUser.getUserId());
         return checkLoginInfo(loginUser, user);
     }
 

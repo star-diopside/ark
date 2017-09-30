@@ -37,11 +37,14 @@ subprojects {
     repositories {
         jcenter()
         mavenLocal()
+        maven {
+            url "https://repo.spring.io/libs-snapshot"
+        }
     }
 
     dependencyManagement {
         imports {
-            mavenBom "io.spring.platform:platform-bom:Brussels-SR4"
+            mavenBom "io.spring.platform:platform-bom:Cairo-BUILD-SNAPSHOT"
         }
     }
 
@@ -165,7 +168,7 @@ project(":ark-projects:ark-web-controller") {
 project(":ark-projects:ark-web-view") {
     dependencies {
         runtime "org.springframework:spring-webmvc"
-        runtime "org.thymeleaf:thymeleaf-spring4"
+        runtime "org.thymeleaf:thymeleaf-spring5"
         runtime "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
         runtime "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
         runtime "org.webjars:webjars-locator"
@@ -227,6 +230,7 @@ project(":ark-servlets:ark-web") {
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "ch.qos.logback:logback-classic"
         runtime "org.springframework.session:spring-session-data-redis"
+        runtime "redis.clients:jedis"
         providedCompile "javax.servlet:javax.servlet-api"
 
         if (env == "develop") {

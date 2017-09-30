@@ -23,6 +23,6 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     public Page<PostalCode> search(Pageable pageable) {
         Sort sort = new Sort(Sort.Direction.ASC, "localGovernmentCode", "postalCode", "kanaPrefectureName",
                 "kanaMunicipalityName", "kanaAreaName");
-        return postalCodeRepository.findAll(new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort));
+        return postalCodeRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
     }
 }
