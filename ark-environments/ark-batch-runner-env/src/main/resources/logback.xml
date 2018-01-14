@@ -44,7 +44,7 @@
     </appender>
 
     <!-- Logger Setting -->
-    <logger name="jp.gr.java_conf.star_diopside.ark" level="TRACE">
+    <logger name="jp.gr.java_conf.stardiopside.ark" level="TRACE">
         <appender-ref ref="traceLog" />
     </logger>
 

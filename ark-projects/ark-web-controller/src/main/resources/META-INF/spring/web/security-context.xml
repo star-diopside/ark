@@ -27,7 +27,7 @@
         <property name="passwordEncoder" ref="passwordEncoder" />
         <property name="hideUserNotFoundExceptions" value="false" />
         <property name="preAuthenticationChecks">
-            <bean class="jp.gr.java_conf.star_diopside.ark.service.userdetails.BeforeLoginUserDetailsChecker" />
+            <bean class="jp.gr.java_conf.stardiopside.ark.service.userdetails.BeforeLoginUserDetailsChecker" />
         </property>
     </bean>
 
