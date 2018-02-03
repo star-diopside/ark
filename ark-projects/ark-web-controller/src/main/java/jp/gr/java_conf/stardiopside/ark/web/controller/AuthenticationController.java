@@ -1,7 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.web.controller;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -36,21 +34,16 @@ import jp.gr.java_conf.stardiopside.ark.web.form.UserLoginForm;
 public class AuthenticationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
-    private static final Map<String, String> EXCEPTION_MESSAGES;
+    private static final Map<String, String> EXCEPTION_MESSAGES = Map.of(
+            BadCredentialsException.class.getName(), "error.badCredentials",
+            UsernameNotFoundException.class.getName(), "error.badCredentials",
+            DisabledException.class.getName(), "error.accountDisabled",
+            LockedException.class.getName(), "error.accountLocked",
+            AccountExpiredException.class.getName(), "error.userInvalid",
+            DualLoginException.class.getName(), "error.dualLogin");
 
     @Inject
     private MessageSourceAccessor messages;
-
-    static {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(BadCredentialsException.class.getName(), "error.badCredentials");
-        map.put(UsernameNotFoundException.class.getName(), "error.badCredentials");
-        map.put(DisabledException.class.getName(), "error.accountDisabled");
-        map.put(LockedException.class.getName(), "error.accountLocked");
-        map.put(AccountExpiredException.class.getName(), "error.userInvalid");
-        map.put(DualLoginException.class.getName(), "error.dualLogin");
-        EXCEPTION_MESSAGES = Collections.unmodifiableMap(map);
-    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
