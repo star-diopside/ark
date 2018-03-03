@@ -1,0 +1,26 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:9-jdk-browsers
+      - image: circleci/postgres:10.2-alpine
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: ""
+    environment:
+      - TEST_ENVIRONMENT: circleci
+    steps:
+      - checkout
+      - run:
+          name: install repository
+          command: ./ci/scripts/install_repository.sh
+      - run:
+          name: gradle dependencies
+          command: ./gradlew dependencies
+      - run:
+          name: database
+          command: ./gradlew -b config/database/build.gradle -Penv=circleci update
+      - run:
+          name: gradle test
+          command: ./gradlew test
