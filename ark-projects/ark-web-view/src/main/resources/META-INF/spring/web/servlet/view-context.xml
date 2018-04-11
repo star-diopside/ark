@@ -14,10 +14,10 @@
         </mvc:resource-chain>
     </mvc:resources>
 
-    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
         <property name="characterEncoding" value="UTF-8" />
         <property name="templateEngine">
-            <bean class="org.thymeleaf.spring4.SpringTemplateEngine">
+            <bean class="org.thymeleaf.spring5.SpringTemplateEngine">
                 <property name="additionalDialects">
                     <set>
                         <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />

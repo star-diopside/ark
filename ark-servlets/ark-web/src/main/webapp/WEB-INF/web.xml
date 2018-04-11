@@ -29,7 +29,7 @@
 
     <filter>
         <filter-name>loggingConfig</filter-name>
-        <filter-class>jp.gr.java_conf.star_diopside.ark.web.servlet.LoggingConfigFilter</filter-class>
+        <filter-class>jp.gr.java_conf.stardiopside.ark.web.servlet.LoggingConfigFilter</filter-class>
     </filter>
 
     <filter>

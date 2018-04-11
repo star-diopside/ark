@@ -29,12 +29,12 @@
 
     </job>
 
-    <bean id="importPostalCodeJob.listener.TemporaryDirectory" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryDirectoryJobListener">
+    <bean id="importPostalCodeJob.listener.TemporaryDirectory" class="jp.gr.java_conf.stardiopside.silver.commons.batch.support.TemporaryDirectoryJobListener">
         <property name="key" value="postcode.tempDir" />
         <property name="prefix" value="postcode" />
     </bean>
 
-    <bean id="importPostalCodeJob.unarchiveStep.tasklet" class="jp.gr.java_conf.star_diopside.ark.batch.tasklet.UnarchiveZipFileTasklet" scope="step">
+    <bean id="importPostalCodeJob.unarchiveStep.tasklet" class="jp.gr.java_conf.stardiopside.ark.batch.tasklet.UnarchiveZipFileTasklet" scope="step">
         <property name="resource" value="${resource.postcode}" />
         <property name="charset" value="Windows-31J" />
         <property name="unarchiveDirectory" value="#{jobExecutionContext['postcode.tempDir']}" />
@@ -74,7 +74,7 @@
                         </property>
                         <property name="fieldSetMapper">
                             <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
-                                <property name="targetType" value="jp.gr.java_conf.star_diopside.ark.batch.bean.PostalCodeAddress" />
+                                <property name="targetType" value="jp.gr.java_conf.stardiopside.ark.batch.bean.PostalCodeAddress" />
                             </bean>
                         </property>
                     </bean>
@@ -83,7 +83,7 @@
         </property>
     </bean>
 
-    <bean id="importPostalCodeJob.importStep.processor" class="jp.gr.java_conf.star_diopside.ark.batch.item.PostalCodeConverter" />
+    <bean id="importPostalCodeJob.importStep.processor" class="jp.gr.java_conf.stardiopside.ark.batch.item.PostalCodeConverter" />
 
     <bean id="importPostalCodeJob.importStep.writer" class="org.springframework.batch.item.database.JpaItemWriter" scope="step">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
