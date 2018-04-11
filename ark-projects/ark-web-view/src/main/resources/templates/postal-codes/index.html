@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head>
+  <meta charset="UTF-8" th:remove="all" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/normalize/css/normalize.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
+  <script src="../../../../static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">郵便番号一覧</title>
+</head>
+<body>
+  <div class="container">
+    <div layout:fragment="content">
+      <h1 class="page-header">郵便番号一覧</h1>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>全国地方公共団体コード</th>
+            <th>郵便番号</th>
+            <th>都道府県</th>
+            <th>市区町村</th>
+            <th>町域</th>
+          </tr>
+        </thead>
+        <tbody th:remove="all-but-first" th:each="postalCode : ${postalCodes.content}">
+          <tr>
+            <td th:text="${postalCode.localGovernmentCode}">01101</td>
+            <td th:text="${postalCode.postalCode}">0600000</td>
+            <td><span th:text="${postalCode.kanjiPrefectureName}">北海道</span><br/><span th:text="${postalCode.kanaPrefectureName}">ﾎｯｶｲﾄﾞｳ</span></td>
+            <td><span th:text="${postalCode.kanjiMunicipalityName}">札幌市中央区</span><br/><span th:text="${postalCode.kanaMunicipalityName}">ｻｯﾎﾟﾛｼﾁｭｳｵｳｸ</span></td>
+            <td><span th:text="${postalCode.kanjiAreaName}">以下に掲載がない場合</span><br/><span th:text="${postalCode.kanaAreaName}">ｲｶﾆｹｲｻｲｶﾞﾅｲﾊﾞｱｲ</span></td>
+          </tr>
+          <tr>
+            <td>01101</td>
+            <td>0600001</td>
+            <td><span>北海道</span><br/><span>ﾎｯｶｲﾄﾞｳ</span></td>
+            <td><span>札幌市中央区</span><br/><span>ｻｯﾎﾟﾛｼﾁｭｳｵｳｸ</span></td>
+            <td><span>北一条西（１～１９丁目）</span><br/><span>ｷﾀ1ｼﾞｮｳﾆｼ(1-19ﾁｮｳﾒ)</span></td>
+          </tr>
+          <tr>
+            <td>01101</td>
+            <td>0600002</td>
+            <td><span>北海道</span><br/><span>ﾎｯｶｲﾄﾞｳ</span></td>
+            <td><span>札幌市中央区</span><br/><span>ｻｯﾎﾟﾛｼﾁｭｳｵｳｸ</span></td>
+            <td><span>北二条西（１～１９丁目）</span><br/><span>ｷﾀ2ｼﾞｮｳﾆｼ(1-19ﾁｮｳﾒ)</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <nav aria-label="pagination">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" th:href="@{/postal-codes}" aria-label="previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item" th:each="index : ${#numbers.sequence(postalCodes.startPageNumber, postalCodes.endPageNumber)}" th:class="${index} == ${postalCodes.number} ? 'page-item active' : 'page-item'"><a class="page-link" href="#" th:href="@{/postal-codes(page=${index})}" th:text="${index + 1}">1</a></li>
+          <li class="page-item active" th:remove="all"><a class="page-link" href="#">2</a></li>
+          <li class="page-item" th:remove="all"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" th:href="@{/postal-codes(page=${postalCodes.totalPages - 1})}" aria-label="next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</body>
+</html>

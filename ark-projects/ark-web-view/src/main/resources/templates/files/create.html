@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head>
+  <meta charset="UTF-8" th:remove="all" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/normalize/css/normalize.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
+  <script src="../../../../static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">ファイル登録</title>
+</head>
+<body>
+  <div class="container">
+    <div layout:fragment="content">
+      <h1 class="page-header">ファイル登録</h1>
+      <form action="show.html" th:action="@{/files}" th:object="${fileCreateForm}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+        <div th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="alert alert-danger">エラーメッセージ</div>
+        <div class="form-group" th:class="${#fields.hasErrors('file')}? 'form-group has-error' : 'form-group'">
+          <label for="file" class="col-sm-2 control-label">ファイル</label>
+          <div class="col-sm-10">
+            <input type="file" th:field="*{file}" id="file" class="form-control" />
+            <span th:if="${#fields.hasErrors('file')}" th:errors="*{file}" class="help-block"></span>
+          </div>
+        </div>
+        <div class="form-group mainbtn-area">
+          <div class="col-sm-12">
+            <div class="pull-right">
+              <input type="submit" value="登録" class="btn btn-default" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

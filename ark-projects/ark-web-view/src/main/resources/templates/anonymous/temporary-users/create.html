@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head>
+  <meta charset="UTF-8" th:remove="all" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
+  <link rel="stylesheet" href="../../../../../static/lib/normalize/css/normalize.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../../static/lib/bootstrap/css/bootstrap.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
+  <script src="../../../../../static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">ユーザ登録</title>
+</head>
+<body>
+  <div class="container">
+    <div layout:fragment="content">
+      <h1 class="page-header">ユーザ登録</h1>
+      <form action="../../authentication/create.html" th:action="@{/anonymous/temporary-users}" th:object="${temporaryUserForm}" method="post" class="form-horizontal" role="form">
+        <div th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="alert alert-danger">エラーメッセージ</div>
+        <div class="form-group" th:class="${#fields.hasErrors('username')}? 'form-group has-error' : 'form-group'">
+          <label for="username" class="col-sm-2 control-label">ユーザ名</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{username}" id="username" class="form-control" />
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="help-block"></span>
+          </div>
+        </div>
+        <div class="form-group" th:class="${#fields.hasErrors('nickname')}? 'form-group has-error' : 'form-group'">
+          <label for="nickname" class="col-sm-2 control-label">ニックネーム</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{nickname}" id="nickname" class="form-control" />
+            <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="help-block"></span>
+          </div>
+        </div>
+        <div class="form-group" th:class="${#fields.hasErrors('password')}? 'form-group has-error' : 'form-group'">
+          <label for="password" class="col-sm-2 control-label">パスワード</label>
+          <div class="col-sm-10">
+            <input type="password" th:field="*{password}" id="password" class="form-control" autocomplete="off" />
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="help-block"></span>
+          </div>
+        </div>
+        <div class="form-group" th:class="${#fields.hasErrors('passwordConfirm')}? 'form-group has-error' : 'form-group'">
+          <label for="passwordConfirm" class="col-sm-2 control-label">パスワード(確認)</label>
+          <div class="col-sm-10">
+            <input type="password" th:field="*{passwordConfirm}" id="passwordConfirm" class="form-control" autocomplete="off" />
+            <span th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}" class="help-block"></span>
+          </div>
+        </div>
+        <div class="form-group" th:class="${#fields.hasErrors('captcha')}? 'form-group has-error' : 'form-group'">
+          <label for="captcha" class="col-sm-2 control-label">画像認証</label>
+          <div class="col-sm-10">
+            <span class="help-block">画像に表示されている文字を入力してください。</span>
+            <p><img th:src="@{/captcha.jpg}" /></p>
+            <input type="text" th:field="*{captcha}" id="captcha" class="form-control" autocomplete="off" />
+            <span th:if="${#fields.hasErrors('captcha')}" th:errors="*{captcha}" class="help-block"></span>
+          </div>
+        </div>
+        <div class="form-group mainbtn-area">
+          <div class="col-sm-12">
+            <div class="pull-right">
+              <input type="submit" value="新規登録" class="btn btn-default" />
+            </div>
+            <div class="pull-left">
+              <a href="../../authentication/create.html" th:href="@{/authentication/create}" class="btn btn-default">戻る</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

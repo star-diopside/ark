@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/">
+        <mvc:resource-chain resource-cache="true">
+            <mvc:resolvers>
+                <bean class="org.springframework.web.servlet.resource.GzipResourceResolver" />
+            </mvc:resolvers>
+        </mvc:resource-chain>
+    </mvc:resources>
+
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="templateEngine">
+            <bean class="org.thymeleaf.spring5.SpringTemplateEngine">
+                <property name="additionalDialects">
+                    <set>
+                        <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
+                        <bean class="nz.net.ultraq.thymeleaf.LayoutDialect" />
+                    </set>
+                </property>
+                <property name="templateResolver">
+                    <bean class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+                        <property name="prefix" value="/templates/" />
+                        <property name="suffix" value=".html" />
+                        <property name="cacheable" value="${thymeleaf.cache}" />
+                        <property name="characterEncoding" value="UTF-8" />
+                        <property name="templateMode" value="HTML5" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

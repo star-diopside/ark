@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head>
+  <meta charset="UTF-8" th:remove="all" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/normalize/css/normalize.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
+  <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
+  <script src="../../../../static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">ファイル詳細</title>
+</head>
+<body>
+  <div class="container">
+    <div layout:fragment="content">
+      <h1 class="page-header">ファイル詳細</h1>
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="file" class="col-sm-2 control-label">ファイル名</label>
+          <div class="col-sm-10">
+            <p class="form-control-static"><a th:href="@{/files/{id}/data(id=${file.id})}" th:text="${file.name}">xxxx.txt</a></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="file" class="col-sm-2 control-label">ファイルサイズ</label>
+          <div class="col-sm-10">
+            <p class="form-control-static"><span th:text="${#numbers.formatInteger(file.size, 1, 'COMMA')}">1,024</span> バイト</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="file" class="col-sm-2 control-label">ハッシュ値</label>
+          <div class="col-sm-10">
+            <p class="form-control-static" th:text="${file.hash}">abc</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

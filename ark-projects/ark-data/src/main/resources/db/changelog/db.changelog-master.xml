@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="se-yoshi" id="1">
+        <createTable tableName="users" remarks="ユーザ">
+            <column name="user_id" type="varchar(32)" remarks="ユーザID">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="username" type="varchar(32)" remarks="ユーザ名">
+                <constraints nullable="false" />
+            </column>
+            <column name="password" type="char(60)" remarks="パスワード">
+                <constraints nullable="false" />
+            </column>
+            <column name="password_updated_at" type="timestamp" remarks="パスワード更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="enabled" type="boolean" remarks="有効フラグ">
+                <constraints nullable="false" />
+            </column>
+            <column name="high_grade_registry" type="boolean" remarks="本登録フラグ">
+                <constraints nullable="false" />
+            </column>
+            <column name="login_error_count" type="int" remarks="ログインエラー回数">
+                <constraints nullable="false" />
+            </column>
+            <column name="lockout_at" type="timestamp" remarks="ロックアウト日時" />
+            <column name="last_login_at" type="timestamp" remarks="最終ログイン日時" />
+            <column name="logout_at" type="timestamp" remarks="ログアウト日時" />
+            <column name="created_at" type="timestamp" remarks="登録日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_user_id" type="varchar(32)" remarks="登録ユーザID" />
+            <column name="updated_at" type="timestamp" remarks="更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_user_id" type="varchar(32)" remarks="更新ユーザID" />
+            <column name="version" type="int" remarks="バージョン">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="authorities" remarks="権限">
+            <column name="user_id" type="varchar(32)" remarks="ユーザID">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="authority" type="varchar(50)" remarks="権限">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="created_at" type="timestamp" remarks="登録日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_user_id" type="varchar(32)" remarks="登録ユーザID" />
+            <column name="updated_at" type="timestamp" remarks="更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_user_id" type="varchar(32)" remarks="更新ユーザID" />
+            <column name="version" type="int" remarks="バージョン">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_authorities_users"
+            baseTableName="authorities" baseColumnNames="user_id"
+            referencedTableName="users" referencedColumnNames="user_id" />
+    </changeSet>
+
+    <changeSet author="se-yoshi" id="2">
+        <createTable tableName="attached_files" remarks="添付ファイル">
+            <column name="id" type="int" autoIncrement="true" remarks="ID">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar(255)" remarks="ファイル名">
+                <constraints nullable="false" />
+            </column>
+            <column name="content_type" type="varchar(255)" remarks="コンテンツタイプ" />
+            <column name="size" type="bigint" remarks="ファイルサイズ">
+                <constraints nullable="false" />
+            </column>
+            <column name="hash" type="varchar(64)" remarks="ハッシュ値" />
+            <column name="created_at" type="timestamp" remarks="登録日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_user_id" type="varchar(32)" remarks="登録ユーザID" />
+            <column name="updated_at" type="timestamp" remarks="更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_user_id" type="varchar(32)" remarks="更新ユーザID" />
+            <column name="version" type="int" remarks="バージョン">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="attached_file_data" remarks="添付ファイルデータ">
+            <column name="id" type="int" autoIncrement="true" remarks="ID">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="attached_file_id" type="int" remarks="添付ファイルID">
+                <constraints nullable="false" />
+            </column>
+            <column name="order_by" type="int" remarks="順序">
+                <constraints nullable="false" />
+            </column>
+            <column name="data" type="binary" remarks="ファイルデータ" />
+            <column name="created_at" type="timestamp" remarks="登録日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_user_id" type="varchar(32)" remarks="登録ユーザID" />
+            <column name="updated_at" type="timestamp" remarks="更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_user_id" type="varchar(32)" remarks="更新ユーザID" />
+            <column name="version" type="int" remarks="バージョン">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_attached_file_data_attached_files"
+            baseTableName="attached_file_data" baseColumnNames="attached_file_id"
+            referencedTableName="attached_files" referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet author="se-yoshi" id="3">
+        <createTable tableName="batch_job_instance">
+            <column name="job_instance_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="version" type="bigint" />
+            <column name="job_name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="job_key" type="varchar(32)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="batch_job_instance" columnNames="job_name, job_key" />
+        <createTable tableName="batch_job_execution">
+            <column name="job_execution_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="version" type="bigint" />
+            <column name="job_instance_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_time" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="start_time" type="timestamp" />
+            <column name="end_time" type="timestamp" />
+            <column name="status" type="varchar(10)" />
+            <column name="exit_code" type="varchar(2500)" />
+            <column name="exit_message" type="varchar(2500)" />
+            <column name="last_updated" type="timestamp" />
+            <column name="job_configuration_location" type="varchar(2500)" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="job_inst_exec_fk"
+            baseTableName="batch_job_execution" baseColumnNames="job_instance_id"
+            referencedTableName="batch_job_instance" referencedColumnNames="job_instance_id" />
+        <createTable tableName="batch_job_execution_params">
+            <column name="job_execution_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="type_cd" type="varchar(6)">
+                <constraints nullable="false" />
+            </column>
+            <column name="key_name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="string_val" type="varchar(250)" />
+            <column name="date_val" type="timestamp" />
+            <column name="long_val" type="bigint" />
+            <column name="double_val" type="double" />
+            <column name="identifying" type="char(1)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="job_exec_params_fk"
+            baseTableName="batch_job_execution_params" baseColumnNames="job_execution_id"
+            referencedTableName="batch_job_execution" referencedColumnNames="job_execution_id" />
+        <createTable tableName="batch_step_execution">
+            <column name="step_execution_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="step_name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="job_execution_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="end_time" type="timestamp" />
+            <column name="status" type="varchar(10)" />
+            <column name="commit_count" type="bigint" />
+            <column name="read_count" type="bigint" />
+            <column name="filter_count" type="bigint" />
+            <column name="write_count" type="bigint" />
+            <column name="read_skip_count" type="bigint" />
+            <column name="write_skip_count" type="bigint" />
+            <column name="process_skip_count" type="bigint" />
+            <column name="rollback_count" type="bigint" />
+            <column name="exit_code" type="varchar(2500)" />
+            <column name="exit_message" type="varchar(2500)" />
+            <column name="last_updated" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="job_exec_step_fk"
+            baseTableName="batch_step_execution" baseColumnNames="job_execution_id"
+            referencedTableName="batch_job_execution" referencedColumnNames="job_execution_id" />
+        <createTable tableName="batch_step_execution_context">
+            <column name="step_execution_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="short_context" type="varchar(2500)">
+                <constraints nullable="false" />
+            </column>
+            <column name="serialized_context" type="clob" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="step_exec_ctx_fk"
+            baseTableName="batch_step_execution_context" baseColumnNames="step_execution_id"
+            referencedTableName="batch_step_execution" referencedColumnNames="step_execution_id" />
+        <createTable tableName="batch_job_execution_context">
+            <column name="job_execution_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="short_context" type="varchar(2500)">
+                <constraints nullable="false" />
+            </column>
+            <column name="serialized_context" type="clob" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="job_exec_ctx_fk"
+            baseTableName="batch_job_execution_context" baseColumnNames="job_execution_id"
+            referencedTableName="batch_job_execution" referencedColumnNames="job_execution_id" />
+        <createSequence sequenceName="batch_step_execution_seq" maxValue="9223372036854775807" cycle="false" />
+        <createSequence sequenceName="batch_job_execution_seq" maxValue="9223372036854775807" cycle="false" />
+        <createSequence sequenceName="batch_job_seq" maxValue="9223372036854775807" cycle="false" />
+    </changeSet>
+
+    <changeSet author="se-yoshi" id="4">
+        <createTable tableName="postal_codes" remarks="郵便番号住所データ">
+            <column name="id" type="int" autoIncrement="true" remarks="ID">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="local_government_code" type="char(5)" remarks="全国地方公共団体コード">
+                <constraints nullable="false" />
+            </column>
+            <column name="old_postal_code" type="varchar(5)" remarks="(旧)郵便番号">
+                <constraints nullable="false" />
+            </column>
+            <column name="postal_code" type="char(7)" remarks="郵便番号">
+                <constraints nullable="false" />
+            </column>
+            <column name="kana_prefecture_name" type="text" remarks="都道府県名(カナ)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kana_municipality_name" type="text" remarks="市区町村名(カナ)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kana_area_name" type="text" remarks="町域名(カナ)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kanji_prefecture_name" type="text" remarks="都道府県名(漢字)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kanji_municipality_name" type="text" remarks="市区町村名(漢字)">
+                <constraints nullable="false" />
+            </column>
+            <column name="kanji_area_name" type="text" remarks="町域名(漢字)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="timestamp" remarks="登録日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_user_id" type="varchar(32)" remarks="登録ユーザID" />
+            <column name="updated_at" type="timestamp" remarks="更新日時">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_user_id" type="varchar(32)" remarks="更新ユーザID" />
+            <column name="version" type="int" remarks="バージョン">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
