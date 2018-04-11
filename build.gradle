@@ -18,10 +18,8 @@ allprojects {
 
     ext {
         env = project.hasProperty("env") ? project.getProperty("env") : "develop"
-        silverCommonsVersion = "1.0.0-SNAPSHOT"
+        silverCommonsVersion = "1.0.0"
     }
-
-    ext["lombok.version"] = "1.16.20"
 }
 
 subprojects {
@@ -51,14 +49,11 @@ subprojects {
     repositories {
         jcenter()
         mavenLocal()
-        maven {
-            url "https://repo.spring.io/libs-snapshot"
-        }
     }
 
     dependencyManagement {
         imports {
-            mavenBom "io.spring.platform:platform-bom:Cairo-BUILD-SNAPSHOT"
+            mavenBom "io.spring.platform:platform-bom:Cairo-RELEASE"
         }
     }
 
@@ -115,7 +110,7 @@ subprojects {
 
 project(":ark-projects:ark-core") {
     dependencies {
-        compile "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-core:${silverCommonsVersion}"
+        compile "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-support:${silverCommonsVersion}"
         compile "javax.inject:javax.inject"
         compile "org.slf4j:slf4j-api"
         compile "org.slf4j:jcl-over-slf4j"
@@ -185,7 +180,7 @@ project(":ark-projects:ark-web-view") {
         runtime "org.thymeleaf:thymeleaf-spring5"
         runtime "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
         runtime "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
-        runtime "org.webjars:webjars-locator"
+        runtime "org.webjars:webjars-locator-core"
         runtime "org.webjars:normalize.css:5.0.0"
         runtime "org.webjars:bootstrap:3.3.7-1"
     }

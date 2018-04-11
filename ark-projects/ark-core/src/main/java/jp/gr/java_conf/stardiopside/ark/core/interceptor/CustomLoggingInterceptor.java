@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.slf4j.MDC;
 
 import jp.gr.java_conf.stardiopside.ark.core.exception.ApplicationException;
-import jp.gr.java_conf.stardiopside.silver.commons.core.interceptor.LoggingObjectDetailsInterceptor;
+import jp.gr.java_conf.stardiopside.silver.commons.support.interceptor.LoggingObjectDetailsInterceptor;
 
 @SuppressWarnings("serial")
 public class CustomLoggingInterceptor extends LoggingObjectDetailsInterceptor {

@@ -8,8 +8,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
-import jp.gr.java_conf.stardiopside.silver.commons.core.logging.Loggable;
-import jp.gr.java_conf.stardiopside.silver.commons.core.logging.LoggingSetting;
+import jp.gr.java_conf.stardiopside.silver.commons.support.logging.Loggable;
+import jp.gr.java_conf.stardiopside.silver.commons.support.logging.LoggingSetting;
 
 /**
  * ログインユーザ情報クラス
