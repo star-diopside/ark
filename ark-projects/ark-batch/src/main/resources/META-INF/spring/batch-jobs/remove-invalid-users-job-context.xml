@@ -27,7 +27,7 @@
 
     </job>
 
-    <bean id="removeInvalidUsersJob.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.silver.commons.batch.support.TemporaryFileJobListener">
+    <bean id="removeInvalidUsersJob.listener.temporaryFile" class="jp.gr.java_conf.stardiopside.silver.commons.batch.support.TemporaryFileJobListener">
         <property name="key" value="tempFile" />
     </bean>
 
@@ -36,7 +36,7 @@
         <property name="queryString" value="select u from User u order by u.userId asc" />
     </bean>
 
-    <bean id="removeInvalidUsersJob.extractStep.processor" class="jp.gr.java_conf.star_diopside.ark.batch.item.InvalidUserFilter" />
+    <bean id="removeInvalidUsersJob.extractStep.processor" class="jp.gr.java_conf.stardiopside.ark.batch.item.InvalidUserFilter" />
 
     <bean id="removeInvalidUsersJob.extractStep.writer" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
         <property name="resource" value="file:#{jobExecutionContext['tempFile']}" />
@@ -64,15 +64,15 @@
                 </property>
                 <property name="fieldSetMapper">
                     <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
-                        <property name="targetType" value="jp.gr.java_conf.star_diopside.ark.data.entity.User" />
+                        <property name="targetType" value="jp.gr.java_conf.stardiopside.ark.data.entity.User" />
                     </bean>
                 </property>
             </bean>
         </property>
     </bean>
 
-    <bean id="removeInvalidUsersJob.removeStep.processor" class="jp.gr.java_conf.star_diopside.ark.batch.item.UserVersionCheckProcessor" />
+    <bean id="removeInvalidUsersJob.removeStep.processor" class="jp.gr.java_conf.stardiopside.ark.batch.item.UserVersionCheckProcessor" />
 
-    <bean id="removeInvalidUsersJob.removeStep.writer" class="jp.gr.java_conf.star_diopside.ark.batch.item.RemoveUserWriter" />
+    <bean id="removeInvalidUsersJob.removeStep.writer" class="jp.gr.java_conf.stardiopside.ark.batch.item.RemoveUserWriter" />
 
 </beans>

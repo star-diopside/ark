@@ -1,21 +1,25 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE"
+        classpath "gradle.plugin.com.github.spotbugs:gradlePlugin:1.6.0"
     }
 }
 
 allprojects {
-    group = "jp.gr.java_conf.star_diopside.ark"
-    version = "1.0.0-SNAPSHOT"
+    group = "jp.gr.java_conf.stardiopside.ark"
+    version = "0.2.0-SNAPSHOT"
 
     ext {
         env = project.hasProperty("env") ? project.getProperty("env") : "develop"
-        silverCommonsVersion = "1.0.0-SNAPSHOT"
+        silverCommonsVersion = "1.0.0"
     }
 }
 
@@ -25,11 +29,19 @@ subprojects {
     apply plugin: "io.spring.dependency-management"
     apply plugin: "eclipse-wtp"
     apply plugin: "checkstyle"
-    apply plugin: "findbugs"
+    apply plugin: "com.github.spotbugs"
     apply plugin: "jacoco"
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 9
+    targetCompatibility = 9
+
+    eclipse.wtp.facet.file.whenMerged { facet ->
+        facet.facets.each {
+            if (it.name == "jst.java") {
+                it.version = "9"
+            }
+        }
+    }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
@@ -42,7 +54,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "io.spring.platform:platform-bom:Brussels-SR4"
+            mavenBom "io.spring.platform:platform-bom:Cairo-RELEASE"
         }
     }
 
@@ -60,13 +72,13 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "7.1.1"
+        toolVersion = "8.7"
         configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
         ignoreFailures = true
     }
 
-    findbugs {
-        toolVersion = "3.0.1"
+    spotbugs {
+        toolVersion = "3.1.1"
         ignoreFailures = true
     }
 
@@ -78,7 +90,7 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "0.7.7.201606060606"
+        toolVersion = "0.8.0"
     }
 
     task packageSources(type: Jar, dependsOn: classes) {
@@ -99,7 +111,7 @@ subprojects {
 
 project(":ark-projects:ark-core") {
     dependencies {
-        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-core:${silverCommonsVersion}"
+        compile "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-support:${silverCommonsVersion}"
         compile "javax.inject:javax.inject"
         compile "org.slf4j:slf4j-api"
         compile "org.slf4j:jcl-over-slf4j"
@@ -136,7 +148,7 @@ project(":ark-projects:ark-service") {
 project(":ark-projects:ark-batch") {
     dependencies {
         compile project(":ark-projects:ark-service")
-        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
+        compile "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
         compile "org.springframework.batch:spring-batch-core"
         testCompile project(":ark-projects:ark-test-support")
         testCompile "org.springframework.batch:spring-batch-test"
@@ -148,7 +160,7 @@ project(":ark-projects:ark-web-controller") {
     dependencies {
         compile project(":ark-projects:ark-support")
         compile project(":ark-projects:ark-service")
-        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
+        compile "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
         compile "org.hibernate:hibernate-validator"
         compile "org.springframework:spring-webmvc"
         compile "org.springframework.security:spring-security-web"
@@ -166,10 +178,10 @@ project(":ark-projects:ark-web-controller") {
 project(":ark-projects:ark-web-view") {
     dependencies {
         runtime "org.springframework:spring-webmvc"
-        runtime "org.thymeleaf:thymeleaf-spring4"
+        runtime "org.thymeleaf:thymeleaf-spring5"
         runtime "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
         runtime "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
-        runtime "org.webjars:webjars-locator"
+        runtime "org.webjars:webjars-locator-core"
         runtime "org.webjars:normalize.css:5.0.0"
         runtime "org.webjars:bootstrap:3.3.7-1"
     }
@@ -177,7 +189,7 @@ project(":ark-projects:ark-web-view") {
 
 project(":ark-projects:ark-test-support") {
     dependencies {
-        compile "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-test:${silverCommonsVersion}"
+        compile "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-test:${silverCommonsVersion}"
         compile "org.springframework:spring-context"
         compile "org.springframework:spring-orm"
         compile "org.apache.commons:commons-dbcp2"
@@ -233,13 +245,9 @@ project(":ark-applications:ark-web-boot") {
 
 project(":ark-servlets") {
     subprojects {
-        eclipse {
-            wtp {
-                facet {
-                    facet name: "jst.web", version: "3.1"
-                    facet name: "wst.jsdt.web", version: "1.0"
-                }
-            }
+        eclipse.wtp.facet {
+            facet name: "jst.web", version: "3.1"
+            facet name: "wst.jsdt.web", version: "1.0"
         }
     }
 }
@@ -250,11 +258,12 @@ project(":ark-servlets:ark-web") {
     dependencies {
         runtime project(":ark-projects:ark-web-controller")
         runtime project(":ark-projects:ark-web-view")
-        runtime "jp.gr.java_conf.star_diopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
+        runtime "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-web:${silverCommonsVersion}"
         runtime "javax.transaction:javax.transaction-api"
         runtime "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtime "ch.qos.logback:logback-classic"
         runtime "org.springframework.session:spring-session-data-redis"
+        runtime "redis.clients:jedis"
         providedCompile "javax.servlet:javax.servlet-api"
 
         if (env == "develop") {

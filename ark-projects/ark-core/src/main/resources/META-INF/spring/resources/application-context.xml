@@ -8,15 +8,15 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="jp.gr.java_conf.star_diopside.ark"
+    <context:component-scan base-package="jp.gr.java_conf.stardiopside.ark"
         scope-resolver="org.springframework.context.annotation.Jsr330ScopeMetadataResolver">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
 
-    <bean id="logging" class="jp.gr.java_conf.star_diopside.ark.core.interceptor.CustomLoggingInterceptor" />
+    <bean id="logging" class="jp.gr.java_conf.stardiopside.ark.core.interceptor.CustomLoggingInterceptor" />
 
     <aop:config>
-        <aop:advisor advice-ref="logging" pointcut="execution(* jp.gr.java_conf.star_diopside.ark..*(..))" />
+        <aop:advisor advice-ref="logging" pointcut="execution(* jp.gr.java_conf.stardiopside.ark..*(..))" />
     </aop:config>
 
 </beans>
