@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group = "jp.gr.java_conf.stardiopside.ark"
-    version = "0.1.0"
+    version = "0.2.0-SNAPSHOT"
 
     ext {
         env = project.hasProperty("env") ? project.getProperty("env") : "develop"
