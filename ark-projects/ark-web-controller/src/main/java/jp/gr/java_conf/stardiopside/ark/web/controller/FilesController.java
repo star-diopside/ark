@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.gr.java_conf.stardiopside.ark.data.entity.AttachedFile;
 import jp.gr.java_conf.stardiopside.ark.service.AttachedFileService;
@@ -51,7 +52,7 @@ public class FilesController {
     }
 
     @PostMapping
-    public String save(@Valid FileCreateForm form, BindingResult result) throws IOException {
+    public String save(@Valid FileCreateForm form, BindingResult result, RedirectAttributes attr) throws IOException {
         if (result.hasErrors()) {
             return "files/create";
         }
@@ -59,7 +60,9 @@ public class FilesController {
         try (InputStream input = form.getFile().getInputStream()) {
             AttachedFile attachedFile = attachedFileService.create(input, form.getFile().getOriginalFilename(),
                     form.getFile().getContentType());
-            return "redirect:/files/" + attachedFile.getId();
+            attr.addAttribute("id", attachedFile.getId());
         }
+
+        return "redirect:/files/{id}";
     }
 }

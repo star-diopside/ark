@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layouts/default">
+      layout:decorate="layouts/default">
 <head>
   <meta charset="UTF-8" th:remove="all" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all" />
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
   <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
   <script src="../../../../static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
-  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Home</title>
+  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Home</title>
 </head>
 <body>
   <div class="container">

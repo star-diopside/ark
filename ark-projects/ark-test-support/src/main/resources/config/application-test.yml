@@ -1,0 +1,7 @@
+logging:
+  path: ${user.home}/log/ark-test
+spring:
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false

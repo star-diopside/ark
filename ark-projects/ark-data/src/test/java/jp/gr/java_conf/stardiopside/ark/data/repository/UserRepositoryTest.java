@@ -18,17 +18,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
+import jp.gr.java_conf.stardiopside.ark.test.config.TestConfig;
 import jp.gr.java_conf.stardiopside.silver.commons.test.support.DatabaseTestSupport;
 import jp.gr.java_conf.stardiopside.silver.commons.test.support.SimpleDatabaseTestSupport;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { AppConfig.class, TestConfig.class }, webEnvironment = WebEnvironment.NONE)
 @Transactional
 @Rollback
 public class UserRepositoryTest {

@@ -2,7 +2,6 @@ package jp.gr.java_conf.stardiopside.ark.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import javax.inject.Inject;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Named("passwordEncoder")
     private PasswordEncoder passwordEncoder;
 
-    @Value("${tempUserValidDays}")
+    @Value("${application.settings.temp-user-valid-days}")
     private int tempUserValidDays;
 
     @Override
@@ -158,7 +157,24 @@ public class UserServiceImpl implements UserService {
      */
     private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
         // 最終ログイン日時、ログアウト日時の判定を行う。
-        return !Objects.equals(loginUser.getLastLoginAt(), user.getLastLoginAt())
-                || !Objects.equals(loginUser.getLogoutAt(), user.getLogoutAt());
+        return !compare​LocalDateTime(loginUser.getLastLoginAt(), user.getLastLoginAt())
+                || !compare​LocalDateTime(loginUser.getLogoutAt(), user.getLogoutAt());
+    }
+
+    /**
+     * {@link LocalDateTime} を {@link java.util.Date} で表現可能なミリ秒までの精度に切り詰めて比較を行う。
+     * 
+     * @param a 比較対象の日付
+     * @param b 比較対象の日付
+     * @return 引数で指定された日付の値が等しい場合はtrue、それ以外の場合はfalse。
+     */
+    private boolean compare​LocalDateTime(LocalDateTime a, LocalDateTime b) {
+        if (a == b) {
+            return true;
+        } else if (a == null || b == null) {
+            return false;
+        } else {
+            return a.truncatedTo(ChronoUnit.MILLIS).equals(b.truncatedTo(ChronoUnit.MILLIS));
+        }
     }
 }

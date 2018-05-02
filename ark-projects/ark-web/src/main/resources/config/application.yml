@@ -1,0 +1,15 @@
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+spring:
+  batch:
+    initialize-schema: never
+  liquibase:
+    enabled: false
+  profiles:
+    include:
+    - logging
+    - messages
+    - settings
+    - servlet

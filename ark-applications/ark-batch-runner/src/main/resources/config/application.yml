@@ -1,0 +1,10 @@
+spring:
+  batch:
+    initialize-schema: never
+  liquibase:
+    enabled: false
+  profiles:
+    include:
+    - logging
+    - messages
+    - settings

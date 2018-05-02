@@ -38,7 +38,7 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
     @Inject
     private AttachedFileDataRepository attachedFileDataRepository;
 
-    @Value("${divideAttachedFileDataSize}")
+    @Value("${application.settings.divide-attached-file-data-size}")
     private int divideAttachedFileDataSize;
 
     @Override
