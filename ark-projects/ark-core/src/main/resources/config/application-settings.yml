@@ -1,7 +1,3 @@
-spring:
-  aop:
-    proxy-target-class: false
-
 application:
   settings:
     # 仮登録ユーザ有効日数

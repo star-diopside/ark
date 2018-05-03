@@ -1,3 +1,8 @@
 logging:
   pattern:
     file: '%d{yyyy-MM-dd HH:mm:ss.SSS},%X{sessionId},%X{remoteAddr},%level,%thread,%logger,%X{className},%X{methodName},%m%n'
+spring:
+  aop:
+    proxy-target-class: false
+  messages:
+    basename: messages,ValidationMessages

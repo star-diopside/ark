@@ -250,6 +250,7 @@ project(":ark-servlets:ark-web-war") {
     dependencies {
         implementation project(":ark-projects:ark-web")
         runtimeOnly "javax.xml.bind:jaxb-api"
+        providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
     }
 
     war {

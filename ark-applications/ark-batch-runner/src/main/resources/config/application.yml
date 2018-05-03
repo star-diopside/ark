@@ -5,6 +5,5 @@ spring:
     enabled: false
   profiles:
     include:
-    - logging
-    - messages
+    - core
     - settings
