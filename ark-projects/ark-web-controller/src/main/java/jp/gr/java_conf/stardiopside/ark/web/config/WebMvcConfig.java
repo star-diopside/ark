@@ -10,11 +10,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import jp.gr.java_conf.stardiopside.ark.service.UserService;
 import jp.gr.java_conf.stardiopside.ark.web.interceptor.DualLoginCheckInterceptor;
 import jp.gr.java_conf.stardiopside.ark.web.interceptor.KaptchaSessionClearInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MessageSource messageSource;
@@ -33,7 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public HandlerInterceptor dualLoginCheckInterceptor() {
-        return new DualLoginCheckInterceptor();
+        return new DualLoginCheckInterceptor(userService);
     }
 
     @Bean

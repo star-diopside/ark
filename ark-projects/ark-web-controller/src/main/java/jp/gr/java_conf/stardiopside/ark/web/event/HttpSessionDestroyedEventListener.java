@@ -1,6 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.web.event;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -14,8 +13,11 @@ import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
 @Singleton
 public class HttpSessionDestroyedEventListener implements ApplicationListener<HttpSessionDestroyedEvent> {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+
+    public HttpSessionDestroyedEventListener(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void onApplicationEvent(HttpSessionDestroyedEvent event) {

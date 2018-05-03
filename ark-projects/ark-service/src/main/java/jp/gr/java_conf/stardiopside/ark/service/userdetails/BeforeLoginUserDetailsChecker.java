@@ -1,8 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.service.userdetails;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +12,13 @@ import jp.gr.java_conf.stardiopside.ark.service.UserService;
  */
 public class BeforeLoginUserDetailsChecker implements UserDetailsChecker {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+    private final MessageSourceAccessor messages;
 
-    @Inject
-    @Named("messages")
-    private MessageSourceAccessor messages;
+    public BeforeLoginUserDetailsChecker(UserService userService, MessageSourceAccessor messages) {
+        this.userService = userService;
+        this.messages = messages;
+    }
 
     @Override
     public void check(UserDetails toCheck) {

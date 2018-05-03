@@ -1,6 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.web.interceptor;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,8 +19,11 @@ import jp.gr.java_conf.stardiopside.ark.web.exception.DualLoginException;
  */
 public class DualLoginCheckInterceptor extends HandlerInterceptorAdapter {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+
+    public DualLoginCheckInterceptor(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

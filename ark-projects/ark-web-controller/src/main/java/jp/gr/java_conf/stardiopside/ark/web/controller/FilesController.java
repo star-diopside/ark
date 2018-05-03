@@ -3,7 +3,6 @@ package jp.gr.java_conf.stardiopside.ark.web.controller;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.core.io.InputStreamResource;
@@ -29,8 +28,11 @@ import jp.gr.java_conf.stardiopside.ark.web.util.HttpHeaderUtils;
 @RequestMapping("/files")
 public class FilesController {
 
-    @Inject
-    private AttachedFileService attachedFileService;
+    private final AttachedFileService attachedFileService;
+
+    public FilesController(AttachedFileService attachedFileService) {
+        this.attachedFileService = attachedFileService;
+    }
 
     @GetMapping("/{id}")
     public ModelAndView show(@PathVariable Long id) {

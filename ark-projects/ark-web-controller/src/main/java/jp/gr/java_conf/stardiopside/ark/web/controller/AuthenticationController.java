@@ -2,7 +2,6 @@ package jp.gr.java_conf.stardiopside.ark.web.controller;
 
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -42,8 +41,11 @@ public class AuthenticationController {
             AccountExpiredException.class.getName(), "error.userInvalid",
             DualLoginException.class.getName(), "error.dualLogin");
 
-    @Inject
-    private MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
+
+    public AuthenticationController(MessageSourceAccessor messages) {
+        this.messages = messages;
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

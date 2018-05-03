@@ -1,6 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.web.event;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -15,8 +14,11 @@ import jp.gr.java_conf.stardiopside.ark.service.UserService;
 public class AuthenticationFailureBadCredentialsEventListener
         implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+
+    public AuthenticationFailureBadCredentialsEventListener(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {

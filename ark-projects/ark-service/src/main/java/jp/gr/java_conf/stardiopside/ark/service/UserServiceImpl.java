@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.function.Supplier;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -26,18 +25,19 @@ import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
 @Singleton
 public class UserServiceImpl implements UserService {
 
-    @Inject
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final int tempUserValidDays;
 
-    @Inject
-    private AuthorityRepository authorityRepository;
-
-    @Inject
-    @Named("passwordEncoder")
-    private PasswordEncoder passwordEncoder;
-
-    @Value("${application.settings.temp-user-valid-days}")
-    private int tempUserValidDays;
+    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository,
+            @Named("passwordEncoder") PasswordEncoder passwordEncoder,
+            @Value("${application.settings.temp-user-valid-days}") int tempUserValidDays) {
+        this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tempUserValidDays = tempUserValidDays;
+    }
 
     @Override
     @Transactional

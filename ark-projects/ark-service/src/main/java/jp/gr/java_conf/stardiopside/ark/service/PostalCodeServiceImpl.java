@@ -1,6 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.service;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -16,8 +15,11 @@ import jp.gr.java_conf.stardiopside.ark.data.repository.PostalCodeRepository;
 @Singleton
 public class PostalCodeServiceImpl implements PostalCodeService {
 
-    @Inject
-    private PostalCodeRepository postalCodeRepository;
+    private final PostalCodeRepository postalCodeRepository;
+
+    public PostalCodeServiceImpl(PostalCodeRepository postalCodeRepository) {
+        this.postalCodeRepository = postalCodeRepository;
+    }
 
     @Override
     public Page<PostalCode> search(Pageable pageable) {

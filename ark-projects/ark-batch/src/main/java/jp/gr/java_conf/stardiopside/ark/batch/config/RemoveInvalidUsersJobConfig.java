@@ -29,6 +29,8 @@ import jp.gr.java_conf.stardiopside.ark.batch.item.InvalidUserFilter;
 import jp.gr.java_conf.stardiopside.ark.batch.item.RemoveUserWriter;
 import jp.gr.java_conf.stardiopside.ark.batch.item.UserVersionCheckProcessor;
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
+import jp.gr.java_conf.stardiopside.ark.data.repository.UserRepository;
+import jp.gr.java_conf.stardiopside.ark.service.UserService;
 import jp.gr.java_conf.stardiopside.silver.commons.batch.support.TemporaryFileJobListener;
 
 @Configuration
@@ -42,6 +44,12 @@ public class RemoveInvalidUsersJobConfig {
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public Job removeInvalidUsersJob(@Qualifier("extractStep") Step extractStep,
@@ -75,7 +83,7 @@ public class RemoveInvalidUsersJobConfig {
     @Bean
     @StepScope
     protected InvalidUserFilter extractStepProcessor() {
-        return new InvalidUserFilter();
+        return new InvalidUserFilter(userService);
     }
 
     @Bean
@@ -130,12 +138,12 @@ public class RemoveInvalidUsersJobConfig {
     @Bean
     @StepScope
     protected UserVersionCheckProcessor removeStepProcessor() {
-        return new UserVersionCheckProcessor();
+        return new UserVersionCheckProcessor(userRepository);
     }
 
     @Bean
     @StepScope
     protected RemoveUserWriter removeStepWriter() {
-        return new RemoveUserWriter();
+        return new RemoveUserWriter(userService);
     }
 }
