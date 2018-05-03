@@ -20,6 +20,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Jsr330ScopeMetadataResolver;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -47,7 +48,8 @@ public class AppConfig {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression("(execution(* jp.gr.java_conf.stardiopside.ark..*(..))"
                 + " && !execution(* jp.gr.java_conf.stardiopside.ark..config..*(..)))"
-                + " || execution(* jp.gr.java_conf.stardiopside.silver.commons..*(..))");
+                + " || execution(* jp.gr.java_conf.stardiopside.silver.commons..*(..))"
+                + " || target(" + JpaRepository.class.getName() + ")");
         return new DefaultPointcutAdvisor(pointcut, loggingInterceptor());
     }
 
