@@ -1,0 +1,9 @@
+spring:
+  security:
+    filter:
+      order: 2
+      dispatcher-types: async,error,request,forward
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1

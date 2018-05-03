@@ -1,0 +1,10 @@
+application:
+  settings:
+    # 仮登録ユーザ有効日数
+    temp-user-valid-days: 1
+    # 添付ファイルデータ分割サイズ(バイト)
+    divide-attached-file-data-size: 20971520
+
+    resource:
+      # 郵便番号データファイル
+      postcode: http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip

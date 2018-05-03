@@ -1,7 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.web.controller;
 
-import javax.inject.Inject;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,8 +16,11 @@ import jp.gr.java_conf.stardiopside.ark.web.util.PageWrapper;
 @RequestMapping("/postal-codes")
 public class PostalCodeController {
 
-    @Inject
-    private PostalCodeService postalCodeService;
+    private final PostalCodeService postalCodeService;
+
+    public PostalCodeController(PostalCodeService postalCodeService) {
+        this.postalCodeService = postalCodeService;
+    }
 
     @GetMapping
     public ModelAndView index(@PageableDefault(page = 0, size = 100) Pageable pageable) {

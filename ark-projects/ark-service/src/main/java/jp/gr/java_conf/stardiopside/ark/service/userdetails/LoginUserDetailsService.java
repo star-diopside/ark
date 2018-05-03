@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +17,13 @@ import jp.gr.java_conf.stardiopside.ark.data.repository.UserRepository;
  */
 public class LoginUserDetailsService extends JdbcDaoImpl {
 
-    @Inject
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final AuthorityRepository authorityRepository;
 
-    @Inject
-    private AuthorityRepository authorityRepository;
+    public LoginUserDetailsService(UserRepository userRepository, AuthorityRepository authorityRepository) {
+        this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
+    }
 
     @Override
     protected List<UserDetails> loadUsersByUsername(String username) {

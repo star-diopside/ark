@@ -9,7 +9,6 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -32,14 +31,17 @@ import jp.gr.java_conf.stardiopside.ark.data.repository.AttachedFileRepository;
 @Singleton
 public class AttachedFileServiceImpl implements AttachedFileService, InitializingBean {
 
-    @Inject
-    private AttachedFileRepository attachedFileRepository;
+    private final AttachedFileRepository attachedFileRepository;
+    private final AttachedFileDataRepository attachedFileDataRepository;
+    private final int divideAttachedFileDataSize;
 
-    @Inject
-    private AttachedFileDataRepository attachedFileDataRepository;
-
-    @Value("${divideAttachedFileDataSize}")
-    private int divideAttachedFileDataSize;
+    public AttachedFileServiceImpl(AttachedFileRepository attachedFileRepository,
+            AttachedFileDataRepository attachedFileDataRepository,
+            @Value("${application.settings.divide-attached-file-data-size}") int divideAttachedFileDataSize) {
+        this.attachedFileRepository = attachedFileRepository;
+        this.attachedFileDataRepository = attachedFileDataRepository;
+        this.divideAttachedFileDataSize = divideAttachedFileDataSize;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {

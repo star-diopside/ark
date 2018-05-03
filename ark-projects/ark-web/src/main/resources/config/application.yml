@@ -1,0 +1,16 @@
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+spring:
+  batch:
+    initialize-schema: never
+  liquibase:
+    enabled: false
+  jpa:
+    open-in-view: true
+  profiles:
+    include:
+    - core
+    - settings
+    - servlet

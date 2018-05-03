@@ -23,19 +23,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import jp.gr.java_conf.stardiopside.ark.batch.config.BatchTestConfig;
+import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
 import jp.gr.java_conf.stardiopside.silver.commons.test.support.CommitTransactionDatabaseTestSupport;
 import jp.gr.java_conf.stardiopside.silver.commons.test.support.DatabaseTestSupport;
 import jp.gr.java_conf.stardiopside.silver.commons.test.util.DataSetUtils;
 import jp.gr.java_conf.stardiopside.silver.commons.test.util.TestUtils;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { AppConfig.class, BatchTestConfig.class }, webEnvironment = WebEnvironment.NONE)
 public class RemoveInvalidUsersJobTest {
 
     @Inject
@@ -46,6 +48,7 @@ public class RemoveInvalidUsersJobTest {
     private PlatformTransactionManager transactionManager;
 
     @Inject
+    @Named("removeInvalidUsersJobLauncherTestUtils")
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     private DatabaseTestSupport databaseTestSupport;
@@ -71,8 +74,7 @@ public class RemoveInvalidUsersJobTest {
 
     @Test
     public void testJob() throws Exception {
-        JobParametersBuilder jpb = new JobParametersBuilder(jobLauncherTestUtils.getUniqueJobParameters());
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jpb.toJobParameters());
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
         assertThat(jobExecution.getExitStatus(), is(ExitStatus.COMPLETED));
 
         IDataSet expectedDataSet = new ReplacementDataSet(DataSetUtils.createCsvDataSet(TestUtils.findTestDataFile(

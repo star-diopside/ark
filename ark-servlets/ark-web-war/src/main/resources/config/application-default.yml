@@ -1,0 +1,11 @@
+logging:
+  path: ${user.home}/log/ark-web
+spring:
+  datasource:
+    jndi-name: java:comp/env/jdbc/dataSource
+  job-datasource:
+    jndi-name: java:comp/env/jdbc/dataSource
+  redis:
+    host: localhost
+  session:
+    store-type: redis

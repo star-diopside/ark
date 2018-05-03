@@ -1,6 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.web.controller.anonymous;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -24,8 +23,11 @@ import jp.gr.java_conf.stardiopside.ark.web.form.anonymous.TemporaryUserForm;
 @RequestMapping("/anonymous/temporary-users")
 public class TemporaryUserController {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+
+    public TemporaryUserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/create")
     public String create(TemporaryUserForm form) {
