@@ -11,17 +11,38 @@
   <link rel="stylesheet" href="../../../../static/lib/bootstrap/css/bootstrap-theme.min.css" type="text/css" media="screen,print" th:remove="all" />
   <link rel="stylesheet" href="../../META-INF/resources/static/css/layout.css" type="text/css" media="screen,print" th:remove="all" />
   <script src="../../../../static/lib/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
-  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Home</title>
+  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">ファイル一覧</title>
 </head>
 <body>
   <div class="container">
     <div layout:fragment="content">
-      <h1 class="page-header">Home</h1>
-      <div class="list-group">
-        <a href="../files/index.html" th:href="@{/files}" class="list-group-item">ファイル一覧</a>
-        <a href="../files/create.html" th:href="@{/files/create}" class="list-group-item">ファイル登録</a>
-        <a href="../postal-codes/index.html" th:href="@{/postal-codes}" class="list-group-item">郵便番号検索</a>
-      </div>
+      <h1 class="page-header">ファイル一覧</h1>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>ファイル名</th>
+            <th>サイズ(バイト)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody th:remove="all-but-first" th:each="file : ${files}">
+          <tr>
+            <td><a th:href="@{/files/{id}/data(id=${file.id})}" th:text="${file.name}">xxxx.txt</a></td>
+            <td th:text="${#numbers.formatInteger(file.size, 1, 'COMMA')}">1,024</td>
+            <td><a class="btn btn-default" href="show.html" th:href="@{/files/{id}(id=${file.id})}">詳細</a></td>
+          </tr>
+          <tr>
+            <td><a>xxxx.jpg</a></td>
+            <td>2,048</td>
+            <td><a class="btn btn-default" href="show.html">詳細</a></td>
+          </tr>
+          <tr>
+            <td><a>xxxx.zip</a></td>
+            <td>4,096</td>
+            <td><a class="btn btn-default" href="show.html">詳細</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </body>

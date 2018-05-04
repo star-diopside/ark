@@ -2,6 +2,7 @@ package jp.gr.java_conf.stardiopside.ark.web.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -34,14 +35,20 @@ public class FilesController {
         this.attachedFileService = attachedFileService;
     }
 
+    @GetMapping
+    public ModelAndView index() {
+        List<AttachedFile> files = attachedFileService.search();
+        return new ModelAndView("files/index").addObject("files", files);
+    }
+
     @GetMapping("/{id}")
-    public ModelAndView show(@PathVariable Long id) {
+    public ModelAndView show(@PathVariable("id") Long id) {
         AttachedFile file = attachedFileService.find(id).orElseThrow(ResourceNotFoundException::new);
         return new ModelAndView("files/show").addObject("file", file);
     }
 
     @GetMapping("/{id}/data")
-    public ResponseEntity<Resource> download(@PathVariable Long id) {
+    public ResponseEntity<Resource> download(@PathVariable("id") Long id) {
         AttachedFile file = attachedFileService.find(id).orElseThrow(ResourceNotFoundException::new);
         return ResponseEntity.ok().headers(HttpHeaderUtils.createContentDispositionHeader(file.getName()))
                 .contentType(MediaType.parseMediaType(file.getContentType()))

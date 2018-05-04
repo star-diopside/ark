@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Named;
@@ -52,6 +53,12 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
     @Transactional
     public Optional<AttachedFile> find(Long id) {
         return attachedFileRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<AttachedFile> search() {
+        return attachedFileRepository.findAll();
     }
 
     @Override

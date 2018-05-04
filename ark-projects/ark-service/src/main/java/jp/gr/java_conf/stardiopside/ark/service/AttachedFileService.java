@@ -2,6 +2,7 @@ package jp.gr.java_conf.stardiopside.ark.service;
 
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 import jp.gr.java_conf.stardiopside.ark.data.entity.AttachedFile;
@@ -18,6 +19,13 @@ public interface AttachedFileService {
      * @return 添付ファイルエンティティ
      */
     Optional<AttachedFile> find(Long attachedFileId);
+
+    /**
+     * 添付ファイルを検索する。
+     * 
+     * @return 添付ファイルエンティティのリスト
+     */
+    List<AttachedFile> search();
 
     /**
      * 添付ファイルを登録する。
