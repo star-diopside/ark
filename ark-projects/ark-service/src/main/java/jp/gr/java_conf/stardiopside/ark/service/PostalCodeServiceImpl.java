@@ -2,6 +2,7 @@ package jp.gr.java_conf.stardiopside.ark.service;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     }
 
     @Override
+    @Transactional
     public Page<PostalCode> search(Pageable pageable) {
         Sort sort = new Sort(Sort.Direction.ASC, "localGovernmentCode", "postalCode", "kanaPrefectureName",
                 "kanaMunicipalityName", "kanaAreaName");

@@ -12,12 +12,12 @@ import java.util.Optional;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import jp.gr.java_conf.stardiopside.ark.data.entity.AttachedFile;

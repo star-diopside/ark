@@ -6,10 +6,10 @@ import java.util.function.Supplier;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import jp.gr.java_conf.stardiopside.ark.core.exception.ApplicationException;
 import jp.gr.java_conf.stardiopside.ark.data.entity.Authority;

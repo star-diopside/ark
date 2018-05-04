@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.DataSetException;
@@ -22,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;

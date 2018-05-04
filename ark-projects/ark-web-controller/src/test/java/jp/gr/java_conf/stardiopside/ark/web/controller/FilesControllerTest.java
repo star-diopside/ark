@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +19,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
