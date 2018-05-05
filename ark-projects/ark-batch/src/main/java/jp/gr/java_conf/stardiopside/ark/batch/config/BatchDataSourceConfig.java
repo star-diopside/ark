@@ -24,7 +24,7 @@ public class BatchDataSourceConfig {
     }
 
     @Bean(name = "jobDataSource")
-    @ConditionalOnProperty(prefix = "spring.job-datasource", name = "url")
+    @ConditionalOnProperty(prefix = "spring.job-datasource", name = "jndi-name", havingValue = "false", matchIfMissing = true)
     public DataSource jobDataSource() {
         return jobDataSourceProperties().initializeDataSourceBuilder().build();
     }

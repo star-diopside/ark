@@ -60,7 +60,7 @@ public class AppConfig {
     }
 
     @Bean(name = "dataSource")
-    @ConditionalOnProperty(prefix = "spring.datasource", name = "url")
+    @ConditionalOnProperty(prefix = "spring.datasource", name = "jndi-name", havingValue = "false", matchIfMissing = true)
     @Primary
     public DataSource dataSource() {
         return dataSourceProperties().initializeDataSourceBuilder().build();
