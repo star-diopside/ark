@@ -1,5 +1,7 @@
 logging:
   path: ${user.home}/log/ark-test
+  custom:
+    level: debug
 spring:
   batch:
     initialize-schema: always

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<included>
+    <logger name="jp.gr.java_conf.stardiopside.ark" level="DEBUG" additivity="false">
+        <appender-ref ref="TRACE_LOG" />
+        <appender-ref ref="ERROR_LOG" />
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="TRACE_LOG" />
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+        <appender-ref ref="TRACE_LOG" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ERROR_LOG" />
+    </root>
+</included>

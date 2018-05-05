@@ -1,5 +1,7 @@
 logging:
   path: ${user.home}/log/ark-web
+  custom:
+    level: debug
 spring:
   datasource:
     jndi-name: java:comp/env/jdbc/dataSource

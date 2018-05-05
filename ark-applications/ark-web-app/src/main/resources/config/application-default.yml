@@ -1,5 +1,7 @@
 logging:
   path: ${user.home}/log/ark-web-app
+  custom:
+    level: debug
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver

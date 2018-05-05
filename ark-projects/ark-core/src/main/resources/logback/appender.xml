@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<included>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <property name="TRACE_LOG_FILE" value="${LOG_PATH:-${user.home}/log}/trace.log}" />
+    <property name="ERROR_LOG_FILE" value="${LOG_PATH:-${user.home}/log}/error.log}" />
+    <springProperty name="LOG_FILE_MIN_INDEX" source="logging.file.min-index" defaultValue="1" />
+    <springProperty name="LOG_FILE_MAX_INDEX" source="logging.file.max-index" defaultValue="9" />
+
+    <appender name="TRACE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${TRACE_LOG_FILE}</file>
+        <append>true</append>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <minIndex>${LOG_FILE_MIN_INDEX}</minIndex>
+            <maxIndex>${LOG_FILE_MAX_INDEX}</maxIndex>
+            <fileNamePattern>${TRACE_LOG_FILE}.%i</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ERROR_LOG_FILE}</file>
+        <append>true</append>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <minIndex>${LOG_FILE_MIN_INDEX}</minIndex>
+            <maxIndex>${LOG_FILE_MAX_INDEX}</maxIndex>
+            <fileNamePattern>${ERROR_LOG_FILE}.%i</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+        </triggeringPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+</included>

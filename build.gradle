@@ -18,8 +18,7 @@ allprojects {
     version = "0.2.0-SNAPSHOT"
 
     ext {
-        env = project.hasProperty("env") ? project.getProperty("env") : "develop"
-        silverCommonsVersion = "1.0.0"
+        silverCommonsVersion = "1.0.1"
     }
 }
 
