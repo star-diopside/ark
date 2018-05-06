@@ -7,6 +7,7 @@ import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -32,10 +33,10 @@ public class ServletConfig {
     private PlatformTransactionManager transactionManager;
 
     @Bean
-    public FilterRegistrationBean<LoggingConfigFilter> loggingConfigFilter() {
+    public FilterRegistrationBean<LoggingConfigFilter> loggingConfigFilter(SecurityProperties properties) {
         FilterRegistrationBean<LoggingConfigFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new LoggingConfigFilter());
-        bean.setOrder(1);
+        bean.setOrder(properties.getFilter().getOrder() - 1);
         return bean;
     }
 
