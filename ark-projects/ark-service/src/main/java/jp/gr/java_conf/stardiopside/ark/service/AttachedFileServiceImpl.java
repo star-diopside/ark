@@ -16,9 +16,7 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.Assert;
 
 import jp.gr.java_conf.stardiopside.ark.data.entity.AttachedFile;
 import jp.gr.java_conf.stardiopside.ark.data.entity.AttachedFileData;
@@ -30,7 +28,7 @@ import jp.gr.java_conf.stardiopside.ark.data.repository.AttachedFileRepository;
  */
 @Named
 @Singleton
-public class AttachedFileServiceImpl implements AttachedFileService, InitializingBean {
+public class AttachedFileServiceImpl implements AttachedFileService {
 
     private final AttachedFileRepository attachedFileRepository;
     private final AttachedFileDataRepository attachedFileDataRepository;
@@ -42,11 +40,6 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
         this.attachedFileRepository = attachedFileRepository;
         this.attachedFileDataRepository = attachedFileDataRepository;
         this.divideAttachedFileDataSize = divideAttachedFileDataSize;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.isTrue(divideAttachedFileDataSize > 0, "Parameter 'divideAttachedFileDataSize' is not over 1.");
     }
 
     @Override
@@ -81,16 +74,21 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
             attachedFile = attachedFileRepository.save(attachedFile);
 
             MessageDigest digest = DigestUtils.getSha256Digest();
-            byte[] buffer = new byte[divideAttachedFileDataSize];
             long fileSize = 0;
-            int count = 0;
-            int len;
 
-            while ((len = input.read(buffer)) != -1) {
-                digest.update(buffer, 0, len);
-                attachedFileDataRepository.save(AttachedFileData.builder().attachedFile(attachedFile).orderBy(++count)
-                        .data(Arrays.copyOf(buffer, len)).build());
-                fileSize += len;
+            if (divideAttachedFileDataSize > 0) {
+                byte[] buffer = new byte[divideAttachedFileDataSize];
+                int count = 0;
+                int len;
+
+                while ((len = input.read(buffer)) != -1) {
+                    saveFileData(digest, attachedFile, ++count, Arrays.copyOf(buffer, len));
+                    fileSize += len;
+                }
+            } else {
+                byte[] data = input.readAllBytes();
+                saveFileData(digest, attachedFile, 1, data);
+                fileSize = data.length;
             }
 
             attachedFile.setSize(fileSize);
@@ -100,5 +98,11 @@ public class AttachedFileServiceImpl implements AttachedFileService, Initializin
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private void saveFileData(MessageDigest digest, AttachedFile attachedFile, int order, byte[] data) {
+        digest.update(data);
+        attachedFileDataRepository
+                .save(AttachedFileData.builder().attachedFile(attachedFile).orderBy(order).data(data).build());
     }
 }
