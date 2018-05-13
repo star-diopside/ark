@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(dualLoginCheckInterceptor()).excludePathPatterns("/webjars/**", "/static/**",
                 "/authentication/**", "/anonymous/**");
-        registry.addInterceptor(kaptchaSessionClearInterceptor()).excludePathPatterns("/webjars/**", "/static/**");
+        registry.addInterceptor(kaptchaSessionClearInterceptor()).addPathPatterns("/authentication/**", "/home/**");
     }
 
     @Override

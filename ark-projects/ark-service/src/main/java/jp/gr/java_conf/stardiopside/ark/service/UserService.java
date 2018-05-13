@@ -1,24 +1,34 @@
 package jp.gr.java_conf.stardiopside.ark.service;
 
-import java.util.function.Supplier;
+import javax.validation.Valid;
+
+import org.springframework.validation.annotation.Validated;
 
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
+import jp.gr.java_conf.stardiopside.ark.service.dto.UserDto;
 import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
 
 /**
  * ユーザ管理インタフェース
  */
-
+@Validated
 public interface UserService {
 
     /**
      * ユーザを作成する。
      * 
-     * @param userId ユーザID
-     * @param username ユーザ名
-     * @param password パスワード
+     * @param userDto ユーザ情報
+     * @param mainRegistration 本登録の場合はtrue、仮登録の場合はfalse
+     * @param authorities 権限名
      */
-    void createUser(String userId, String username, Supplier<String> password);
+    void create(@Valid UserDto userDto, boolean mainRegistration, String... authorities);
+
+    /**
+     * 仮登録ユーザを作成する。
+     * 
+     * @param userDto ユーザ情報
+     */
+    void createTemporaryUser(@Valid UserDto userDto);
 
     /**
      * 取得したユーザ情報が有効かどうか判定する。
@@ -33,7 +43,7 @@ public interface UserService {
      * 
      * @param user ユーザエンティティ
      */
-    void removeUser(User user);
+    void remove(User user);
 
     /**
      * ユーザ状態を判定し、無効ユーザの場合は削除する。

@@ -2,7 +2,7 @@ package jp.gr.java_conf.stardiopside.ark.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.function.Supplier;
+import java.util.Arrays;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -16,6 +16,7 @@ import jp.gr.java_conf.stardiopside.ark.data.entity.Authority;
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
 import jp.gr.java_conf.stardiopside.ark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.stardiopside.ark.data.repository.UserRepository;
+import jp.gr.java_conf.stardiopside.ark.service.dto.UserDto;
 import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
 
 /**
@@ -41,9 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(String userId, String username, Supplier<String> password) {
+    public void create(UserDto userDto, boolean mainRegistration, String... authorities) {
         // ユーザの存在チェックを行う。
-        if (userRepository.existsById(userId)) {
+        if (userRepository.existsById(userDto.getUsername())) {
             throw new ApplicationException("error.userExists", true);
         }
 
@@ -53,22 +54,28 @@ public class UserServiceImpl implements UserService {
         // ユーザ情報の登録を行う。
         User user = new User();
 
-        user.setUserId(userId);
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password.get()));
+        user.setUserId(userDto.getUsername());
+        user.setUsername(userDto.getDisplayName());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setPasswordUpdatedAt(current);
         user.setEnabled(true);
-        user.setHighGradeRegistry(false);
+        user.setHighGradeRegistry(mainRegistration);
 
         userRepository.save(user);
 
         // 権限情報の登録を行う。
-        Authority authority = new Authority();
+        authorityRepository.saveAll(Arrays.stream(authorities).map(auth -> {
+            Authority authority = new Authority();
+            authority.setUserId(userDto.getUsername());
+            authority.setAuthority(auth);
+            return authority;
+        })::iterator);
+    }
 
-        authority.setUserId(userId);
-        authority.setAuthority("ROLE_USER");
-
-        authorityRepository.save(authority);
+    @Override
+    @Transactional
+    public void createTemporaryUser(UserDto userDto) {
+        create(userDto, false, "ROLE_USER");
     }
 
     @Override
@@ -85,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void removeUser(User user) {
+    public void remove(User user) {
         userRepository.delete(user);
     }
 
@@ -97,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
         // 無効ユーザの場合、削除を行う
         if (!checkValid(user)) {
-            removeUser(user);
+            remove(user);
             return true;
         }
 

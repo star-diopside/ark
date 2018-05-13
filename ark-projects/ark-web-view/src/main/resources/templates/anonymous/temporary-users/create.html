@@ -19,25 +19,25 @@
       <h1 class="page-header">ユーザ登録</h1>
       <form action="../../authentication/create.html" th:action="@{/anonymous/temporary-users}" th:object="${temporaryUserForm}" method="post" class="form-horizontal" role="form">
         <div th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="alert alert-danger">エラーメッセージ</div>
-        <div class="form-group" th:class="${#fields.hasErrors('username')}? 'form-group has-error' : 'form-group'">
+        <div class="form-group" th:class="${#fields.hasErrors('userDto.username')}? 'form-group has-error' : 'form-group'">
           <label for="username" class="col-sm-2 control-label">ユーザ名</label>
           <div class="col-sm-10">
-            <input type="text" th:field="*{username}" id="username" class="form-control" />
-            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="help-block"></span>
+            <input type="text" th:field="*{userDto.username}" id="username" class="form-control" />
+            <span th:if="${#fields.hasErrors('userDto.username')}" th:errors="*{userDto.username}" class="help-block"></span>
           </div>
         </div>
-        <div class="form-group" th:class="${#fields.hasErrors('nickname')}? 'form-group has-error' : 'form-group'">
+        <div class="form-group" th:class="${#fields.hasErrors('userDto.displayName')}? 'form-group has-error' : 'form-group'">
           <label for="nickname" class="col-sm-2 control-label">ニックネーム</label>
           <div class="col-sm-10">
-            <input type="text" th:field="*{nickname}" id="nickname" class="form-control" />
-            <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="help-block"></span>
+            <input type="text" th:field="*{userDto.displayName}" id="nickname" class="form-control" />
+            <span th:if="${#fields.hasErrors('userDto.displayName')}" th:errors="*{userDto.displayName}" class="help-block"></span>
           </div>
         </div>
-        <div class="form-group" th:class="${#fields.hasErrors('password')}? 'form-group has-error' : 'form-group'">
+        <div class="form-group" th:class="${#fields.hasErrors('userDto.password')}? 'form-group has-error' : 'form-group'">
           <label for="password" class="col-sm-2 control-label">パスワード</label>
           <div class="col-sm-10">
-            <input type="password" th:field="*{password}" id="password" class="form-control" autocomplete="off" />
-            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="help-block"></span>
+            <input type="password" th:field="*{userDto.password}" id="password" class="form-control" autocomplete="off" />
+            <span th:if="${#fields.hasErrors('userDto.password')}" th:errors="*{userDto.password}" class="help-block"></span>
           </div>
         </div>
         <div class="form-group" th:class="${#fields.hasErrors('passwordConfirm')}? 'form-group has-error' : 'form-group'">

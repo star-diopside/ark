@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/authentication/**").permitAll()

@@ -131,6 +131,7 @@ project(":ark-projects:ark-data") {
         implementation "org.springframework.boot:spring-boot-starter-data-jpa"
         compileOnly "org.eclipse.persistence:org.eclipse.persistence.jpa"
         runtimeOnly "org.liquibase:liquibase-core"
+        runtimeOnly "javax.xml.bind:jaxb-api"
         testImplementation project(":ark-projects:ark-core")
         testImplementation project(":ark-projects:ark-test-support")
     }
@@ -140,6 +141,7 @@ project(":ark-projects:ark-service") {
     dependencies {
         api project(":ark-projects:ark-core")
         api project(":ark-projects:ark-data")
+        api "org.springframework.boot:spring-boot-starter-validation"
         implementation "commons-codec:commons-codec"
     }
 }
@@ -195,7 +197,6 @@ project(":ark-projects:ark-test-support") {
         api "org.springframework.boot:spring-boot-starter-test"
         implementation "org.springframework.boot:spring-boot-starter-data-jpa"
         runtimeOnly "org.postgresql:postgresql"
-        runtimeOnly "javax.xml.bind:jaxb-api"
     }
 }
 
@@ -206,7 +207,17 @@ project("ark-applications:ark-db-setup") {
         implementation project(":ark-projects:ark-data")
         implementation "org.springframework.boot:spring-boot-starter-batch"
         runtimeOnly "org.postgresql:postgresql"
-        runtimeOnly "javax.xml.bind:jaxb-api"
+    }
+}
+
+project("ark-applications:ark-user-registration") {
+    apply plugin: "org.springframework.boot"
+
+    dependencies {
+        implementation project(":ark-projects:ark-service")
+        implementation "commons-cli:commons-cli"
+        implementation "com.google.guava:guava"
+        runtimeOnly "org.postgresql:postgresql"
     }
 }
 
@@ -216,7 +227,6 @@ project(":ark-applications:ark-batch-runner") {
     dependencies {
         implementation project(":ark-projects:ark-batch")
         runtimeOnly "org.postgresql:postgresql"
-        runtimeOnly "javax.xml.bind:jaxb-api"
     }
 }
 
@@ -226,7 +236,6 @@ project(":ark-applications:ark-web-app") {
     dependencies {
         implementation project(":ark-projects:ark-web")
         runtimeOnly "org.postgresql:postgresql"
-        runtimeOnly "javax.xml.bind:jaxb-api"
     }
 
     bootJar {
@@ -248,7 +257,6 @@ project(":ark-servlets:ark-web-war") {
 
     dependencies {
         implementation project(":ark-projects:ark-web")
-        runtimeOnly "javax.xml.bind:jaxb-api"
         providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
     }
 

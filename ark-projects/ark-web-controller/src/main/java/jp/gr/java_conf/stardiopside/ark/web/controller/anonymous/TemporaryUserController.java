@@ -4,9 +4,13 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,10 +27,18 @@ import jp.gr.java_conf.stardiopside.ark.web.form.anonymous.TemporaryUserForm;
 @RequestMapping("/anonymous/temporary-users")
 public class TemporaryUserController {
 
+    private final Validator temporaryUserValidator;
     private final UserService userService;
 
-    public TemporaryUserController(UserService userService) {
+    public TemporaryUserController(@Qualifier("temporaryUserValidator") Validator temporaryUserValidator,
+            UserService userService) {
+        this.temporaryUserValidator = temporaryUserValidator;
         this.userService = userService;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(temporaryUserValidator);
     }
 
     @GetMapping("/create")
@@ -38,7 +50,7 @@ public class TemporaryUserController {
     public String save(@Valid TemporaryUserForm form, BindingResult result, HttpSession session,
             RedirectAttributes attr) {
 
-        if (result.hasErrors() || !form.validate(result)) {
+        if (result.hasErrors()) {
             return "anonymous/temporary-users/create";
         }
 
@@ -51,7 +63,7 @@ public class TemporaryUserController {
 
         // ユーザ登録を行う。
         try {
-            userService.createUser(form.getUsername(), form.getNickname(), form::getPassword);
+            userService.createTemporaryUser(form.getUserDto());
         } catch (ApplicationException e) {
             ExceptionUtils.reject(result, e);
             return "anonymous/temporary-users/create";
@@ -59,7 +71,7 @@ public class TemporaryUserController {
 
         // ユーザログイン画面に遷移する。
         UserLoginForm nextForm = new UserLoginForm();
-        nextForm.setUsername(form.getUsername());
+        nextForm.setUsername(form.getUserDto().getUsername());
         attr.addFlashAttribute(nextForm);
 
         return "redirect:/authentication/create";
