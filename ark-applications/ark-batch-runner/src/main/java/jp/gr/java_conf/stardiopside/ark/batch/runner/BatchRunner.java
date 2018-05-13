@@ -8,9 +8,9 @@ import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
 
 @SpringBootApplication
 @Import(AppConfig.class)
-public class App {
+public class BatchRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(BatchRunner.class, args);
     }
 }

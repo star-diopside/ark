@@ -12,10 +12,10 @@ import org.springframework.core.io.ResourceLoader;
 
 @SpringBootApplication
 @EnableConfigurationProperties(BatchProperties.class)
-public class App {
+public class DbSetup {
 
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(DbSetup.class, args);
     }
 
     @Bean
