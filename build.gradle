@@ -19,6 +19,8 @@ allprojects {
 
     ext {
         silverCommonsVersion = "1.0.1"
+        normalizeCssVersion = "5.0.0"
+        bootstrapVersion = "3.3.7-1"
     }
 }
 
@@ -63,7 +65,11 @@ subprojects {
 
     dependencies {
         compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     }
+
+    compileJava.dependsOn(processResources)
 
     javadoc {
         options.charSet = "UTF-8"
@@ -151,7 +157,6 @@ project(":ark-projects:ark-batch") {
         api project(":ark-projects:ark-service")
         implementation "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-batch:${silverCommonsVersion}"
         implementation "org.springframework.boot:spring-boot-starter-batch"
-        compileOnly "org.springframework.boot:spring-boot-configuration-processor"
         testImplementation project(":ark-projects:ark-test-support")
         testImplementation "org.springframework.batch:spring-batch-test"
         testImplementation "com.h2database:h2"
@@ -177,8 +182,8 @@ project(":ark-projects:ark-web-view") {
         runtimeOnly "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
         runtimeOnly "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
         runtimeOnly "org.webjars:webjars-locator-core"
-        runtimeOnly "org.webjars:normalize.css:5.0.0"
-        runtimeOnly "org.webjars:bootstrap:3.3.7-1"
+        runtimeOnly "org.webjars:normalize.css:${normalizeCssVersion}"
+        runtimeOnly "org.webjars:bootstrap:${bootstrapVersion}"
     }
 }
 
