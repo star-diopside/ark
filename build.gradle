@@ -9,7 +9,7 @@ allprojects {
     version = "0.2.0-SNAPSHOT"
 
     ext {
-        silverCommonsVersion = "1.0.1"
+        silverCommonsVersion = "1.0.2-SNAPSHOT"
         normalizeCssVersion = "5.0.0"
         bootstrapVersion = "3.3.7-1"
     }
