@@ -13,6 +13,8 @@ allprojects {
         normalizeCssVersion = "5.0.0"
         bootstrapVersion = "3.3.7-1"
     }
+
+    ext["lombok.version"] = "1.16.22"
 }
 
 subprojects {
@@ -24,8 +26,8 @@ subprojects {
     apply plugin: "com.github.spotbugs"
     apply plugin: "jacoco"
 
-    sourceCompatibility = 9
-    targetCompatibility = 9
+    sourceCompatibility = JavaVersion.VERSION_1_9
+    targetCompatibility = JavaVersion.VERSION_1_9
 
     eclipse.wtp.facet.file.whenMerged { facet ->
         facet.facets.each {
@@ -65,6 +67,7 @@ subprojects {
     javadoc {
         options.charSet = "UTF-8"
         options.encoding = "UTF-8"
+        options.addBooleanOption("html5", true)
     }
 
     checkstyle {
