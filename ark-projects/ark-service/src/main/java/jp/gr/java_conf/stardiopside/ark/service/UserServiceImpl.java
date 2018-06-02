@@ -164,8 +164,8 @@ public class UserServiceImpl implements UserService {
      */
     private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
         // 最終ログイン日時、ログアウト日時の判定を行う。
-        return !compare​LocalDateTime(loginUser.getLastLoginAt(), user.getLastLoginAt())
-                || !compare​LocalDateTime(loginUser.getLogoutAt(), user.getLogoutAt());
+        return !compareLocalDateTime(loginUser.getLastLoginAt(), user.getLastLoginAt())
+                || !compareLocalDateTime(loginUser.getLogoutAt(), user.getLogoutAt());
     }
 
     /**
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
      * @param b 比較対象の日付
      * @return 引数で指定された日付の値が等しい場合はtrue、それ以外の場合はfalse。
      */
-    private boolean compare​LocalDateTime(LocalDateTime a, LocalDateTime b) {
+    private boolean compareLocalDateTime(LocalDateTime a, LocalDateTime b) {
         if (a == b) {
             return true;
         } else if (a == null || b == null) {
