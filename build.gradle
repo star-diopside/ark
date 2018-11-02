@@ -1,7 +1,6 @@
 plugins {
-    id "io.spring.dependency-management" version "1.0.5.RELEASE"
-    id "org.springframework.boot" version "2.0.1.RELEASE"
-    id "com.github.spotbugs" version "1.6.1"
+    id "org.springframework.boot" version "2.1.0.RELEASE" apply false
+    id "com.github.spotbugs" version "1.6.5"
 }
 
 allprojects {
@@ -10,11 +9,14 @@ allprojects {
 
     ext {
         silverCommonsVersion = "1.0.2-SNAPSHOT"
-        normalizeCssVersion = "5.0.0"
+        commonsCliVersion = "1.4"
+        eclipselinkVersion = "2.7.3"
+        guavaVersion = "27.0-jre"
+        javaxInjectVersion = "1"
         bootstrapVersion = "3.3.7-1"
+        normalizeCssVersion = "5.0.0"
     }
 
-    ext["lombok.version"] = "1.16.22"
 }
 
 subprojects {
@@ -48,7 +50,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "io.spring.platform:platform-bom:Cairo-RELEASE"
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
         }
     }
 
@@ -71,13 +73,13 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "8.10"
+        toolVersion = "8.14"
         configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
         ignoreFailures = true
     }
 
     spotbugs {
-        toolVersion = "3.1.3"
+        toolVersion = "3.1.8"
         ignoreFailures = true
     }
 
@@ -89,7 +91,7 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "0.8.1"
+        toolVersion = "0.8.2"
     }
 
     task packageSources(type: Jar, dependsOn: classes) {
@@ -112,7 +114,7 @@ project(":ark-projects:ark-core") {
     dependencies {
         api "jp.gr.java_conf.stardiopside.silver.commons:silver-commons-support:${silverCommonsVersion}"
         api "org.springframework.boot:spring-boot-starter-data-jpa"
-        api "javax.inject:javax.inject"
+        api "javax.inject:javax.inject:${javaxInjectVersion}"
         implementation "org.springframework.boot:spring-boot-starter-logging"
         implementation "org.springframework:spring-context"
     }
@@ -129,7 +131,7 @@ project(":ark-projects:ark-data") {
     dependencies {
         api "org.springframework.security:spring-security-core"
         implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-        compileOnly "org.eclipse.persistence:org.eclipse.persistence.jpa"
+        compileOnly "org.eclipse.persistence:org.eclipse.persistence.jpa:${eclipselinkVersion}"
         runtimeOnly "org.liquibase:liquibase-core"
         runtimeOnly "javax.xml.bind:jaxb-api"
         testImplementation project(":ark-projects:ark-core")
@@ -173,7 +175,7 @@ project(":ark-projects:ark-web-controller") {
 project(":ark-projects:ark-web-view") {
     dependencies {
         runtimeOnly "org.thymeleaf:thymeleaf-spring5"
-        runtimeOnly "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
+        runtimeOnly "org.thymeleaf.extras:thymeleaf-extras-springsecurity5"
         runtimeOnly "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
         runtimeOnly "org.webjars:webjars-locator-core"
         runtimeOnly "org.webjars:normalize.css:${normalizeCssVersion}"
@@ -214,8 +216,8 @@ project("ark-applications:ark-user-registration") {
 
     dependencies {
         implementation project(":ark-projects:ark-service")
-        implementation "commons-cli:commons-cli"
-        implementation "com.google.guava:guava"
+        implementation "commons-cli:commons-cli:${commonsCliVersion}"
+        implementation "com.google.guava:guava:${guavaVersion}"
         runtimeOnly "org.postgresql:postgresql"
     }
 }

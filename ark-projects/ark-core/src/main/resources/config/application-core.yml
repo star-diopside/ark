@@ -4,5 +4,7 @@ logging:
 spring:
   aop:
     proxy-target-class: false
+  main:
+    allow-bean-definition-overriding: true
   messages:
     basename: messages,ValidationMessages
