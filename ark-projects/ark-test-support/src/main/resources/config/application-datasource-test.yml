@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test-arkdb
+    url: jdbc:postgresql://localhost:5432/test_arkdb
     username: ark
     password: ark
   job-datasource:

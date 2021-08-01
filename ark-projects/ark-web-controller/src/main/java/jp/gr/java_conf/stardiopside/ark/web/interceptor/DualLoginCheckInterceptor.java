@@ -1,23 +1,22 @@
 package jp.gr.java_conf.stardiopside.ark.web.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jp.gr.java_conf.stardiopside.ark.service.UserService;
+import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
+import jp.gr.java_conf.stardiopside.ark.web.exception.DualLoginException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.FlashMapManager;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import jp.gr.java_conf.stardiopside.ark.service.UserService;
-import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
-import jp.gr.java_conf.stardiopside.ark.web.exception.DualLoginException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 二重ログインチェックを行うインターセプター
  */
-public class DualLoginCheckInterceptor extends HandlerInterceptorAdapter {
+public class DualLoginCheckInterceptor implements HandlerInterceptor {
 
     private final UserService userService;
 

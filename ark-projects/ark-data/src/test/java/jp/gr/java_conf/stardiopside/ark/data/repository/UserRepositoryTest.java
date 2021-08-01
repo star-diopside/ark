@@ -1,17 +1,10 @@
 package jp.gr.java_conf.stardiopside.ark.data.repository;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.sql.DataSource;
-import javax.transaction.Transactional;
-
+import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
+import jp.gr.java_conf.stardiopside.ark.data.entity.User;
+import jp.gr.java_conf.stardiopside.ark.test.config.TestConfig;
+import jp.gr.java_conf.stardiopside.silver.commons.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.stardiopside.silver.commons.test.support.SimpleDatabaseTestSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
@@ -24,14 +17,19 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
-import jp.gr.java_conf.stardiopside.ark.data.entity.User;
-import jp.gr.java_conf.stardiopside.ark.test.config.TestConfig;
-import jp.gr.java_conf.stardiopside.silver.commons.test.support.DatabaseTestSupport;
-import jp.gr.java_conf.stardiopside.silver.commons.test.support.SimpleDatabaseTestSupport;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.sql.DataSource;
+import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { AppConfig.class, TestConfig.class }, webEnvironment = WebEnvironment.NONE)
+@SpringBootTest(classes = {AppConfig.class, TestConfig.class}, webEnvironment = WebEnvironment.NONE)
 @Transactional
 @Rollback
 public class UserRepositoryTest {
@@ -66,7 +64,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindOne() throws Exception {
-        User user = userRepository.getOne("user01");
+        User user = userRepository.getById("user01");
         assertUserEntity(user);
     }
 

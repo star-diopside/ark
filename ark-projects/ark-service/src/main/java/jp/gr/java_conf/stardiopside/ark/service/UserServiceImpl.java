@@ -1,16 +1,5 @@
 package jp.gr.java_conf.stardiopside.ark.service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import jp.gr.java_conf.stardiopside.ark.core.exception.ApplicationException;
 import jp.gr.java_conf.stardiopside.ark.data.entity.Authority;
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
@@ -18,6 +7,15 @@ import jp.gr.java_conf.stardiopside.ark.data.repository.AuthorityRepository;
 import jp.gr.java_conf.stardiopside.ark.data.repository.UserRepository;
 import jp.gr.java_conf.stardiopside.ark.service.dto.UserDto;
 import jp.gr.java_conf.stardiopside.ark.service.userdetails.LoginUserDetails;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 /**
  * ユーザ管理クラス
@@ -32,8 +30,8 @@ public class UserServiceImpl implements UserService {
     private final int tempUserValidDays;
 
     public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository,
-            @Named("passwordEncoder") PasswordEncoder passwordEncoder,
-            @Value("${application.settings.temp-user-valid-days}") int tempUserValidDays) {
+                           @Named("passwordEncoder") PasswordEncoder passwordEncoder,
+                           @Value("${application.settings.temp-user-valid-days}") int tempUserValidDays) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
@@ -114,7 +112,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User loginSuccess(LoginUserDetails loginUser) {
-        User user = userRepository.getOne(loginUser.getUserId());
+        User user = userRepository.getById(loginUser.getUserId());
         LocalDateTime current = LocalDateTime.now();
 
         user.setLoginErrorCount(0);
@@ -127,7 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User loginFailure(String userId) {
-        User user = userRepository.getOne(userId);
+        User user = userRepository.getById(userId);
 
         user.setLoginErrorCount(user.getLoginErrorCount() + 1);
 
@@ -138,7 +136,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void logout(LoginUserDetails loginUser) {
         String userId = loginUser.getUserId();
-        User user = userRepository.getOne(userId);
+        User user = userRepository.getById(userId);
 
         // ログイン情報が更新されていない場合、ログアウト処理を行う。
         if (!checkLoginInfo(loginUser, user)) {
@@ -151,15 +149,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean checkDualLogin(LoginUserDetails loginUser) {
-        User user = userRepository.getOne(loginUser.getUserId());
+        User user = userRepository.getById(loginUser.getUserId());
         return checkLoginInfo(loginUser, user);
     }
 
     /**
      * ログイン情報の不変チェックを行う。
-     * 
+     *
      * @param loginUser ログインユーザ情報
-     * @param user ユーザテーブルから取得したユーザ情報
+     * @param user      ユーザテーブルから取得したユーザ情報
      * @return ログイン後にログイン情報が更新されている場合はtrue、それ以外の場合はfalse。
      */
     private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
@@ -170,7 +168,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * {@link LocalDateTime} を {@link java.util.Date} で表現可能なミリ秒までの精度に切り詰めて比較を行う。
-     * 
+     *
      * @param a 比較対象の日付
      * @param b 比較対象の日付
      * @return 引数で指定された日付の値が等しい場合はtrue、それ以外の場合はfalse。

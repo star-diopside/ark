@@ -1,18 +1,11 @@
 package jp.gr.java_conf.stardiopside.ark.batch.job;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.sql.DataSource;
-
+import jp.gr.java_conf.stardiopside.ark.batch.config.BatchTestConfig;
+import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
+import jp.gr.java_conf.stardiopside.silver.commons.test.support.CommitTransactionDatabaseTestSupport;
+import jp.gr.java_conf.stardiopside.silver.commons.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.stardiopside.silver.commons.test.util.DataSetUtils;
+import jp.gr.java_conf.stardiopside.silver.commons.test.util.TestUtils;
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
@@ -29,15 +22,20 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import jp.gr.java_conf.stardiopside.ark.batch.config.BatchTestConfig;
-import jp.gr.java_conf.stardiopside.ark.core.config.AppConfig;
-import jp.gr.java_conf.stardiopside.silver.commons.test.support.CommitTransactionDatabaseTestSupport;
-import jp.gr.java_conf.stardiopside.silver.commons.test.support.DatabaseTestSupport;
-import jp.gr.java_conf.stardiopside.silver.commons.test.util.DataSetUtils;
-import jp.gr.java_conf.stardiopside.silver.commons.test.util.TestUtils;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { AppConfig.class, BatchTestConfig.class }, webEnvironment = WebEnvironment.NONE)
+@SpringBootTest(classes = {AppConfig.class, BatchTestConfig.class}, webEnvironment = WebEnvironment.NONE)
 public class RemoveInvalidUsersJobTest {
 
     @Inject

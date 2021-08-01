@@ -1,12 +1,11 @@
 package jp.gr.java_conf.stardiopside.ark.web.config;
 
-import java.util.Collections;
-
+import com.google.code.kaptcha.servlet.KaptchaServlet;
+import jp.gr.java_conf.stardiopside.ark.web.servlet.LoggingConfigFilter;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -17,20 +16,22 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource;
 import org.springframework.transaction.interceptor.NoRollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-import com.google.code.kaptcha.servlet.KaptchaServlet;
-
-import jp.gr.java_conf.stardiopside.ark.web.servlet.LoggingConfigFilter;
+import java.util.Collections;
 
 @Configuration
 public class ServletConfig {
 
-    @Autowired
-    private PlatformTransactionManager transactionManager;
+    private final TransactionManager transactionManager;
+
+    public ServletConfig(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
 
     @Bean
     public FilterRegistrationBean<LoggingConfigFilter> loggingConfigFilter(SecurityProperties properties) {

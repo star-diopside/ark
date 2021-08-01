@@ -1,6 +1,13 @@
 spring:
   profiles:
-    include:
-    - core
-    - settings
-    - test
+    group:
+      default:
+        - core
+        - settings
+        - test
+        - datasource-test
+      ci:
+        - core
+        - settings
+        - test
+        - datasource-ci
