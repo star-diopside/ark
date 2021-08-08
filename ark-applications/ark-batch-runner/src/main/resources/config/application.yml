@@ -4,6 +4,7 @@ spring:
   liquibase:
     enabled: false
   profiles:
-    include:
-    - core
-    - settings
+    group:
+      default:
+        - core
+        - settings

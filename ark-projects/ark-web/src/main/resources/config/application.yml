@@ -10,7 +10,8 @@ spring:
   jpa:
     open-in-view: true
   profiles:
-    include:
-    - core
-    - settings
-    - servlet
+    group:
+      default:
+        - core
+        - settings
+        - servlet

@@ -1,15 +1,15 @@
 package jp.gr.java_conf.stardiopside.ark.service.userdetails;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import jp.gr.java_conf.stardiopside.ark.data.entity.User;
 import jp.gr.java_conf.stardiopside.silver.commons.support.logging.Loggable;
 import jp.gr.java_conf.stardiopside.silver.commons.support.logging.LoggingSetting;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * ログインユーザ情報クラス
@@ -25,23 +25,16 @@ public class LoginUser implements LoginUserDetails, Loggable {
 
     /**
      * コンストラクタ
-     * 
+     *
      * @param user ユーザエンティティ
      */
     public LoginUser(User user) {
         _userDetails = new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(),
-                user.isEnabled(), true, true, true, AuthorityUtils.NO_AUTHORITIES);
+                user.isEnabled(), true, true, true,
+                user.getAuthorities().stream()
+                        .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+                        .collect(Collectors.toList()));
         _user = user.clone();
-    }
-
-    /**
-     * コンストラクタ
-     * 
-     * @param user ユーザ情報
-     * @param loginUser ログインユーザ情報
-     */
-    public LoginUser(UserDetails user, LoginUserDetails loginUser) {
-        update(user, loginUser.convertUserEntity());
     }
 
     @Override
